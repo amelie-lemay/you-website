@@ -1,0 +1,17 @@
+/* ====================================
+   Card customization
+==================================== */
+
+.minor-characters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+    gap: 1.5em;
+}
+
+.minor-characters .card strong {
+    min-width: 9ch;
+}
+
+.deceased {
+    font-style: italic;
+}

@@ -1,0 +1,166 @@
+/* ====================================
+   Layout wrapper
+==================================== */
+
+.main-content {
+    display: flex;
+    max-width: 90%;
+    margin: 2em auto;
+    padding: 0 1em;
+    gap: 2em;
+}
+
+/* ====================================
+   Sidebar
+==================================== */
+
+aside,
+.translation-block {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5em;
+}
+
+aside {
+    position: sticky;
+    top: 6em;
+    width: max-content;
+    height: fit-content;
+}
+
+aside h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    color: #4A5A3D;
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+aside li {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0.2em;
+}
+
+aside li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.1em;
+    height: 2px;
+    background-color: #2B3D2F;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease, height 0.3s ease, background-color 0.3s ease;
+}
+
+aside li:hover::after,
+aside li:has(a.active)::after {
+    transform: scaleX(1);
+    height: 3px;
+    background-color: var(--accent);
+}
+
+aside a {
+    display: block;
+    padding: 0.3em 3em 0.3em 0.5em;
+    color: var(--text);
+}
+
+aside a.active {
+    color: var(--accent);
+    font-weight: 600;
+    background-color: #f3f0e6;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+/* ====================================
+   Translation Section
+==================================== */
+
+.translations {
+    flex: 1;
+}
+
+.translation-block {
+    padding: 2em;
+    margin-bottom: 2em;
+}
+
+.translation-block h3 {
+    border-bottom: 1px solid rgba(76, 107, 71, 0.6);
+    padding-bottom: 0.3em;
+}
+
+.dialogue {
+    opacity: 0;
+}
+
+.context {
+    font-style: italic;
+    margin: 1rem 0 0.5rem 0;
+}
+
+/* ====================================
+   Dialogue boxes
+==================================== */
+
+.box {
+    padding: 2em 1em;
+    background-color: #f3f0e6;
+    border-radius: 4px;
+    border-left: 4px solid var(--text);
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    text-align: justify;
+}
+
+.box p {
+    margin-bottom: 1.5rem;
+}
+
+.box p:last-child {
+    margin-bottom: 0;
+}
+
+/* ====================================
+   Separator between dialogues
+==================================== */
+
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    margin: 3rem 0;
+    opacity: 0.8;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+}
+
+.separator::before {
+    background: linear-gradient(to right, transparent, #4C6B47);
+}
+
+.separator::after {
+    background: linear-gradient(to right, #4C6B47, transparent);
+}
+
+.separator span {
+    color: #4C6B47;
+    font-size: 1.1em;
+    transform: translateY(-0.1em);
+}

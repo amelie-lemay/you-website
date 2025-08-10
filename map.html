@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Merriweather&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/shared.css">
+    <script type="module" src="/js/shared.js"></script>
+    <script type="module" src="/js/map.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1><a href="index.html">You</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="map.html" aria-current="page">Map</a>
+            <a href="translation.html">Translation</a>
+            <a href="characters.html">Characters</a>
+        </nav>
+    </header>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15" />
+        </svg>
+    </a>
+
+    <!-- TO DO: Map references to the cards -->
+    <section class="section">
+        <h2>Jane's Map</h2>
+        <img src="/img/map-temp.jpg" alt="Jane's Map"
+            style="width:100%;max-width:900px;border:1px solid #CBB89D;border-radius:8px;">
+    </section>
+
+    <section class="section">
+        <h2>Groups</h2>
+        <div class="cards">
+            <div class="card card--hover">
+                <h3 class="section-heading">The Verdant Kin</h3>
+                <p><strong>Member count:</strong> ~400</p>
+                <p class="card-underline"><strong>Location:</strong> Eastern Forests</p>
+                <p class="card-description">A nomadic tribe that lives in harmony with the forest. Known for their herbal knowledge and silent
+                    travel.</p>
+            </div>
+            <div class="card card--hover">
+                <h3 class="section-heading">The Echo Caste</h3>
+                <p><strong>Member count:</strong> ~120</p>
+                <p class="card-underline"><strong>Location:</strong> Cavernous West</p>
+                <p class="card-description">Reclusive group residing in natural caves. They preserve ancient data fragments and value oral
+                    tradition.</p>
+            </div>
+            <div class="card card--hover">
+                <h3 class="section-heading">The Ashen Circle</h3>
+                <p><strong>Member count:</strong> ~60</p>
+                <p class="card-underline"><strong>Location:</strong> Northern Plains</p>
+                <p class="card-description">A survivalist faction known for their fire rituals and strict hierarchy. Often seen as hostile.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Buildings</h2>
+        <div class="cards">
+            <div class="card card--hover">
+                <h3 class="section-heading">The Grove Hall</h3>
+                <p><strong>Belongs to:</strong> The Verdant Kin</p>
+                <p><strong>Usage:</strong>Council gatherings and healing rituals.</p>
+            </div>
+            <div class="card card--hover">
+                <h3 class="section-heading">The Data Core</h3>
+                <p><strong>Belongs to:</strong> The Echo Caste</p>
+                <p><strong>Usage:</strong> Storing and interpreting ancient technological knowledge.</p>
+            </div>
+            <div class="card card--hover">
+                <h3 class="section-heading">The Ember Ring</h3>
+                <p><strong>Belongs to:</strong> The Ashen Circle</p>
+                <p><strong>Usage:</strong> Initiation ceremonies and fire-based trials.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Amélie Lemay. All rights reserved. |
+        <a href="#">Author Bio</a> |
+        <a href="#">Contact</a> |
+        <a href="#">Buy the Book</a>
+    </footer>
+</body>
+
+</html>
