@@ -1,4 +1,12 @@
-import { setUpSectionFadeIn, setupBackToTopButton } from "./shared.js";
+import { setUpSectionFadeIn, setupBackToTopButton, setUpBanner } from "./shared.js";
 
-setUpSectionFadeIn(document.querySelectorAll('.fade-in'));
-setupBackToTopButton();
+document.addEventListener("DOMContentLoaded", () => {
+    // Set up animations
+    const sections = document.querySelectorAll('.fade-in');
+    setUpSectionFadeIn(sections);
+    setupBackToTopButton();
+
+    // Get user's chapter progress
+    const banner = document.querySelector('.chapter-update');
+    setUpBanner(banner);
+});

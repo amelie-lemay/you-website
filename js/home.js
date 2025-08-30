@@ -1,14 +1,27 @@
-import { setUpSectionFadeIn, setupBackToTopButton } from "./shared.js";
+import { setUpSectionFadeIn, setupBackToTopButton, setUpBanner, 
+    showProgressPopup } from "./shared.js";
 
-setUpSectionFadeIn(document.querySelectorAll('.section'));
-setupBackToTopButton();
+document.addEventListener("DOMContentLoaded", () => {
+    // Set up animations
+    const sections = document.querySelectorAll('.section');
+    const heroImage = document.querySelector('.hero-bg');
+    setUpSectionFadeIn(sections);
+    setupBackToTopButton();
+    if (heroImage.complete) // Apply the animation effect when the image is loaded
+        fadeInAndAnimate(heroImage);
+    else
+        heroImage.addEventListener('load', () => fadeInAndAnimate(heroImage));
 
-const heroImage = document.querySelector('.hero-bg');
+    // Get user's chapter progress
+    const banner = document.querySelector('.chapter-update');
+    showProgressPopup('onboarding'); // For visitors
+    setUpBanner(banner); // For users
+});
 
 /**
  * Fade in the hero image and apply a moving effect.
  */
-function fadeInAndAnimate() {
+function fadeInAndAnimate(heroImage) {
     void heroImage.offsetWidth; // Force reflow to reset animation
     heroImage.classList.add('loaded');
 
@@ -25,9 +38,3 @@ function fadeInAndAnimate() {
 
     requestAnimationFrame(animate);
 }
-
-// Apply the animation effect when the image is loaded
-if (heroImage.complete)
-    fadeInAndAnimate();
-else
-    heroImage.addEventListener('load', fadeInAndAnimate);

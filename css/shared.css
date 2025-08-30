@@ -65,18 +65,21 @@ a {
     transition: color 0.3s ease;
     text-decoration: none;
     color: var(--link);
+    cursor: pointer;
 }
 
 nav a,
 aside a,
-footer a {
+footer a,
+.chapter-update a {
     position: relative;
     font-weight: 500;
 }
 
 nav a::after,
 .card a::after,
-footer a::after {
+footer a::after,
+.chapter-update a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -91,7 +94,8 @@ footer a::after {
 
 nav a:hover::after,
 .card a:hover::after,
-footer a:hover::after {
+footer a:hover::after,
+.chapter-update a:hover::after {
     transform: scaleX(1);
 }
 
@@ -102,7 +106,8 @@ nav a {
 nav a:hover,
 .card a:hover,
 footer a:hover,
-.translation strong {
+.translation strong,
+.chapter-update a:hover {
     color: var(--accent);
 }
 
@@ -159,6 +164,7 @@ body.scrolled .back-to-top {
    Buttons
 ==================================== */
 .button {
+    font-family: 'Merriweather', serif;
     font-size: 1rem;
     font-weight: bold;
     padding: 0.6rem 1.2rem;
@@ -233,6 +239,224 @@ h3.section-heading {
         transform: translateY(0);
         filter: blur(0);
     }
+}
+
+@keyframes popupIn {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ====================================
+   Popup and banner styles
+==================================== */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 2000;
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup {
+    position: relative;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 3rem 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    animation: popupIn 0.4s ease;
+    text-align: center;
+    font-family: 'Merriweather', serif;
+    color: var(--text);
+}
+
+.popup-close {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-close svg {
+    width: 2rem;
+    height: 2rem;
+    stroke-width: 1.5;
+    color: #a38f7d;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.popup-close:hover svg {
+    color: var(--text);
+    transform: scale(1.1);
+}
+
+[data-id="close"] {
+    top: 0.5rem;
+    bottom: auto;
+}
+
+[data-id="close"] svg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.popup-intro {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    color: var(--accent);
+    border-bottom: 1.5px solid var(--accent);
+}
+
+.popup-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.chapter-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+[data-id="chapter-display"] {
+    min-width: 2ch;
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--text);
+}
+
+.stepper-btn {
+    background: none;
+    color: var(--accent);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.stepper-btn svg {
+    width: 2.5em;
+    height: 2.5em;
+}
+
+.stepper-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.stepper-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.popup-checkbox {
+    display: flex;
+    justify-content: center;
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.popup-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.popup-checkbox input {
+    accent-color: var(--accent);
+    width: 1.3rem;
+    height: 1.3rem;
+    cursor: pointer;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.popup-actions .button {
+    font-weight: 500;
+    padding: 0.6rem 1.4rem;
+    transition: color 0.3s ease;
+}
+
+.button--primary {
+    background-color: var(--accent);
+    color: var(--bg);
+    border: 1.5px solid var(--accent);
+}
+
+.button--primary:hover {
+    background-color: #5c7b58;
+    box-shadow: none;
+}
+
+.button--secondary {
+    background-color: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--text);
+}
+
+.button--secondary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: none;
+}
+
+.chapter-update {
+    padding: 0.5em;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    font-style: italic;
+    background: var(--bg);
+    position: absolute;
+    width: 100%;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    z-index: 50;
+}
+
+.chapter-update.show {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 /* ====================================
