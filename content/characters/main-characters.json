@@ -1,0 +1,311 @@
+[
+    {
+        "chapter": 1,
+        "removeOn": null,
+        "name": "Jane",
+        "age": {
+            "ch-1": "4 months",
+            "ch-12": "5 months",
+            "ch-17": "6 months",
+            "ch-24": "7 months",
+            "ch-26": "8 months",
+            "ch-28": "10 months",
+            "ch-29": "11 months",
+            "ch-32": "1 year",
+            "ch-34": "1 year, 1 month",
+            "ch-35": "1 year, 2 months",
+            "ch-37": "1 year, 3 months",
+            "ch-39": "1 year, 4 months",
+            "ch-40": "1 year, 5 months"
+        },
+        "dateOfArrival": "March 9th",
+        "allegiance": {
+            "ch-1": "Blue clan",
+            "ch-18": "None",
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-1": "Jane is a young woman with great skills in cartography and whose profound desire is freedom with her friends.",
+            "ch-35": "Jane is a young woman with great skills in cartography and whose profound desire is freedom with her friends. She is Dahlia's partner."
+        }
+    },
+    {
+        "chapter": 1,
+        "removeOn": null,
+        "name": "Maha",
+        "age": {
+            "ch-1": "1.5 years",
+            "ch-7": "4 years",
+            "ch-12": "9 years",
+            "ch-24": "10 years",
+            "ch-30": "15 years"
+        },
+        "dateOfArrival": "October 10th",
+        "allegiance": {
+            "ch-1": "Blue clan",
+            "ch-18": "None",
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-1": "Jane's best friend despite being hot-headed, Maha is an experienced warrior and, above all, extremely loyal."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Dahlia",
+        "age": {
+            "ch-21": "4 years",
+            "ch-40": "5 years"
+        },
+        "dateOfArrival": "August 2nd",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Dahlia is an open-minded and curious individual, always eager to explore the world around her. Freedom and friendship are the core values that guide her.",
+            "ch-35": "Dahlia is an open-minded and curious individual, always eager to explore the world around her. Freedom and friendship are the core values that guide her. She is Jane's partner."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Sofia",
+        "age": {
+            "ch-21": "3 years",
+            "ch-38": "4 years"
+        },
+        "dateOfArrival": "June 18th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Both calm and thoughtful, Sofia is an emotionally intelligent person whom her friends can rely on."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Vincent",
+        "age": {
+            "ch-21": "9 months",
+            "ch-28": "1 year"
+        },
+        "dateOfArrival": "January 18th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Vincent is, next to Jane, the youngest member of the pack. Despite his age, he is smart and a fast learner, and skillful in art."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Alan",
+        "age": {
+            "ch-21": "9 years",
+            "ch-24": "10 years"
+        },
+        "dateOfArrival": "October 2nd",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Despite his height and experience in combat, Alan is a gentle man. He is Ahn's partner."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Ahn",
+        "age": {
+            "ch-21": "4 years",
+            "ch-34": "5 years"
+        },
+        "dateOfArrival": "April 1st",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Ahn is just as energetic and confident as she is compassionate and inclusive. She is Alan's partner."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Ivan",
+        "age": {
+            "ch-21": "7 years",
+            "ch-36": "8 years"
+        },
+        "dateOfArrival": "May 7th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Ivan is a wise and experienced individual. His skills in medecine and will to help others make him a trustful person to both outsiders and pack members."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Sean",
+        "age": {
+            "ch-21": "3 years",
+            "ch-43": "4 years"
+        },
+        "dateOfArrival": "August 18th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Although Sean appears as a playful and curious man, he can show maturity and compassion when it matters most."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Yousra",
+        "age": {
+            "ch-21": "9 years",
+            "ch-35": "10 years"
+        },
+        "dateOfArrival": "April 28th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Yousra is a strong and fierce person, whose protectiveness towards her friends can lead to aggression."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Justine",
+        "age": {
+            "ch-21": "6 years",
+            "ch-38": "7 years"
+        },
+        "dateOfArrival": "June 24th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Calm and compassionate, Justine has a strong sense of justice."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Junseo",
+        "age": {
+            "ch-21": "5 years",
+            "ch-36": "6 years"
+        },
+        "dateOfArrival": "May 12th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Junseo is quick with his jokes, although shy with those outside of his close circle."
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Victor",
+        "age": {
+            "ch-21": "9 years",
+            "ch-40": "10 years"
+        },
+        "dateOfArrival": "July 9th",
+        "allegiance": {
+            "ch-21": "The pack"
+        },
+        "description": {
+            "ch-21": "Despite his strength, Victor is a calm and reserved person that likes stability."
+        }
+    },
+    {
+        "chapter": 3,
+        "removeOn": 21,
+        "name": "Judy",
+        "age": {
+            "ch-3": "4 years"
+        },
+        "dateOfArrival": "April 7th",
+        "allegiance": {
+            "ch-3": "Blue clan"
+        },
+        "description": {
+            "ch-3": "Judy is her clan's primary raid intermediate, a role she has earned thanks to her tactiful mind, her ability to recognize others' strengths, and her obedience. Outside of her duties, she is an extroverted girl with a bubbly personality."
+        }
+    },
+    {
+        "chapter": 3,
+        "removeOn": 21,
+        "name": "Frederick",
+        "age": {
+            "ch-3": "10 years"
+        },
+        "dateOfArrival": "October 13th",
+        "allegiance": {
+            "ch-3": "Blue clan"
+        },
+        "description": {
+            "ch-3": "Frederick is the Blue's 'low-bridge' and the closest leader to the clan's life. His charismatic personality has earned him Jane's friendship.",
+            "ch-12": "Frederick is the Blue's 'low-bridge' and the closest leader to the clan's life. His charismatic personality has earned him Jane's friendship. Yet, despite his love for the clan, his failed attempt to escape years ago has bound him to the Blue forever."
+        }
+    },
+    {
+        "chapter": 3,
+        "removeOn": 21,
+        "name": "George",
+        "age": {
+            "ch-3": "3 days",
+            "ch-5": "4 days",
+            "ch-6": "1 week",
+            "ch-9": "2 weeks",
+            "ch-12": "3 weeks",
+            "ch-15": "1 month"
+        },
+        "dateOfArrival": "July 15th",
+        "allegiance": {
+            "ch-3": "Blue clan"
+        },
+        "description": {
+            "ch-3": "George is a young boy who joined the raid team early. Despite his newcomer's fears, he shows extreme adaptability and willingness to learn from the clan."
+        }
+    },
+    {
+        "chapter": 3,
+        "removeOn": 21,
+        "name": "Ahmed",
+        "age": {
+            "ch-3": "2 years"
+        },
+        "dateOfArrival": "August 21st",
+        "allegiance": {
+            "ch-3": "Blue clan"
+        },
+        "description": {
+            "ch-3": "As one of the Blue's most skillful hunters, Ahmed is an energetic boy that cares a lot for his friends."
+        }
+    },
+    {
+        "chapter": 15,
+        "removeOn": 20,
+        "name": "Clémence",
+        "age": {
+            "ch-15": "6 years"
+        },
+        "dateOfArrival": "September 7th",
+        "allegiance": {
+            "ch-15": "Southern clans"
+        },
+        "description": {
+            "ch-15": "Clémence is a gatherer living in the French village. She is carefree and curious, and loves to make others smile. She welcomed Jane into her home."
+        }
+    }
+]

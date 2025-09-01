@@ -1,0 +1,131 @@
+[
+    {
+        "chapter": 15,
+        "removeOn": null,
+        "name": "Florence",
+        "allegiance": {
+            "ch-15": "Southern clans"
+        }
+    },
+    {
+        "chapter": 20,
+        "removeOn": null,
+        "name": "Clémence",
+        "allegiance": {
+            "ch-20": "Southern clans"
+        }
+    },
+    {
+        "chapter": 24,
+        "removeOn": null,
+        "name": "Antoine",
+        "allegiance": {
+            "ch-24": "Southern clans"
+        }
+    },
+    {
+        "chapter": 29,
+        "removeOn": null,
+        "name": "Li Hua",
+        "allegiance": {
+            "ch-29": "Southern clans"
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Judy",
+        "allegiance": {
+            "ch-21": "Blue clan"
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Frederick",
+        "allegiance": {
+            "ch-21": "Blue clan"
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "George",
+        "allegiance": {
+            "ch-21": "Blue clan"
+        }
+    },
+    {
+        "chapter": 21,
+        "removeOn": null,
+        "name": "Ahmed",
+        "allegiance": {
+            "ch-21": "Blue clan"
+        }
+    },
+    {
+        "chapter": 4,
+        "removeOn": null,
+        "name": "Laura",
+        "allegiance": {
+            "ch-4": "Blue clan"
+        }
+    },
+    {
+        "chapter": 3,
+        "removeOn": null,
+        "name": "Lama",
+        "allegiance": {
+            "ch-3": "Blue clan"
+        }
+    },
+    {
+        "chapter": 5,
+        "removeOn": null,
+        "name": "Anthony",
+        "allegiance": {
+            "ch-5": "Blue clan"
+        }
+    },
+    {
+        "chapter": 29,
+        "removeOn": null,
+        "name": "Ellie",
+        "allegiance": {
+            "ch-29": "Southern clans"
+        }
+    },
+    {
+        "chapter": 29,
+        "removeOn": null,
+        "name": "Jose",
+        "allegiance": {
+            "ch-29": "Southern clans"
+        }
+    },
+    {
+        "chapter": 29,
+        "removeOn": null,
+        "name": "Fatima",
+        "allegiance": {
+            "ch-29": "Southern clans"
+        }
+    },
+    {
+        "chapter": 29,
+        "removeOn": null,
+        "name": "Andrew",
+        "allegiance": {
+            "ch-29": "Southern clans"
+        }
+    },
+    {
+        "chapter": 10,
+        "removeOn": 21,
+        "name": "Dahlia",
+        "allegiance": {
+            "ch-10": "Green clan",
+            "ch-14": "None"
+        }
+    }
+]

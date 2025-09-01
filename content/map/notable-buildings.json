@@ -1,0 +1,51 @@
+[
+    {
+        "chapter": 1,
+        "name": "The School",
+        "belongsTo": "Blue Clan",
+        "usage": "Storage and shelter."
+    },
+    {
+        "chapter": 5,
+        "name": "The Grocery Store",
+        "belongsTo": "Blue Clan",
+        "usage": "Landmark."
+    },
+    {
+        "chapter": 8,
+        "name": "The Sports Complex",
+        "belongsTo": "Green Clan",
+        "usage": "Important storage facility.",
+        "note": {
+            "ch-9": "Note: The pool section is based on the Montréal Olympic Stadium."
+        }
+    },
+    {
+        "chapter": 14,
+        "name": "The Hospital",
+        "belongsTo": "Green Clan",
+        "usage": "Landmark and shelter. Temporarily used for the Blue prisoners."
+    },
+    {
+        "chapter": 16,
+        "name": "The University",
+        "belongsTo": "Unknown",
+        "usage": {
+            "ch-16": "Unknown.",
+            "ch-20": "It is fervently defended by guards.",
+            "ch-42": "This building hosts and protects the gate. It is fervently defended by guards."
+        }
+    },
+    {
+        "chapter": 22,
+        "name": "The House",
+        "belongsTo": "The Pack",
+        "usage": "Landmark."
+    },
+    {
+        "chapter": 34,
+        "name": "The Subway",
+        "belongsTo": "The Pack",
+        "usage": "Landmark."
+    }
+]
