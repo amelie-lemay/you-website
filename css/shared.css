@@ -446,7 +446,7 @@ h3.section-heading {
     text-align: center;
     font-style: italic;
     background: var(--bg);
-    position: absolute;
+    position: fixed;
     width: 100%;
     transform: translateY(-100%);
     opacity: 0;

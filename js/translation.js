@@ -25,8 +25,15 @@ window.addEventListener('chapterChange', injectContent);
 
 /**
  * Inject content into the page based on user's chapter progress.
+ * For this page, if the user reverted before chapter 7, they will 
+ * be redirected to the main page.
  */
 async function injectContent() {
+    if (getChapterProgress() < 7) {
+        window.location.href = "../index.html";
+        return;
+    }
+
     loadContent();
     await loadTranslations();
 
@@ -151,5 +158,125 @@ function addChapterSwitchListener() {
 
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+function configureCustomScrollbar() {
+    const aside = document.querySelector('aside');
+    if (!aside) return;
+
+    const ul = aside.querySelector('ul#sidebar') || aside.querySelector('ul');
+    if (!ul) return;
+
+    let wrapper = ul.parentElement;
+    if (!wrapper.classList.contains('toc-scroll')) {
+        // Wrap ul in wrapper
+        wrapper = document.createElement('div');
+        wrapper.className = 'toc-scroll';
+        ul.parentNode.insertBefore(wrapper, ul);
+        wrapper.appendChild(ul);
+
+        // Create faux scrollbar + thumb
+        const faux = document.createElement('div');
+        faux.className = 'faux-scrollbar';
+        const thumb = document.createElement('div');
+        thumb.className = 'faux-thumb';
+        faux.appendChild(thumb);
+        wrapper.appendChild(faux);
+    }
+
+    const thumb = wrapper.querySelector('.faux-thumb');
+
+    // Synchronize thumb size & position
+    function updateThumb() {
+        // Ensure layout has settled
+        requestAnimationFrame(() => {
+            const ch = ul.clientHeight;
+            const sh = ul.scrollHeight;
+
+            if (!thumb) return;
+
+            // Hide thumb if not scrollable
+            if (sh <= ch) {
+                thumb.style.display = 'none';
+                return;
+            } else {
+                thumb.style.display = '';
+            }
+
+            const ratio = ch / sh;
+            const thumbHeight = Math.max(24, Math.floor(ratio * ch));
+            const maxTop = ch - thumbHeight;
+            const scrollTop = ul.scrollTop;
+            const top = (scrollTop / (sh - ch)) * maxTop;
+
+            thumb.style.height = thumbHeight + 'px';
+            thumb.style.transform = `translateY(${Math.max(0, top)}px)`;
+        });
+    }
+
+    // Update on scroll/resize
+    ul.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+
+    // Observe size changes
+    const ro = new ResizeObserver(updateThumb);
+    ro.observe(wrapper);
+
+    // Detect dynamic additions/removals of list items
+    const mo = new MutationObserver(() => updateThumb());
+    mo.observe(ul, { childList: true, subtree: true, characterData: true });
+
+    // Initial update
+    updateThumb();
+    requestAnimationFrame(updateThumb);
+
+    // Dragging the thumb
+    let dragging = false;
+    let dragStartY = 0;
+    let startScrollTop = 0;
+
+    // Mouse down on thumb
+    thumb.addEventListener('mousedown', (e) => {
+        dragging = true;
+        dragStartY = e.clientY;
+        startScrollTop = ul.scrollTop;
+        document.body.classList.add('no-select');
+        e.preventDefault();
+    });
+
+    // Mouse move to drag
+    document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        const deltaY = e.clientY - dragStartY;
+        const ch = ul.clientHeight;
+        const sh = ul.scrollHeight;
+        const thumbH = thumb.clientHeight;
+        const scrollable = sh - ch;
+        const trackScrollable = ch - thumbH;
+        if (trackScrollable <= 0) return;
+        const scrollDelta = (deltaY / trackScrollable) * scrollable;
+        ul.scrollTop = Math.max(0, Math.min(sh - ch, startScrollTop + scrollDelta));
+        updateThumb();
+    });
+
+    // Mouse up to stop dragging
+    document.addEventListener('mouseup', () => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.classList.remove('no-select');
+    });
+
+    // Click on faux scrollbar to jump
+    wrapper.querySelector('.faux-scrollbar').addEventListener('click', (e) => {
+        if (e.target === thumb) return;
+        const rect = wrapper.querySelector('.faux-scrollbar').getBoundingClientRect();
+        const clickPos = e.clientY - rect.top;
+        const ch = ul.clientHeight;
+        const sh = ul.scrollHeight;
+        const thumbH = thumb.clientHeight;
+        const targetTop = Math.max(0, Math.min(ch - thumbH, clickPos - thumbH / 2));
+        const ratio = targetTop / (ch - thumbH);
+        ul.scrollTop = ratio * (sh - ch);
     });
 }

@@ -4,8 +4,9 @@
 
 .main-content {
     display: flex;
+    align-items: flex-start;
     max-width: 90%;
-    margin: 2em auto;
+    margin: 2em auto 4em auto;
     padding: 0 1em;
     gap: 2em;
 }
@@ -24,8 +25,10 @@ aside,
 aside {
     position: sticky;
     top: 6em;
-    width: max-content;
-    height: fit-content;
+    max-height: min(60vh, 500px);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
 }
 
 aside h2 {
@@ -35,11 +38,73 @@ aside h2 {
     color: #4A5A3D;
 }
 
-aside ul {
-    list-style: none;
-    padding: 0;
+.toc-scroll {
+    position: relative;
+    min-height: 0;
+    padding-right: 12px;
+    overscroll-behavior: contain;
+    overflow: hidden;
+}
+
+.toc-scroll > ul {
     margin: 0;
-    width: 100%;
+    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.toc-scroll > ul::-webkit-scrollbar {
+    display: none;
+}
+
+.faux-scrollbar {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    width: 8px;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .12s;
+}
+
+.toc-scroll:hover .faux-scrollbar {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.faux-scrollbar::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 4px;
+    bottom: 4px;
+    border-radius: 6px;
+    background: transparent;
+}
+
+.faux-thumb {
+    position: absolute;
+    left: 1px;
+    right: 1px;
+    width: auto;
+    border-radius: 6px;
+    background: rgba(120, 120, 120, 0.9);
+    transition: background .12s, opacity .12s;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toc-scroll:hover .faux-thumb {
+    background: rgba(100, 100, 100, 0.95);
+}
+
+.no-select {
+    user-select: none !important;
+    -webkit-user-select: none !important;
 }
 
 aside li {
