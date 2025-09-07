@@ -17,7 +17,7 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="map.html" aria-current="page">Map</a>
-            <a href="translation.html">Translation</a>
+            <a href="translation.html" class="ch-8">Translation</a>
             <a href="characters.html">Characters</a>
         </nav>
     </header>
@@ -39,40 +39,42 @@
         </svg>
     </a>
 
-    <!-- TO DO: Map references to the cards -->
-    <section class="section">
-        <h2>Jane's Map</h2>
-        <img src="/img/map-temp.jpg" alt="Jane's Map"
-            style="width:100%;max-width:900px;border:1px solid #CBB89D;border-radius:8px;">
-    </section>
-
-    <section class="section">
-        <h2>Major groups</h2>
-        <div id="major-groups" class="cards">
-        <!-- Major groups card structure
-            <div class="card card--hover">
-                <h3 class="section-heading">Name</h3>
-                <p><strong>Member count:</strong> Member count</p>
-                <p class="card-underline"><strong>Location:</strong> Location</p>
-                <p class="card-description">Description</p>
+    <div id="content-wrapper">
+        <!-- TO DO: Map references to the cards -->
+        <section class="section">
+            <h2>Jane's Map</h2>
+            <img src="/img/map-temp.jpg" alt="Jane's Map"
+                style="width:100%;max-width:900px;border:1px solid #CBB89D;border-radius:8px;">
+        </section>
+        
+        <section class="section">
+            <h2>Major groups</h2>
+            <div id="major-groups" class="cards">
+                <!-- Major groups card structure
+                    <div class="card card--hover">
+                        <h3 class="section-heading">Name</h3>
+                        <p><strong>Member count:</strong> Member count</p>
+                        <p class="card-underline"><strong>Location:</strong> Location</p>
+                        <p class="card-description">Description</p>
+                    </div>
+                -->
             </div>
-        -->
-        </div>
-    </section>
-
-    <section class="section">
-        <h2>Notable Buildings</h2>
-        <div id="notable-buildings" class="cards">
-        <!-- Notable buildings card structure
-            <div class="card card--hover">
-                <h3 class="section-heading">Name</h3>
-                <p><strong>Belongs to:</strong> Group</p>
-                <p><strong>Usage:</strong> Description.</p>
-                <p class="card-description">Optional note</p>
+        </section>
+        
+        <section class="section">
+            <h2>Notable Buildings</h2>
+            <div id="notable-buildings" class="cards">
+                <!-- Notable buildings card structure
+                    <div class="card card--hover">
+                        <h3 class="section-heading">Name</h3>
+                        <p><strong>Belongs to:</strong> Group</p>
+                        <p><strong>Usage:</strong> Description.</p>
+                        <p class="card-description">Optional note</p>
+                    </div>
+                -->
             </div>
-        -->
-        </div>
-    </section>
+        </section>
+    </div>
 
     <footer>
         &copy; 2025 Amélie Lemay. All rights reserved. |
@@ -81,6 +83,49 @@
         <a href="#">Buy the Book</a> |
         <a class="update-progress">Change Progress</a>
     </footer>
+
+    <template id="progress-modal-template">
+        <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
+            <div class="popup">
+                <button class="popup-close" data-id="close" aria-label="Close popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+    
+                <p class="popup-intro" data-when="update">You've made some progress!</p>
+    
+                <div class="chapter-stepper">
+                    <button class="stepper-btn" data-id="dec" aria-label="Previous chapter">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                    </button>
+                    <span data-id="chapter-display">1</span>
+                    <button class="stepper-btn" data-id="inc" aria-label="Next chapter">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </button>
+                </div>
+    
+                <div class="popup-checkbox">
+                    <label>
+                        <input type="checkbox" data-id="finished" />
+                        <span>I finished reading</span>
+                    </label>
+                </div>
+    
+                <div class="popup-actions">
+                    <button class="button button--primary" data-id="save">Let's go</button>
+                </div>
+            </div>
+        </div>
+    </template>
 </body>
 
 </html>

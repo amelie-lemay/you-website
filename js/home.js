@@ -1,5 +1,5 @@
 import { setUpSectionFadeIn, setupBackToTopButton, setUpBanner, 
-    showProgressPopup } from "./shared.js";
+    showProgressPopup, setUpProgressSync, loadContent } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Set up animations
@@ -16,7 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const banner = document.querySelector('.chapter-update');
     showProgressPopup('onboarding'); // For visitors
     setUpBanner(banner); // For users
+
+    // Update website's content with chapter progress
+    setUpProgressSync(); // Sync chapter progress across tabs
+    loadContent();
 });
+
+// Reload content when chapter changes
+window.addEventListener('chapterChange', loadContent);
 
 /**
  * Fade in the hero image and apply a moving effect.

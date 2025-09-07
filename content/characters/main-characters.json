@@ -2,7 +2,9 @@
     {
         "chapter": 1,
         "removeOn": null,
-        "name": "Jane",
+        "name": {
+            "ch-1": "Jane"
+        },
         "age": {
             "ch-1": "4 months",
             "ch-12": "5 months",
@@ -18,7 +20,9 @@
             "ch-39": "1 year, 4 months",
             "ch-40": "1 year, 5 months"
         },
-        "dateOfArrival": "March 9th",
+        "dateOfArrival": {
+            "ch-1": "March 9th"
+        },
         "allegiance": {
             "ch-1": "Blue clan",
             "ch-18": "None",
@@ -32,7 +36,9 @@
     {
         "chapter": 1,
         "removeOn": null,
-        "name": "Maha",
+        "name": {
+            "ch-1": "Maha"
+        },
         "age": {
             "ch-1": "1.5 years",
             "ch-7": "4 years",
@@ -40,7 +46,9 @@
             "ch-24": "10 years",
             "ch-30": "15 years"
         },
-        "dateOfArrival": "October 10th",
+        "dateOfArrival": {
+            "ch-1": "October 10th"
+        },
         "allegiance": {
             "ch-1": "Blue clan",
             "ch-18": "None",
@@ -53,12 +61,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Dahlia",
+        "name": {
+            "ch-21": "Dahlia"
+        },
         "age": {
             "ch-21": "4 years",
             "ch-40": "5 years"
         },
-        "dateOfArrival": "August 2nd",
+        "dateOfArrival": {
+            "ch-21": "August 2nd"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -70,12 +82,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Sofia",
+        "name": {
+            "ch-21": "Sofia"
+        },
         "age": {
             "ch-21": "3 years",
             "ch-38": "4 years"
         },
-        "dateOfArrival": "June 18th",
+        "dateOfArrival": {
+            "ch-21": "June 18th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -86,12 +102,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Vincent",
+        "name": {
+            "ch-21": "Vincent"
+        },
         "age": {
             "ch-21": "9 months",
             "ch-28": "1 year"
         },
-        "dateOfArrival": "January 18th",
+        "dateOfArrival": {
+            "ch-21": "January 18th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -102,12 +122,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Alan",
+        "name": {
+            "ch-21": "Alan"
+        },
         "age": {
             "ch-21": "9 years",
             "ch-24": "10 years"
         },
-        "dateOfArrival": "October 2nd",
+        "dateOfArrival": {
+            "ch-21": "October 2nd"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -118,12 +142,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Ahn",
+        "name": {
+            "ch-21": "Ahn"
+        },
         "age": {
             "ch-21": "4 years",
             "ch-34": "5 years"
         },
-        "dateOfArrival": "April 1st",
+        "dateOfArrival": {
+            "ch-21": "April 1st"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -134,12 +162,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Ivan",
+        "name": {
+            "ch-21": "Ivan"
+        },
         "age": {
             "ch-21": "7 years",
             "ch-36": "8 years"
         },
-        "dateOfArrival": "May 7th",
+        "dateOfArrival": {
+            "ch-21": "May 7th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -150,12 +182,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Sean",
+        "name": {
+            "ch-21": "Sean"
+        },
         "age": {
             "ch-21": "3 years",
             "ch-43": "4 years"
         },
-        "dateOfArrival": "August 18th",
+        "dateOfArrival": {
+            "ch-21": "August 18th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -166,12 +202,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Yousra",
+        "name": {
+            "ch-21": "Yousra"
+        },
         "age": {
             "ch-21": "9 years",
             "ch-35": "10 years"
         },
-        "dateOfArrival": "April 28th",
+        "dateOfArrival": {
+            "ch-21": "April 28th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -182,12 +222,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Justine",
+        "name": {
+            "ch-21": "Justine"
+        },
         "age": {
             "ch-21": "6 years",
             "ch-38": "7 years"
         },
-        "dateOfArrival": "June 24th",
+        "dateOfArrival": {
+            "ch-21": "June 24th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -198,12 +242,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Junseo",
+        "name": {
+            "ch-21": "Junseo"
+        },
         "age": {
             "ch-21": "5 years",
             "ch-36": "6 years"
         },
-        "dateOfArrival": "May 12th",
+        "dateOfArrival": {
+            "ch-21": "May 12th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -214,12 +262,16 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Victor",
+        "name": {
+            "ch-21": "Victor"
+        },
         "age": {
             "ch-21": "9 years",
             "ch-40": "10 years"
         },
-        "dateOfArrival": "July 9th",
+        "dateOfArrival": {
+            "ch-21": "July 9th"
+        },
         "allegiance": {
             "ch-21": "The pack"
         },
@@ -230,11 +282,15 @@
     {
         "chapter": 3,
         "removeOn": 21,
-        "name": "Judy",
+        "name": {
+            "ch-3": "Judy"
+        },
         "age": {
             "ch-3": "4 years"
         },
-        "dateOfArrival": "April 7th",
+        "dateOfArrival": {
+            "ch-3": "April 7th"
+        },
         "allegiance": {
             "ch-3": "Blue clan"
         },
@@ -245,11 +301,15 @@
     {
         "chapter": 3,
         "removeOn": 21,
-        "name": "Frederick",
+        "name": {
+            "ch-3": "Frederick"
+        },
         "age": {
             "ch-3": "10 years"
         },
-        "dateOfArrival": "October 13th",
+        "dateOfArrival": {
+            "ch-3": "October 13th"
+        },
         "allegiance": {
             "ch-3": "Blue clan"
         },
@@ -261,7 +321,9 @@
     {
         "chapter": 3,
         "removeOn": 21,
-        "name": "George",
+        "name": {
+            "ch-3": "George"
+        },
         "age": {
             "ch-3": "3 days",
             "ch-5": "4 days",
@@ -270,7 +332,9 @@
             "ch-12": "3 weeks",
             "ch-15": "1 month"
         },
-        "dateOfArrival": "July 15th",
+        "dateOfArrival": {
+            "ch-3": "July 15th"
+        },
         "allegiance": {
             "ch-3": "Blue clan"
         },
@@ -281,11 +345,15 @@
     {
         "chapter": 3,
         "removeOn": 21,
-        "name": "Ahmed",
+        "name": {
+            "ch-3": "Ahmed"
+        },
         "age": {
             "ch-3": "2 years"
         },
-        "dateOfArrival": "August 21st",
+        "dateOfArrival": {
+            "ch-3": "August 21st"
+        },
         "allegiance": {
             "ch-3": "Blue clan"
         },
@@ -296,11 +364,15 @@
     {
         "chapter": 15,
         "removeOn": 20,
-        "name": "Clémence",
+        "name": {
+            "ch-15": "Clémence"
+        },
         "age": {
             "ch-15": "6 years"
         },
-        "dateOfArrival": "September 7th",
+        "dateOfArrival": {
+            "ch-15": "September 7th"
+        },
         "allegiance": {
             "ch-15": "Southern clans"
         },

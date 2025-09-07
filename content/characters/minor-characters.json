@@ -2,7 +2,9 @@
     {
         "chapter": 15,
         "removeOn": null,
-        "name": "Florence",
+        "name": {
+            "ch-15": "Florence"
+        },
         "allegiance": {
             "ch-15": "Southern clans"
         }
@@ -10,7 +12,9 @@
     {
         "chapter": 20,
         "removeOn": null,
-        "name": "Clémence",
+        "name": {
+            "ch-20": "Clémence"
+        },
         "allegiance": {
             "ch-20": "Southern clans"
         }
@@ -18,7 +22,9 @@
     {
         "chapter": 24,
         "removeOn": null,
-        "name": "Antoine",
+        "name": {
+            "ch-24": "Antoine"
+        },
         "allegiance": {
             "ch-24": "Southern clans"
         }
@@ -26,7 +32,9 @@
     {
         "chapter": 29,
         "removeOn": null,
-        "name": "Li Hua",
+        "name": {
+            "ch-29": "Li Hua"
+        },
         "allegiance": {
             "ch-29": "Southern clans"
         }
@@ -34,7 +42,9 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Judy",
+        "name": {
+            "ch-21": "Judy"
+        },
         "allegiance": {
             "ch-21": "Blue clan"
         }
@@ -42,7 +52,9 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Frederick",
+        "name": {
+            "ch-21": "Frederick"
+        },
         "allegiance": {
             "ch-21": "Blue clan"
         }
@@ -50,7 +62,9 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "George",
+        "name": {
+            "ch-21": "George"
+        },
         "allegiance": {
             "ch-21": "Blue clan"
         }
@@ -58,7 +72,9 @@
     {
         "chapter": 21,
         "removeOn": null,
-        "name": "Ahmed",
+        "name": {
+            "ch-21": "Ahmed"
+        },
         "allegiance": {
             "ch-21": "Blue clan"
         }
@@ -66,7 +82,9 @@
     {
         "chapter": 4,
         "removeOn": null,
-        "name": "Laura",
+        "name": {
+            "ch-4": "Laura"
+        },
         "allegiance": {
             "ch-4": "Blue clan"
         }
@@ -74,7 +92,9 @@
     {
         "chapter": 3,
         "removeOn": null,
-        "name": "Lama",
+        "name": {
+            "ch-3": "Lama"
+        },
         "allegiance": {
             "ch-3": "Blue clan"
         }
@@ -82,7 +102,9 @@
     {
         "chapter": 5,
         "removeOn": null,
-        "name": "Anthony",
+        "name": {
+            "ch-5": "Anthony"
+        },
         "allegiance": {
             "ch-5": "Blue clan"
         }
@@ -90,7 +112,9 @@
     {
         "chapter": 29,
         "removeOn": null,
-        "name": "Ellie",
+        "name": {
+            "ch-29": "Ellie"
+        },
         "allegiance": {
             "ch-29": "Southern clans"
         }
@@ -98,7 +122,9 @@
     {
         "chapter": 29,
         "removeOn": null,
-        "name": "Jose",
+        "name": {
+            "ch-29": "Jose"
+        },
         "allegiance": {
             "ch-29": "Southern clans"
         }
@@ -106,7 +132,9 @@
     {
         "chapter": 29,
         "removeOn": null,
-        "name": "Fatima",
+        "name": {
+            "ch-29": "Fatima"
+        },
         "allegiance": {
             "ch-29": "Southern clans"
         }
@@ -114,7 +142,9 @@
     {
         "chapter": 29,
         "removeOn": null,
-        "name": "Andrew",
+        "name": {
+            "ch-29": "Andrew"
+        },
         "allegiance": {
             "ch-29": "Southern clans"
         }
@@ -122,7 +152,9 @@
     {
         "chapter": 10,
         "removeOn": 21,
-        "name": "Dahlia",
+        "name": {
+            "ch-10": "Dahlia"
+        },
         "allegiance": {
             "ch-10": "Green clan",
             "ch-14": "None"

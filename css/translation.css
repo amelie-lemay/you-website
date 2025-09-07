@@ -92,7 +92,11 @@ aside a.active {
 
 .translation-block {
     padding: 2em;
-    margin-bottom: 2em;
+    display: none;
+}
+
+.translation-block.active {
+    display: block;
 }
 
 .translation-block h3 {

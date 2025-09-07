@@ -177,7 +177,25 @@ function createProgressPopup(mode = 'onboarding') {
 
 	function closeModal() {
 		modal.remove();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.documentElement.scrollTop = 0; // Scroll to top
+
+        // If the current page defined an injectContent function, call it
+        if (typeof window.injectContent === "function") {
+            // Hide content during reload
+            const contentWrapper = document.getElementById("content-wrapper");
+            contentWrapper.style.visibility = "hidden";
+
+            const waitForTop = () => {
+                if (document.documentElement.scrollTop === 0) {
+                    window.injectContent();
+                    // Show content again once injected
+                    contentWrapper.style.visibility = "visible";
+                } else {
+                    requestAnimationFrame(waitForTop);
+                }
+            };
+            waitForTop();
+        }
 	}
 
 	function changeChapter(step) {
@@ -278,11 +296,55 @@ function isElementInViewport(el) {
 }
 
 /**
- * Save the user's current chapter progress.
+ * Load content based on the user's chapter progress.
+ * Elements with classes like "ch-3" will appear when chapter >= 3,
+ * and elements with classes like "remove-on-3" will disappear when chapter >= 3.
+ */
+export function loadContent() {
+    const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
+
+    // Remember elements' display before they are hidden
+    const rememberDisplay = (el, shouldShow) => {
+        if (shouldShow) {
+            // Restore saved display, or fallback to CSS default
+            el.style.display = el.dataset.originalDisplay || "";
+        } else {
+            // Save original display if not already stored
+            if (!el.dataset.originalDisplay)
+                el.dataset.originalDisplay = getComputedStyle(el).display;
+            el.style.display = "none";
+        }
+    };
+    
+    // Handle elements that should be visible and should disappear
+    document.querySelectorAll("[class*='ch-'], [class*='remove-on-']").forEach(el => {
+        const appearMatch = el.className.match(/\bch-(\d+)\b/);
+        const removeMatch = el.className.match(/\bremove-on-(\d+)\b/);
+
+        const appearValue = appearMatch ? parseInt(appearMatch[1], 10) : null;
+        const removeValue = removeMatch ? parseInt(removeMatch[1], 10) : null;
+
+        // Rules
+        const shouldAppear = appearValue === null ? true : chapter >= appearValue;
+        const shouldRemove = removeValue === null ? true : chapter < removeValue;
+
+        rememberDisplay(el, shouldAppear && shouldRemove);
+    });
+}
+
+/**
+ * Save the user's current chapter progress. It also notifies
+ * other parts of the application about the change.
  * @param {number} chapter - The chapter number to save
  */
 export function saveChapterProgress(chapter) {
-    localStorage.setItem("chapter", chapter);
+    const value = Number(chapter);
+    localStorage.setItem("chapter", value);
+
+    // Emit change for pages to adapt
+    window.dispatchEvent(new CustomEvent("chapterChange", {
+        detail: { chapter: value }
+    }));
 }
 
 /**
@@ -291,7 +353,7 @@ export function saveChapterProgress(chapter) {
  * @returns {number} - The chapter number the user is currently on
  */
 export function getChapterProgress() {
-    return parseInt(localStorage.getItem("chapter"), 10) || 0;
+    return Number(localStorage.getItem("chapter") || 0);
 }
 
 /**
@@ -299,6 +361,22 @@ export function getChapterProgress() {
  */
 export function resetChapterProgress() {
     localStorage.removeItem("chapter");
+}
+
+/**
+ * Set up synchronization for chapter progress across tabs.
+ */
+export function setUpProgressSync() {
+    window.addEventListener("storage", (event) => {
+        if (event.key === "chapter") {
+            const newChapter = event.newValue ? Number(event.newValue) : 0;
+            
+            // Emit change for pages to adapt
+            window.dispatchEvent(new CustomEvent("chapterChange", {
+                detail: { chapter: newChapter }
+            }));
+        }
+    });
 }
 
 /**
@@ -331,4 +409,58 @@ function userHasClosedBanner() {
  */
 function markBannerAsClosed() {
     sessionStorage.setItem("bannerClosed", "true");
+}
+
+/**
+ * Fetch a JSON file and parse its contents.
+ * 
+ * @async
+ * @param {string} url - Path or URL to the JSON file.
+ * @returns {Promise<any>} Parsed JSON data.
+ * @throws {Error} If the HTTP request fails.
+ */
+export async function fetchJson(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return res.json();
+}
+
+/**
+ * Get the closest chapter-specific value for the given progress.
+ * 
+ * Expects an object with keys like "ch-1", "ch-2", etc., and returns the
+ * value of the closest key that is less than or equal to the provided chapter.
+ * 
+ * @param {Object|string|number|null} values - An object keyed by "ch-X", or a direct value.
+ * @param {number} chapter - Current chapter number.
+ * @returns {any|null} The closest matching value, or null if none found.
+ */
+export function getClosestChapterValue(values, chapter) {
+    if (typeof values !== "object") return values;
+
+    const keys = Object.keys(values)
+        .map(k => parseInt(k.replace("ch-", ""), 10))
+        .filter(num => !isNaN(num) && num <= chapter);
+
+    if (keys.length === 0) return null;
+
+    const closest = Math.max(...keys);
+    return values[`ch-${closest}`];
+}
+
+/**
+ * Determine if a piece of content should be visible at a given chapter.
+ * 
+ * Rules:
+ * - Content is visible if its `chapter` is <= current chapter.
+ * - Content is hidden if its `removeOn` is not null and <= current chapter.
+ * 
+ * @param {Object} item - Content object with `chapter` and `removeOn` fields.
+ * @param {number} currentChapter - Current user chapter progress.
+ * @returns {boolean} True if the item should be visible, false otherwise.
+ */
+export function isContentVisible(item, currentChapter) {
+    const introduced = item.chapter <= currentChapter;
+    const notRemoved = item.removeOn === null || item.removeOn > currentChapter;
+    return introduced && notRemoved;
 }

@@ -1,51 +1,104 @@
 [
     {
         "chapter": 1,
-        "name": "The School",
-        "belongsTo": "Blue Clan",
-        "usage": "Storage and shelter."
+        "removeOn": null,
+        "name": {
+            "ch-1": "The School"
+        },
+        "belongsTo": {
+            "ch-1": "Blue Clan"
+        },
+        "usage": {
+            "ch-1": "Storage and shelter."
+        },
+        "note": null
     },
     {
         "chapter": 5,
-        "name": "The Grocery Store",
-        "belongsTo": "Blue Clan",
-        "usage": "Landmark."
+        "removeOn": null,
+        "name": {
+            "ch-5": "The Grocery Store"
+        },
+        "belongsTo": {
+            "ch-5": "Blue Clan"
+        },
+        "usage": {
+            "ch-5": "Landmark."
+        },
+        "note": null
     },
     {
         "chapter": 8,
-        "name": "The Sports Complex",
-        "belongsTo": "Green Clan",
-        "usage": "Important storage facility.",
+        "removeOn": null,
+        "name": {
+            "ch-8": "The Sports Complex"
+        },
+        "belongsTo": {
+            "ch-8": "Green Clan"
+        },
+        "usage": {
+            "ch-8": "Important storage facility."
+        },
         "note": {
             "ch-9": "Note: The pool section is based on the Montréal Olympic Stadium."
         }
     },
     {
         "chapter": 14,
-        "name": "The Hospital",
-        "belongsTo": "Green Clan",
-        "usage": "Landmark and shelter. Temporarily used for the Blue prisoners."
+        "removeOn": null,
+        "name": {
+            "ch-14": "The Hospital"
+        },
+        "belongsTo": {
+            "ch-14": "Green Clan"
+        },
+        "usage": {
+            "ch-14": "Landmark and shelter. Temporarily used for the Blue prisoners."
+        },
+        "note": null
     },
     {
         "chapter": 16,
-        "name": "The University",
-        "belongsTo": "Unknown",
+        "removeOn": null,
+        "name": {
+            "ch-16": "The University"
+        },
+        "belongsTo": {
+            "ch-16": "Unknown"
+        },
         "usage": {
             "ch-16": "Unknown.",
             "ch-20": "It is fervently defended by guards.",
             "ch-42": "This building hosts and protects the gate. It is fervently defended by guards."
-        }
+        },
+        "note": null
     },
     {
         "chapter": 22,
-        "name": "The House",
-        "belongsTo": "The Pack",
-        "usage": "Landmark."
+        "removeOn": null,
+        "name": {
+            "ch-22": "The House"
+        },
+        "belongsTo": {
+            "ch-22": "The Pack"
+        },
+        "usage": {
+            "ch-22": "Landmark."
+        },
+        "note": null
     },
     {
         "chapter": 34,
-        "name": "The Subway",
-        "belongsTo": "The Pack",
-        "usage": "Landmark."
+        "removeOn": null,
+        "name": {
+            "ch-34": "The Subway"
+        },
+        "belongsTo": {
+            "ch-34": "The Pack"
+        },
+        "usage": {
+            "ch-34": "Landmark."
+        },
+        "note": null
     }
 ]
