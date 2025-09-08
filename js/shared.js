@@ -425,6 +425,11 @@ export async function fetchJson(url) {
     return res.json();
 }
 
+export function displayError() {
+    document.getElementById("content-wrapper").style.display = "none";
+    document.getElementById("error-message").hidden = false;
+}
+
 /**
  * Get the closest chapter-specific value for the given progress.
  * 

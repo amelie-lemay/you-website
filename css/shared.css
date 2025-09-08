@@ -185,6 +185,21 @@ body.scrolled .back-to-top {
 }
 
 /* ====================================
+   Error Message
+==================================== */
+.error-message {
+    background-color: #ffdddd;
+    color: #a94442;
+    border: 1px solid #a94442;
+    padding: 1em 2em;
+    margin: 1em auto;
+    max-width: 600px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* ====================================
    Sections & Text Styling
 ==================================== */
 .section {

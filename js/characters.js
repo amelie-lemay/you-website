@@ -1,5 +1,5 @@
 import { setUpSectionFadeIn, setupBackToTopButton, setupCardFadeIn, setUpBanner,
-    getChapterProgress, setUpProgressSync, loadContent, fetchJson,
+    getChapterProgress, setUpProgressSync, loadContent, fetchJson, displayError,
     getClosestChapterValue, isContentVisible } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,6 +24,10 @@ window.addEventListener('chapterChange', loadContent);
  * Inject content into the page based on user's chapter progress.
  */
 async function injectContent() {
+    // Remove error message if previously shown
+    document.getElementById("error-message").hidden = true;
+    document.getElementById("content-wrapper").style.display = "block";
+
     loadContent();
     await loadMainCharacters();
     await loadMinorCharacters();
@@ -52,7 +56,6 @@ window.injectContent = injectContent;
  * 
  * @async
  * @function
- * @returns {Promise<void>}
  */
 async function loadMainCharacters() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
@@ -89,7 +92,8 @@ async function loadMainCharacters() {
             }
         });
     } catch (error) {
-        console.error("Failed to load major groups:", error);
+        console.error("Failed to load main characters:", error);
+        displayError();
     }
 }
 
@@ -104,7 +108,6 @@ async function loadMainCharacters() {
  * 
  * @async
  * @function
- * @returns {Promise<void>}
  */
 async function loadMinorCharacters() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
@@ -135,6 +138,7 @@ async function loadMinorCharacters() {
             }
         });
     } catch (error) {
-        console.error("Failed to load major groups:", error);
+        console.error("Failed to load minor characters:", error);
+        displayError();
     }
 }

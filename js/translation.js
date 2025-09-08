@@ -1,6 +1,6 @@
 import { setUpSectionFadeIn, setupBackToTopButton, setUpBanner,
     getChapterProgress, setUpProgressSync, 
-    loadContent, fetchJson, isContentVisible } from "./shared.js";
+    loadContent, fetchJson, displayError, isContentVisible } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Set up animations
@@ -34,6 +34,10 @@ async function injectContent() {
         return;
     }
 
+    // Remove error message if previously shown
+    document.getElementById("error-message").hidden = true;
+    document.getElementById("content-wrapper").style.display = "block";
+
     loadContent();
     await loadTranslations();
 
@@ -48,6 +52,18 @@ async function injectContent() {
 // Register function globally so the shared module can access it
 window.injectContent = injectContent;
 
+
+/**
+ * Load and render translations data from JSON into the page.
+ *
+ * - Only displays content if its `chapter` is <= the user's progress.
+ * - Hides content if its `removeOn` value is <= the user's progress.
+ *
+ * Injects cards into the container with ID "translations".
+ *
+ * @async
+ * @function
+ */
 async function loadTranslations() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
     const container = document.getElementById('translations');
@@ -124,10 +140,14 @@ async function loadTranslations() {
             }
         });
     } catch (error) {
-        console.error("Failed to load major groups:", error);
+        console.error("Failed to load translations:", error);
+        displayError();
     }
 }
 
+/**
+ * Add click listeners to sidebar links to switch between chapters.
+ */
 function addChapterSwitchListener() {
     const sidebar = document.querySelector("aside ul");
     const chapters = document.querySelectorAll(".translation-block");
@@ -161,6 +181,10 @@ function addChapterSwitchListener() {
     });
 }
 
+/**
+ * Configure custom scrollbar for the sidebar.
+ * @returns {void}
+ */
 function configureCustomScrollbar() {
     const aside = document.querySelector('aside');
     if (!aside) return;

@@ -1,5 +1,5 @@
 import { setUpSectionFadeIn, setupBackToTopButton, setupCardFadeIn, setUpBanner,
-    getChapterProgress, setUpProgressSync, loadContent, fetchJson,
+    getChapterProgress, setUpProgressSync, loadContent, fetchJson, displayError,
     getClosestChapterValue, isContentVisible } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -24,6 +24,10 @@ window.addEventListener('chapterChange', injectContent);
  * Inject content into the page based on user's chapter progress.
  */
 async function injectContent() {
+    // Remove error message if previously shown
+    document.getElementById("error-message").hidden = true;
+    document.getElementById("content-wrapper").style.display = "block";
+
     loadContent();
     await loadMajorGroups();
     await loadNotableBuildings();
@@ -47,7 +51,6 @@ window.injectContent = injectContent;
  * 
  * @async
  * @function
- * @returns {Promise<void>}
  */
 async function loadMajorGroups() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
@@ -83,9 +86,22 @@ async function loadMajorGroups() {
         });
     } catch (error) {
         console.error("Failed to load major groups:", error);
+        displayError();
     }
 }
 
+/**
+ * Load and render notable buildings data from JSON into the page.
+ * *
+ * - Only displays content if its `chapter` is <= the user's progress.
+ * - Hides content if its `removeOn` value is <= the user's progress.
+ * - Uses `getClosestChapterValue` to resolve chapter-specific values.
+ * 
+ * Injects cards into the container with ID "notable-buildings".
+ * 
+ * @async
+ * @function
+ */
 async function loadNotableBuildings() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
     const container = document.getElementById('notable-buildings');
@@ -118,6 +134,7 @@ async function loadNotableBuildings() {
             }
         });
     } catch (error) {
-        console.error("Failed to load major groups:", error);
+        console.error("Failed to load notable buildings:", error);
+        displayError();
     }
 }
