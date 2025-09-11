@@ -1,8 +1,11 @@
-import { setUpSectionFadeIn, setupBackToTopButton, setUpBanner,
+import { adjustMainOffset, setUpSectionFadeIn, setupBackToTopButton, setUpBanner,
     getChapterProgress, setUpProgressSync, 
     loadContent, fetchJson, displayError, isContentVisible } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Fix header
+    adjustMainOffset();
+    
     // Set up animations
     const sections = document.querySelectorAll('.fade-in');
     setUpSectionFadeIn(sections);
@@ -35,8 +38,8 @@ async function injectContent() {
     }
 
     // Remove error message if previously shown
-    document.getElementById("error-message").hidden = true;
-    document.getElementById("content-wrapper").style.display = "block";
+    document.getElementById("error-wrapper").style.display = "none";
+    document.getElementById("content-wrapper").style.display = "flex";
 
     loadContent();
     await loadTranslations();

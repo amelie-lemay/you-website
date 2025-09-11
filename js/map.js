@@ -1,8 +1,11 @@
-import { setUpSectionFadeIn, setupBackToTopButton, setupCardFadeIn, setUpBanner,
+import { adjustMainOffset, setUpSectionFadeIn, setupBackToTopButton, setupCardFadeIn, setUpBanner,
     getChapterProgress, setUpProgressSync, loadContent, fetchJson, displayError,
     getClosestChapterValue, isContentVisible } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // Fix header
+    adjustMainOffset();
+
     // Set up animations
     const sections = document.querySelectorAll('.section');
     setUpSectionFadeIn(sections);
@@ -25,7 +28,7 @@ window.addEventListener('chapterChange', injectContent);
  */
 async function injectContent() {
     // Remove error message if previously shown
-    document.getElementById("error-message").hidden = true;
+    document.getElementById("error-wrapper").style.display = "none";
     document.getElementById("content-wrapper").style.display = "block";
 
     loadContent();

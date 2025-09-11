@@ -30,55 +30,54 @@
                 <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
         </button>
-        <p>Still on chapter <span id="current-chapter">1</span>? Update your progress <a class="update-progress">here</a>.</p>
+        <p>Still on chapter <span id="current-chapter">1</span>? Update your progress <a class="update-progress">here</a>.
+        </p>
     </section>
 
-    <a href="#" class="back-to-top" aria-label="Back to top">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15" />
-        </svg>
-    </a>
+    <main>
+        <div id="content-wrapper">
+            <!-- TO DO: Map references to the cards -->
+            <section class="section">
+                <h2>Jane's Map</h2>
+                <img src="/img/map-temp.jpg" alt="Jane's Map"
+                    style="width:100%;max-width:900px;border:1px solid #CBB89D;border-radius:8px;">
+            </section>
+            
+            <section class="section">
+                <h2>Major groups</h2>
+                <div id="major-groups" class="cards">
+                    <!-- Major groups card structure
+                        <div class="card card--hover">
+                            <h3 class="section-heading">Name</h3>
+                            <p><strong>Member count:</strong> Member count</p>
+                            <p class="card-underline"><strong>Location:</strong> Location</p>
+                            <p class="card-description">Description</p>
+                        </div>
+                    -->
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Notable Buildings</h2>
+                <div id="notable-buildings" class="cards">
+                    <!-- Notable buildings card structure
+                        <div class="card card--hover">
+                            <h3 class="section-heading">Name</h3>
+                            <p><strong>Belongs to:</strong> Group</p>
+                            <p><strong>Usage:</strong> Description.</p>
+                            <p class="card-description">Optional note</p>
+                        </div>
+                    -->
+                </div>
+            </section>
+        </div>
 
-    <div class="error-message" id="error-message" role="alert" aria-live="assertive" hidden>
-        <p>Sorry, something went wrong while loading the content. Please refresh or try again later.</p>
-    </div>
-
-    <div id="content-wrapper">
-        <!-- TO DO: Map references to the cards -->
-        <section class="section">
-            <h2>Jane's Map</h2>
-            <img src="/img/map-temp.jpg" alt="Jane's Map"
-                style="width:100%;max-width:900px;border:1px solid #CBB89D;border-radius:8px;">
-        </section>
-        
-        <section class="section">
-            <h2>Major groups</h2>
-            <div id="major-groups" class="cards">
-                <!-- Major groups card structure
-                    <div class="card card--hover">
-                        <h3 class="section-heading">Name</h3>
-                        <p><strong>Member count:</strong> Member count</p>
-                        <p class="card-underline"><strong>Location:</strong> Location</p>
-                        <p class="card-description">Description</p>
-                    </div>
-                -->
-            </div>
-        </section>
-        
-        <section class="section">
-            <h2>Notable Buildings</h2>
-            <div id="notable-buildings" class="cards">
-                <!-- Notable buildings card structure
-                    <div class="card card--hover">
-                        <h3 class="section-heading">Name</h3>
-                        <p><strong>Belongs to:</strong> Group</p>
-                        <p><strong>Usage:</strong> Description.</p>
-                        <p class="card-description">Optional note</p>
-                    </div>
-                -->
-            </div>
-        </section>
-    </div>
+        <div id="error-wrapper" hidden>
+            <p id="error-message" role="alert" aria-live="assertive">
+                Sorry, something went wrong while loading the content. Please refresh or try again later.
+            </p>
+        </div>
+    </main>
 
     <footer>
         &copy; 2025 Amélie Lemay. All rights reserved. |
@@ -87,6 +86,12 @@
         <a href="#" onclick="alert('Functionality still in development!'); return false;">Buy the Book</a> |
         <a class="update-progress">Change Progress</a>
     </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15" />
+        </svg>
+    </a>
 
     <template id="progress-modal-template">
         <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">

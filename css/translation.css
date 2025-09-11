@@ -2,11 +2,12 @@
    Layout wrapper
 ==================================== */
 
-.main-content {
+#content-wrapper {
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
     max-width: 90%;
-    margin: 2em auto 4em auto;
+    margin: 4em auto 4em auto;
     padding: 0 1em;
     gap: 2em;
 }

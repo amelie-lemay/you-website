@@ -1,4 +1,20 @@
 /**
+ * Adjust the layout by setting the top padding of the main content
+ * and the position of the banner based on the header height.
+ */
+export function adjustMainOffset() {
+  const header = document.querySelector('header');
+  const main   = document.querySelector('main');
+  const banner = document.querySelector('.chapter-update');
+  if (header) {
+    if (main)
+        main.style.paddingTop = header.offsetHeight + 'px';
+    if (banner)
+        banner.style.top = header.offsetHeight + 'px';
+  }
+}
+
+/**
  * Animate sections with a fade-in effect when they enter the viewport.
  * 
  * @param {Element[] | NodeList} sections - Array of section elements to animate.
@@ -427,7 +443,7 @@ export async function fetchJson(url) {
 
 export function displayError() {
     document.getElementById("content-wrapper").style.display = "none";
-    document.getElementById("error-message").hidden = false;
+    document.getElementById("error-wrapper").style.display = "flex";
 }
 
 /**

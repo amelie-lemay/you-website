@@ -23,11 +23,23 @@ html {
     scroll-behavior: smooth;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Merriweather', serif;
     background-color: var(--bg);
     color: var(--text);
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
 }
 
 header,
@@ -47,8 +59,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: fixed;
     top: 0;
+    width: 100%;
     z-index: 100;
 }
 
@@ -187,15 +200,22 @@ body.scrolled .back-to-top {
 /* ====================================
    Error Message
 ==================================== */
-.error-message {
+#error-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+#error-message {
     background-color: #ffdddd;
     color: #a94442;
     border: 1px solid #a94442;
     padding: 1em 2em;
     margin: 1em auto;
-    max-width: 600px;
+    max-width: 50%;
     border-radius: 8px;
-    text-align: center;
     font-weight: bold;
 }
 
@@ -462,6 +482,7 @@ h3.section-heading {
     font-style: italic;
     background: var(--bg);
     position: fixed;
+    top: 0;
     width: 100%;
     transform: translateY(-100%);
     opacity: 0;

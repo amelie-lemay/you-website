@@ -24,13 +24,6 @@
         </nav>
     </header>
 
-    <a href="#" class="back-to-top" aria-label="Back to top">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15" />
-        </svg>
-    </a>
-
     <section class="chapter-update">
         <button class="popup-close" id="banner-close" aria-label="Close banner">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -39,41 +32,45 @@
                 <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
         </button>
-        <p>Still on chapter <span id="current-chapter">1</span>? Update your progress <a class="update-progress">here</a>.</p>
+        <p>Still on chapter <span id="current-chapter">1</span>? Update your progress <a class="update-progress">here</a>.
+        </p>
     </section>
+    <main>
+        <div id="content-wrapper">
+            <section class="section">
+                <h2>Main Characters</h2>
+                <div class="major-characters cards" id="main-characters">
+                    <!--
+                        <div class="card card--hover">
+                            <h3 class="section-heading">Name</h3>
+                            <p><strong>Age:</strong> Age</p>
+                            <p><strong>Date of Arrival:</strong> Date</p>
+                            <p class="card-underline"><strong>Allegiance:</strong> Group</p>
+                            <p class="card-description">Description.</p>
+                        </div>
+                    -->
+                </div>
+            </section>
 
-    <div class="error-message" id="error-message" role="alert" aria-live="assertive" hidden>
-        <p>Sorry, something went wrong while loading the content. Please refresh or try again later.</p>
-    </div>
+            <section class="section">
+                <h2>Minor Characters</h2>
+                <div class="minor-characters cards" id="minor-characters">
+                    <!--
+                        <div class="card card--hover">
+                            <h3 class="section-heading">Name</h3>
+                            <p><strong>Allegiance:</strong> Group</p>
+                        </div>
+                    -->
+                </div>
+            </section>
+        </div>
 
-    <div id="content-wrapper">
-        <section class="section">
-            <h2>Main Characters</h2>
-            <div class="major-characters cards" id="main-characters">
-                <!--
-                    <div class="card card--hover">
-                        <h3 class="section-heading">Name</h3>
-                        <p><strong>Age:</strong> Age</p>
-                        <p><strong>Date of Arrival:</strong> Date</p>
-                        <p class="card-underline"><strong>Allegiance:</strong> Group</p>
-                        <p class="card-description">Description.</p>
-                    </div>
-                -->
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Minor Characters</h2>
-            <div class="minor-characters cards" id="minor-characters">
-                <!--
-                    <div class="card card--hover">
-                        <h3 class="section-heading">Name</h3>
-                        <p><strong>Allegiance:</strong> Group</p>
-                    </div>
-                -->
-            </div>
-        </section>
-    </div>
+        <div id="error-wrapper">
+            <p id="error-message" role="alert" aria-live="assertive">
+                Sorry, something went wrong while loading the content. Please refresh or try again later.
+            </p>
+        </div>
+    </main>
 
     <footer>
         &copy; 2025 Amélie Lemay. All rights reserved. |
@@ -83,48 +80,55 @@
         <a class="update-progress">Change Progress</a>
     </footer>
 
-        <template id="progress-modal-template">
-            <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
-                <div class="popup">
-                    <button class="popup-close" data-id="close" aria-label="Close popup">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15" />
+        </svg>
+    </a>
+
+    <template id="progress-modal-template">
+        <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
+            <div class="popup">
+                <button class="popup-close" data-id="close" aria-label="Close popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+    
+                <p class="popup-intro" data-when="update">You've made some progress!</p>
+    
+                <div class="chapter-stepper">
+                    <button class="stepper-btn" data-id="dec" aria-label="Previous chapter">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
                         </svg>
                     </button>
-        
-                    <p class="popup-intro" data-when="update">You've made some progress!</p>
-        
-                    <div class="chapter-stepper">
-                        <button class="stepper-btn" data-id="dec" aria-label="Previous chapter">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="15 18 9 12 15 6" />
-                            </svg>
-                        </button>
-                        <span data-id="chapter-display">1</span>
-                        <button class="stepper-btn" data-id="inc" aria-label="Next chapter">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6" />
-                            </svg>
-                        </button>
-                    </div>
-        
-                    <div class="popup-checkbox">
-                        <label>
-                            <input type="checkbox" data-id="finished" />
-                            <span>I finished reading</span>
-                        </label>
-                    </div>
-        
-                    <div class="popup-actions">
-                        <button class="button button--primary" data-id="save">Let's go</button>
-                    </div>
+                    <span data-id="chapter-display">1</span>
+                    <button class="stepper-btn" data-id="inc" aria-label="Next chapter">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </button>
+                </div>
+    
+                <div class="popup-checkbox">
+                    <label>
+                        <input type="checkbox" data-id="finished" />
+                        <span>I finished reading</span>
+                    </label>
+                </div>
+    
+                <div class="popup-actions">
+                    <button class="button button--primary" data-id="save">Let's go</button>
                 </div>
             </div>
-        </template>
+        </div>
+    </template>
 </body>
 
 </html>
