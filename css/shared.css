@@ -21,6 +21,13 @@
 html {
     font-size: 100%;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+}
+
+@supports not (scrollbar-gutter: stable) {
+    html {
+        overflow-y: scroll;
+    }
 }
 
 html, body {
@@ -48,6 +55,10 @@ aside,
 .translation-block,
 footer {
     background: white;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* ====================================
@@ -201,7 +212,7 @@ body.scrolled .back-to-top {
    Error Message
 ==================================== */
 #error-wrapper {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     height: 100%;

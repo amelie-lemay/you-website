@@ -318,19 +318,6 @@ function isElementInViewport(el) {
  */
 export function loadContent() {
     const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
-
-    // Remember elements' display before they are hidden
-    const rememberDisplay = (el, shouldShow) => {
-        if (shouldShow) {
-            // Restore saved display, or fallback to CSS default
-            el.style.display = el.dataset.originalDisplay || "";
-        } else {
-            // Save original display if not already stored
-            if (!el.dataset.originalDisplay)
-                el.dataset.originalDisplay = getComputedStyle(el).display;
-            el.style.display = "none";
-        }
-    };
     
     // Handle elements that should be visible and should disappear
     document.querySelectorAll("[class*='ch-'], [class*='remove-on-']").forEach(el => {
@@ -342,9 +329,12 @@ export function loadContent() {
 
         // Rules
         const shouldAppear = appearValue === null ? true : chapter >= appearValue;
-        const shouldRemove = removeValue === null ? true : chapter < removeValue;
+        const shouldRemove = removeValue === null ? false : chapter > removeValue;
 
-        rememberDisplay(el, shouldAppear && shouldRemove);
+        if (shouldAppear && !shouldRemove)
+            el.classList.remove('hidden');
+        else
+            el.classList.add('hidden');
     });
 }
 
@@ -441,6 +431,9 @@ export async function fetchJson(url) {
     return res.json();
 }
 
+/**
+ * Display an error message and hide the main content.
+ */
 export function displayError() {
     document.getElementById("content-wrapper").style.display = "none";
     document.getElementById("error-wrapper").style.display = "flex";
