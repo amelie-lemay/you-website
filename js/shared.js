@@ -266,6 +266,10 @@ export function setUpBanner(banner) {
     if (getChapterProgress() === 0)
         return;
 
+    // Do not show this element if user has finished the book
+    if (getChapterProgress() === 43)
+        return;
+
     // Update current chapter text
     const currentChapter = banner.querySelector('#current-chapter');
     currentChapter.textContent = getChapterProgress();
@@ -329,7 +333,7 @@ export function loadContent() {
 
         // Rules
         const shouldAppear = appearValue === null ? true : chapter >= appearValue;
-        const shouldRemove = removeValue === null ? false : chapter > removeValue;
+        const shouldRemove = removeValue === null ? false : chapter >= removeValue;
 
         if (shouldAppear && !shouldRemove)
             el.classList.remove('hidden');
