@@ -1,8 +1,182 @@
+// Global cache for fetched text
+const textCache = new Map();
+
+/**
+ * Fetch a JSON file and parse its contents.
+ * 
+ * @async
+ * @param {string} url - Path or URL to the JSON file.
+ * @returns {Promise<any>} Parsed JSON data.
+ * @throws {Error} If the HTTP request fails.
+ */
+export async function fetchJson(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return res.json();
+}
+
+/**
+ * Fetch a text file and return its contents.
+ * 
+ * @async
+ * @param {string} url - Path or URL to the text file.
+ * @returns {Promise<string>} Contents of the text file.
+ * @throws {Error} If the HTTP request fails.
+ */
+async function fetchText(url) {
+    if (textCache.has(url))
+        return textCache.get(url);
+
+    // Fetch text
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    const text = await res.text();
+    
+    // Cache result
+    textCache.set(url, text);
+
+    return text;
+}
+
+/**
+ * Fetch and include the header HTML into the current document.
+ * It also sets the `aria-current` attribute on the link corresponding to the current page.
+ * 
+ * @async
+ * @param {*} page - The current page URL to highlight in the header
+ */
+async function includeHeader(page) {
+    const header = document.querySelector('header');
+    
+    try {
+        const html = await fetchText('includes/header.html');
+        header.innerHTML = html;
+
+        // Set the current page link
+        const currentPage = header.querySelector(`nav a[href="${page}"]`);
+        currentPage?.setAttribute('aria-current', 'page');
+    } catch (error) {
+        console.error('Failed to load header:', error);
+        // Functional fallback with minimal error message
+        header.innerHTML = `
+            <h1><a href="index.html">You</a></h1>
+            <p class="error-p">Header failed to load</p>
+        `;
+    }
+}
+
+/**
+ * Fetch and include the footer HTML into the current document.
+ * 
+ * @async
+ */
+async function includeFooter() {
+    const footer = document.querySelector('footer');
+
+    try {
+        const html = await fetchText('includes/footer.html');
+        footer.innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load footer:', error);
+        // Minimal functional fallback
+        footer.innerHTML = `
+            &copy; 2025 Amélie Lemay. All rights reserved. |
+            <a class="update-progress">Change Progress</a> |
+            <span class="error-p">Footer failed to load</span>
+        `;
+    }
+}
+
+/**
+ * Fetch and include the banner HTML into the current document.
+ * It also sets up the banner behavior, including showing/hiding based on user actions
+ * and updating the current chapter text.
+ * 
+ * @async
+ */
+async function includeBanner() {
+    const banner = document.querySelector('.chapter-update');
+
+    // Do not show this element if the user is a visitor or has finished the book
+    if (getChapterProgress() === 0 || getChapterProgress() === 43) return;
+
+    try {
+        // Fetch banner HTML
+        const html = await fetchText('includes/banner.html');
+        banner.innerHTML = html;
+
+        // Update current chapter text
+        const currentChapter = banner.querySelector('#current-chapter');
+        currentChapter.textContent = getChapterProgress();
+
+        // Close banner for the session on button 'X' click
+        const closeButton = banner.querySelector('#banner-close');
+        closeButton.addEventListener('click', () => {
+            banner.classList.remove('show');
+            markBannerAsClosed(); // User does not want to see the banner again
+        });
+
+        // Animate in the banner only if user has not closed it for the session
+        if (!userHasClosedBanner()) {
+            setTimeout(() => {
+                banner.classList.add('show');
+            }, 2000);
+        }
+    } catch (error) {
+        // Silent fail
+        console.error('Failed to load banner:', error);
+    }
+}
+
+/**
+ * Fetch and include the "Back to Top" button HTML into the current document.
+ * It also sets up the button behavior, including showing/hiding on scroll
+ * and adjusting its position above the footer.
+ * 
+ * @async
+ */
+async function includeBackToTopButton() {
+    try {
+        const html = await fetchText('includes/back-to-top-button.html');
+        const button = document.querySelector('.back-to-top');
+        button.innerHTML = html;
+        button.setAttribute('href', '#');
+        button.setAttribute('aria-label', 'Back to top');
+        
+        // Show/hide button on scroll and adjust position above footer
+        const footer = document.querySelector('footer');
+        if (!footer) return;
+        const baseBottom = 20;
+
+        function handleScroll() {
+            const scrollY = window.scrollY || window.pageYOffset
+            const footerTop = footer.getBoundingClientRect().top + scrollY;
+            const windowHeight = window.innerHeight;
+            const distanceToFooter = footerTop - scrollY - windowHeight;
+
+            const scrollTreshold = window.innerHeight * 0.5;
+            document.body.classList.toggle('scrolled', scrollY > scrollTreshold);
+
+            const offset = distanceToFooter < baseBottom
+                ? baseBottom + (baseBottom - distanceToFooter)
+                : baseBottom;
+
+            button.style.bottom = `${offset}px`;
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+    } catch (error) {
+        // Silent fail
+        console.error('Failed to load back-to-top button:', error);
+    }
+}
+
 /**
  * Adjust the layout by setting the top padding of the main content
  * and the position of the banner based on the header height.
  */
-export function adjustMainOffset() {
+function adjustMainOffset() {
   const header = document.querySelector('header');
   const main   = document.querySelector('main');
   const banner = document.querySelector('.chapter-update');
@@ -15,143 +189,51 @@ export function adjustMainOffset() {
 }
 
 /**
- * Animate sections with a fade-in effect when they enter the viewport.
- * 
- * @param {Element[] | NodeList} sections - Array of section elements to animate.
+ * Attach click event listeners to elements that should trigger the progress popup.
+ * It also hides the banner if it's open when the popup is activated.
  */
-export function setUpSectionFadeIn(sections) {
-    if (!sections || typeof sections.forEach !== 'function')
-        return;
-    const observer = new IntersectionObserver((entries, obs) => {
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                obs.unobserve(entry.target);
+function attachPopupActivators() {
+    const popupActivators = document.querySelectorAll('.update-progress');
+    popupActivators.forEach(activator => {
+        activator.addEventListener('click', async () => {
+            try {
+                const html = await fetchText('includes/popup.html');
+                const template = document.getElementById('progress-modal-template');
+                template.innerHTML = html;
+
+                // Show the popup
+                createProgressPopup('update');
+
+                // Hide the banner if it's open
+                const banner = document.querySelector('.chapter-update');
+                if (banner) {
+                    banner.classList.remove('show');
+                    markBannerAsClosed();
+                }
+            } catch (error) {
+                console.error('Failed to load popup:', error);
+                // Silent fail
             }
-        };
-    }, { threshold: 0.1 });
+        });
+    });
+}
+
+/**
+ * Include all shared components into the current page.
+ */
+export async function includeAllSharedComponents() {
+    // Get current page from URL
+    let currentPage = window.location.pathname.split("/").pop();
+    if (!currentPage) currentPage = "index.html";
+
+    await includeHeader(currentPage);
+    await includeFooter();
+    await includeBackToTopButton();
+    await includeBanner();
+    adjustMainOffset();
     
-    sections.forEach(section => {
-        observer.observe(section);
-
-        // Manually trigger animation if section already in viewport
-        requestAnimationFrame(() => {
-            if (isElementInViewport(section)) {
-                section.classList.add('animate');
-                observer.unobserve(section);
-            }
-        });
-    });
-}
-
-/**
- * Set up a "Back to Top" button that appears after scrolling,
- * and adjusts its position to stay above the footer.
- */
-export function setupBackToTopButton() {
-    const backToTop = document.querySelector('.back-to-top');
-    const footer = document.querySelector('footer');
-
-    if (!backToTop || !footer)
-        return;
-
-    const baseBottom = 20;
-
-    function handleScroll() {
-        const scrollY = window.scrollY || window.pageYOffset
-        const footerTop = footer.getBoundingClientRect().top + scrollY;
-        const windowHeight = window.innerHeight;
-        const distanceToFooter = footerTop - scrollY - windowHeight;
-
-        const scrollTreshold = window.innerHeight * 0.5;
-        document.body.classList.toggle('scrolled', scrollY > scrollTreshold);
-
-        const offset = distanceToFooter < baseBottom
-            ? baseBottom + (baseBottom - distanceToFooter)
-            : baseBottom;
-
-        backToTop.style.bottom = `${offset}px`;
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-}
-
-/**
- * Animate cards' fade-in effect when they come into view,
- * with optional column-based delays based on their position in the grid.
- * 
- * @param {Element | NodeList | Element[]} containers - Elements that contain cards
- * @param {Object} options - Options to customize the delay strategy
- * @param {boolean} options.useColumnDelay - Whether to use column-based delay for grids
- * @param {number} options.staggerDelay - Base delay for staggered animations
- */
-export function setupCardFadeIn(containers, options = {}) {
-    const {
-        useColumnDelay = false,
-        staggerDelay = 80,
-    } = options;
-
-    // Container as array for consistent iteration
-    const containerList = containers instanceof NodeList || Array.isArray(containers)
-        ? Array.from(containers)
-        : [containers];
-
-    containerList.forEach(container => {
-        if (!(container instanceof Element))
-            return;
-
-        const cards = container.querySelectorAll('.card');
-        if (!cards.length)
-            return;
-
-        // Detect number of columns in grid layout
-        let columns = 1;
-        if (useColumnDelay) {
-            const style = window.getComputedStyle(container);
-            const gridTemplateColumns = style.getPropertyValue('grid-template-columns');
-            columns = gridTemplateColumns.split(' ').filter(s => s.trim()).length || 1;
-        }
-
-        // Animate cards when they come into view
-        const observer = new IntersectionObserver((entries, obs) => {
-            for (const entry of entries) {
-                if (!entry.isIntersecting)
-                    return;
-
-                const card = entry.target;
-
-                // Staggered delay for grid layout
-                const index = [...cards].indexOf(card);
-                let delay = 0;
-                if (useColumnDelay) {
-                    const column = index % columns;
-                    delay = column * staggerDelay;
-                }
-
-                setTimeout(() => {
-                    card.classList.add('animate');
-                }, delay);
-
-                obs.unobserve(card);
-            }
-        }, { threshold: 0.1 });
-
-        cards.forEach(card => {
-            observer.observe(card);
-
-            // Manually trigger animation if card already in viewport with no delay
-            requestAnimationFrame(() => {
-                if (isElementInViewport(card)) {
-                    setTimeout(() => {
-                        card.classList.add('animate');
-                    });
-
-                    observer.unobserve(card);
-                }
-            });
-        });
-    });
+    // Wait for layout to stabilize before attaching event listeners and popup
+    attachPopupActivators();
 }
 
 /**
@@ -159,8 +241,17 @@ export function setupCardFadeIn(containers, options = {}) {
  * chosen mode.
  * @param {string} mode - The mode of the popup (e.g., 'onboarding', 'progress')
  */
-function createProgressPopup(mode = 'onboarding') {
+export function createProgressPopup(mode = 'onboarding') {
+    // Do not show the visitor popup if user is already registered
+    if (mode === 'onboarding' && (getChapterProgress() > 0 || visitorHasSeenPopup())) return;
+
     const template = document.getElementById('progress-modal-template');
+    // Popup alert if template was not loaded
+    if (!template || !template.content) {
+        alert("Unable to load the progress form. Please try again later.");
+        return;
+    }
+
     const modalFragment = template.content.cloneNode(true);
     const modal = modalFragment.querySelector("[data-id='overlay']");
 
@@ -245,57 +336,108 @@ function createProgressPopup(mode = 'onboarding') {
 }
 
 /**
- * Show the progress popup if conditions are met.
- * @param {string} mode - The mode of the popup (e.g., 'onboarding', 'progress')
+ * Animate sections with a fade-in effect when they enter the viewport.
+ * 
+ * @param {Element[] | NodeList} sections - Array of section elements to animate.
  */
-export function showProgressPopup(mode = 'onboarding') {
-    // First visit : user is not reading the book and has not seen the popup yet
-    if (mode === 'onboarding' && getChapterProgress() === 0 && !visitorHasSeenPopup())
-        createProgressPopup('onboarding');
-    // Update progress
-    else if (mode === 'update')
-        createProgressPopup('update');
+export function setUpSectionFadeIn(sections) {
+    if (!sections || typeof sections.forEach !== 'function')
+        return;
+    const observer = new IntersectionObserver((entries, obs) => {
+        for (const entry of entries) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                obs.unobserve(entry.target);
+            }
+        };
+    }, { threshold: 0.1 });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+
+        // Manually trigger animation if section already in viewport
+        requestAnimationFrame(() => {
+            if (isElementInViewport(section)) {
+                section.classList.add('animate');
+                observer.unobserve(section);
+            }
+        });
+    });
 }
 
 /**
- * Set up the banner element so the user can change their chapter progress.
- * @param {Element} banner - The banner element to set up
+ * Animate cards' fade-in effect when they come into view,
+ * with optional column-based delays based on their position in the grid.
+ * 
+ * @param {Element | NodeList | Element[]} containers - Elements that contain cards
+ * @param {Object} options - Options to customize the delay strategy
+ * @param {boolean} options.useColumnDelay - Whether to use column-based delay for grids
+ * @param {number} options.staggerDelay - Base delay for staggered animations
  */
-export function setUpBanner(banner) {
-    // Do not show this element if the user is a visitor
-    if (getChapterProgress() === 0)
-        return;
+export function setupCardFadeIn(containers, options = {}) {
+    const {
+        useColumnDelay = false,
+        staggerDelay = 80,
+    } = options;
 
-    // Do not show this element if user has finished the book
-    if (getChapterProgress() === 43)
-        return;
+    // Container as array for consistent iteration
+    const containerList = containers instanceof NodeList || Array.isArray(containers)
+        ? Array.from(containers)
+        : [containers];
 
-    // Update current chapter text
-    const currentChapter = banner.querySelector('#current-chapter');
-    currentChapter.textContent = getChapterProgress();
+    containerList.forEach(container => {
+        if (!(container instanceof Element))
+            return;
 
-    // Close banner for the session on button 'X' click
-    const closeButton = banner.querySelector('#banner-close');
-    closeButton.addEventListener('click', () => {
-        banner.classList.remove('show');
-        markBannerAsClosed(); // User does not want to see the banner again
-    });
+        const cards = container.querySelectorAll('.card');
+        if (!cards.length)
+            return;
 
-    // Animate in the banner only if user has not closed it for the session
-    if (!userHasClosedBanner()) {
-        setTimeout(() => {
-            banner.classList.add('show');
-        }, 2000);
-    }
+        // Detect number of columns in grid layout
+        let columns = 1;
+        if (useColumnDelay) {
+            const style = window.getComputedStyle(container);
+            const gridTemplateColumns = style.getPropertyValue('grid-template-columns');
+            columns = gridTemplateColumns.split(' ').filter(s => s.trim()).length || 1;
+        }
 
-    // Show the update popup if user has requested it
-    const popupActivators = document.querySelectorAll('.update-progress');
-    popupActivators.forEach(activator => {
-        activator.addEventListener('click', () => {
-            showProgressPopup('update');
-            // Hide the banner
-            banner.classList.remove('show');
-            markBannerAsClosed();
+        // Animate cards when they come into view
+        const observer = new IntersectionObserver((entries, obs) => {
+            for (const entry of entries) {
+                if (!entry.isIntersecting)
+                    return;
+
+                const card = entry.target;
+
+                // Staggered delay for grid layout
+                const index = [...cards].indexOf(card);
+                let delay = 0;
+                if (useColumnDelay) {
+                    const column = index % columns;
+                    delay = column * staggerDelay;
+                }
+
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, delay);
+
+                obs.unobserve(card);
+            }
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            observer.observe(card);
+
+            // Manually trigger animation if card already in viewport with no delay
+            requestAnimationFrame(() => {
+                if (isElementInViewport(card)) {
+                    setTimeout(() => {
+                        card.classList.add('animate');
+                    });
+
+                    observer.unobserve(card);
+                }
+            });
         });
     });
 }
@@ -313,6 +455,15 @@ function isElementInViewport(el) {
         rect.left < window.innerWidth &&
         rect.right > 0
     );
+}
+
+/**
+ * Show the main content and hide any error message.
+ */
+export function showContent(contentLayout = "block") {
+    // Remove error message if previously shown
+    document.getElementById("error-wrapper").style.display = "none";
+    document.getElementById("content-wrapper").style.display = contentLayout;
 }
 
 /**
@@ -343,11 +494,65 @@ export function loadContent() {
 }
 
 /**
+ * Load and render cards from a JSON file into a specified container.
+ * 
+ * - Only displays content if its `chapter` is <= the user's progress.
+ * - Hides content if its `removeOn` value is <= the user's progress.
+ * - Uses `mapItemToHtml` to convert each item to its HTML representation.
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
+ * @param {string} param0.containerId - ID of the container element to inject cards into
+ * @param {function} param0.filterFn - Function to filter items based on visibility (default: isContentVisible)
+ * @param {function} param0.mapItemToHtml - Function to convert an item to its HTML representation
+ * @async
+ * @function
+ */
+export async function loadCards({
+    jsonUrl,
+    containerId,
+    filterFn = isContentVisible,
+    mapItemToHtml
+}) {
+    const chapter = getContentChapter();
+    const container = document.getElementById(containerId);
+
+    try {
+        // Fetch data
+        const data = await fetchJson(jsonUrl);
+
+        // Clear existing content
+        container.innerHTML = "";
+
+        // Build cards
+        data.forEach(item => {
+            if (filterFn(item, chapter)) {
+                const cardHtml = mapItemToHtml(item, chapter);
+                const card = document.createElement("div");
+                card.className = "card card--hover";
+                card.innerHTML = cardHtml;
+                container.appendChild(card);
+            }
+        });
+    } catch (error) {
+        displayError(containerId, error);
+    }
+}
+
+/**
+ * Display an error message and hide the main content.
+ */
+export function displayError(context = "unknown context", error = null) {
+    console.error(`Error loading content for ${context}:`, error);
+    document.getElementById("content-wrapper").style.display = "none";
+    document.getElementById("error-wrapper").style.display = "flex";
+}
+
+/**
  * Save the user's current chapter progress. It also notifies
  * other parts of the application about the change.
  * @param {number} chapter - The chapter number to save
  */
-export function saveChapterProgress(chapter) {
+function saveChapterProgress(chapter) {
     const value = Number(chapter);
     localStorage.setItem("chapter", value);
 
@@ -367,9 +572,18 @@ export function getChapterProgress() {
 }
 
 /**
+ * Get the chapter to use for content display.
+ * If the user is a visitor (chapter 0), return chapter 1.
+ * @returns {number} - The chapter number to use for content display
+ */
+export function getContentChapter() {
+    return getChapterProgress() > 0 ? getChapterProgress() : 1;
+}
+
+/**
  * Reset the user's chapter progress.
  */
-export function resetChapterProgress() {
+function resetChapterProgress() {
     localStorage.removeItem("chapter");
 }
 
@@ -393,7 +607,7 @@ export function setUpProgressSync() {
  * Check if the visitor has seen the popup.
  * @returns {boolean} - True if the popup has been seen, false otherwise
  */
-export function visitorHasSeenPopup() {
+function visitorHasSeenPopup() {
     return sessionStorage.getItem("popupSeen") === "true";
 }
 
@@ -401,7 +615,7 @@ export function visitorHasSeenPopup() {
  * Mark the popup as seen, so the visitor does not see the popup again 
  * on the home page for the duration of their visit.
  */
-export function markPopupAsSeen() {
+function markPopupAsSeen() {
     sessionStorage.setItem("popupSeen", "true");
 }
 
@@ -419,28 +633,6 @@ function userHasClosedBanner() {
  */
 function markBannerAsClosed() {
     sessionStorage.setItem("bannerClosed", "true");
-}
-
-/**
- * Fetch a JSON file and parse its contents.
- * 
- * @async
- * @param {string} url - Path or URL to the JSON file.
- * @returns {Promise<any>} Parsed JSON data.
- * @throws {Error} If the HTTP request fails.
- */
-export async function fetchJson(url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return res.json();
-}
-
-/**
- * Display an error message and hide the main content.
- */
-export function displayError() {
-    document.getElementById("content-wrapper").style.display = "none";
-    document.getElementById("error-wrapper").style.display = "flex";
 }
 
 /**

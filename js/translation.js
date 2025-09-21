@@ -1,30 +1,27 @@
-import { adjustMainOffset, setUpSectionFadeIn, setupBackToTopButton, setUpBanner,
-    getChapterProgress, setUpProgressSync, 
-    loadContent, fetchJson, displayError, isContentVisible } from "./shared.js";
+import { setUpSectionFadeIn, includeAllSharedComponents,
+    getChapterProgress, getContentChapter, setUpProgressSync, 
+    loadContent, fetchJson, displayError, isContentVisible, 
+    showContent} from "./shared.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Fix header
-    adjustMainOffset();
-    
-    // Set up animations
-    const sections = document.querySelectorAll('.fade-in');
-    setUpSectionFadeIn(sections);
-    setupBackToTopButton();
+// To hold the cleanup function for the custom scrollbar
+let cleanupScrollbar = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // Include shared components
+    await includeAllSharedComponents();
+
+    // Update website's content with chapter progress
+    injectContent();
 
     // Configure custom scrollbar for sidebar
     configureCustomScrollbar();
 
-    // Get user's chapter progress
-    const banner = document.querySelector('.chapter-update');
-    setUpBanner(banner);
-
-    // Update website's content with chapter progress
-    setUpProgressSync(); // Sync chapter progress across tabs
-    injectContent();
+    // Sync chapter progress across tabs
+    setUpProgressSync();
 });
 
 // Reload content when chapter changes
-window.addEventListener('chapterChange', injectContent);
+window.addEventListener("chapterChange", injectContent);
 
 /**
  * Inject content into the page based on user's chapter progress.
@@ -37,11 +34,9 @@ async function injectContent() {
         return;
     }
 
-    // Remove error message if previously shown
-    document.getElementById("error-wrapper").style.display = "none";
-    document.getElementById("content-wrapper").style.display = "flex";
-
+    showContent("flex");
     loadContent();
+
     await loadTranslations();
 
     // Listener to switch between chapters
@@ -51,9 +46,6 @@ async function injectContent() {
     const sections = document.querySelectorAll('.fade-in');
     setUpSectionFadeIn(sections);
 }
-
-// Register function globally so the shared module can access it
-window.injectContent = injectContent;
 
 
 /**
@@ -68,7 +60,7 @@ window.injectContent = injectContent;
  * @function
  */
 async function loadTranslations() {
-    const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
+    const chapter = getContentChapter();
     const container = document.getElementById('translations');
     const sidebar = document.getElementById("sidebar");
     const FIRST_CHAPTER = 7;
@@ -76,6 +68,12 @@ async function loadTranslations() {
     try {
         // Fetch translations data
         const data = await fetchJson("../content/translations/chapters.json");
+
+        // Clear previous scrollbar if any
+        if (cleanupScrollbar) {
+            cleanupScrollbar();
+            cleanupScrollbar = null;
+        }
 
         // Get active chapter number
         let activeChapter = localStorage.getItem("activeTranslation") === null ? FIRST_CHAPTER : Number(localStorage.getItem("activeTranslation"));
@@ -142,9 +140,11 @@ async function loadTranslations() {
                 }
             }
         });
+
+        // Reconfigure scrollbar after rebuild
+        cleanupScrollbar = configureCustomScrollbar();
     } catch (error) {
-        console.error("Failed to load translations:", error);
-        displayError();
+        displayError("translations", error);
     }
 }
 
@@ -169,10 +169,7 @@ function addChapterSwitchListener() {
 
         // Update active state in sections
         chapters.forEach(chapter => {
-            if (chapter.id === chapterId)
-                chapter.classList.add("active");
-            else
-                chapter.classList.remove("active");
+            chapter.classList.toggle("active", chapter.id === chapterId);
         });
 
         // Update localStorage
@@ -186,7 +183,6 @@ function addChapterSwitchListener() {
 
 /**
  * Configure custom scrollbar for the sidebar.
- * @returns {void}
  */
 function configureCustomScrollbar() {
     const aside = document.querySelector('aside');
@@ -214,49 +210,53 @@ function configureCustomScrollbar() {
 
     const thumb = wrapper.querySelector('.faux-thumb');
 
-    // Synchronize thumb size & position
-    function updateThumb() {
-        // Ensure layout has settled
-        requestAnimationFrame(() => {
-            const ch = ul.clientHeight;
-            const sh = ul.scrollHeight;
-
-            if (!thumb) return;
-
-            // Hide thumb if not scrollable
-            if (sh <= ch) {
-                thumb.style.display = 'none';
-                return;
-            } else {
-                thumb.style.display = '';
-            }
-
-            const ratio = ch / sh;
-            const thumbHeight = Math.max(24, Math.floor(ratio * ch));
-            const maxTop = ch - thumbHeight;
-            const scrollTop = ul.scrollTop;
-            const top = (scrollTop / (sh - ch)) * maxTop;
-
-            thumb.style.height = thumbHeight + 'px';
-            thumb.style.transform = `translateY(${Math.max(0, top)}px)`;
+    // Throttle updates with requestAnimationFrame
+    let rafId = null;
+    function scheduleUpdate() {
+        if (rafId !== null) return;
+        rafId = requestAnimationFrame(() => {
+            updateThumb();
+            rafId = null;
         });
     }
 
+    // Synchronize thumb size & position
+    function updateThumb() {
+        const ch = ul.clientHeight;
+        const sh = ul.scrollHeight;
+
+        if (!thumb) return;
+
+        // Hide thumb if not scrollable
+        if (sh <= ch) {
+            thumb.style.display = 'none';
+            return;
+        }
+        thumb.style.display = '';
+
+        const ratio = ch / sh;
+        const thumbHeight = Math.max(24, Math.floor(ratio * ch));
+        const maxTop = ch - thumbHeight;
+        const top = (ul.scrollTop / (sh - ch)) * maxTop;
+
+        thumb.style.height = thumbHeight + 'px';
+        thumb.style.transform = `translateY(${Math.max(0, top)}px)`;
+    }
+
     // Update on scroll/resize
-    ul.addEventListener('scroll', updateThumb);
-    window.addEventListener('resize', updateThumb);
+    ul.addEventListener('scroll', scheduleUpdate);
+    window.addEventListener('resize', scheduleUpdate);
 
     // Observe size changes
-    const ro = new ResizeObserver(updateThumb);
+    const ro = new ResizeObserver(scheduleUpdate);
     ro.observe(wrapper);
 
     // Detect dynamic additions/removals of list items
-    const mo = new MutationObserver(() => updateThumb());
+    const mo = new MutationObserver(scheduleUpdate);
     mo.observe(ul, { childList: true, subtree: true, characterData: true });
 
     // Initial update
-    updateThumb();
-    requestAnimationFrame(updateThumb);
+    scheduleUpdate();
 
     // Dragging the thumb
     let dragging = false;
@@ -279,12 +279,11 @@ function configureCustomScrollbar() {
         const ch = ul.clientHeight;
         const sh = ul.scrollHeight;
         const thumbH = thumb.clientHeight;
-        const scrollable = sh - ch;
         const trackScrollable = ch - thumbH;
         if (trackScrollable <= 0) return;
-        const scrollDelta = (deltaY / trackScrollable) * scrollable;
+        const scrollDelta = (deltaY / trackScrollable) * (sh - ch);
         ul.scrollTop = Math.max(0, Math.min(sh - ch, startScrollTop + scrollDelta));
-        updateThumb();
+        scheduleUpdate();
     });
 
     // Mouse up to stop dragging
@@ -306,4 +305,12 @@ function configureCustomScrollbar() {
         const ratio = targetTop / (ch - thumbH);
         ul.scrollTop = ratio * (sh - ch);
     });
+
+    // Cleanup function if needed
+    return function cleanupScrollbar() {
+        ul.removeEventListener('scroll', scheduleUpdate);
+        window.removeEventListener('resize', scheduleUpdate);
+        ro.disconnect();
+        mo.disconnect();
+    };
 }

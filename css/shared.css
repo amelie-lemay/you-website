@@ -230,6 +230,12 @@ body.scrolled .back-to-top {
     font-weight: bold;
 }
 
+.error-p {
+    color: gray;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
 /* ====================================
    Sections & Text Styling
 ==================================== */

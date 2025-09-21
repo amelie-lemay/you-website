@@ -14,27 +14,10 @@
 </head>
 
 <body>
-    <header>
-        <h1><a href="index.html">You</a></h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="map.html">Map</a>
-            <a href="translation.html" class="ch-7 hidden">Translation</a>
-            <a href="characters.html" aria-current="page">Characters</a>
-        </nav>
-    </header>
+    <header></header>
 
-    <section class="chapter-update">
-        <button class="popup-close" id="banner-close" aria-label="Close banner">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-        </button>
-        <p>Still on chapter <span id="current-chapter">1</span>? Update your progress <a class="update-progress">here</a>.
-        </p>
-    </section>
+    <section class="chapter-update"></section>
+
     <main>
         <div id="content-wrapper">
             <section class="section">
@@ -72,63 +55,11 @@
         </div>
     </main>
 
-    <footer>
-        &copy; 2025 Amélie Lemay. All rights reserved. |
-        <a href="#" onclick="alert('Functionality still in development!'); return false;">Author Bio</a> |
-        <a href="#" onclick="alert('Functionality still in development!'); return false;">Contact</a> |
-        <a href="#" onclick="alert('Functionality still in development!'); return false;">Buy the Book</a> |
-        <a class="update-progress">Change Progress</a>
-    </footer>
+    <footer></footer>
 
-    <a href="#" class="back-to-top" aria-label="Back to top">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15" />
-        </svg>
-    </a>
+    <a class="back-to-top"></a>
 
-    <template id="progress-modal-template">
-        <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
-            <div class="popup">
-                <button class="popup-close" data-id="close" aria-label="Close popup">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
-    
-                <p class="popup-intro" data-when="update">You've made some progress!</p>
-    
-                <div class="chapter-stepper">
-                    <button class="stepper-btn" data-id="dec" aria-label="Previous chapter">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                    </button>
-                    <span data-id="chapter-display">1</span>
-                    <button class="stepper-btn" data-id="inc" aria-label="Next chapter">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </button>
-                </div>
-    
-                <div class="popup-checkbox">
-                    <label>
-                        <input type="checkbox" data-id="finished" />
-                        <span>I finished reading</span>
-                    </label>
-                </div>
-    
-                <div class="popup-actions">
-                    <button class="button button--primary" data-id="save">Let's go</button>
-                </div>
-            </div>
-        </div>
-    </template>
+    <template id="progress-modal-template"></template>
 </body>
 
 </html>
