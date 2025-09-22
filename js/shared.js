@@ -1,5 +1,8 @@
 // Global cache for fetched text
 const textCache = new Map();
+const TEXT_VERSION = "1.0.1"; // Increment this to invalidate cache
+const FIRST_CHAPTER = 1;
+const LAST_CHAPTER = 43;
 
 /**
  * Fetch a JSON file and parse its contents.
@@ -24,16 +27,18 @@ export async function fetchJson(url) {
  * @throws {Error} If the HTTP request fails.
  */
 async function fetchText(url) {
-    if (textCache.has(url))
-        return textCache.get(url);
+    const urlWithVersion = `${url}?v=${TEXT_VERSION}`;
+
+    if (textCache.has(urlWithVersion))
+        return textCache.get(urlWithVersion);
 
     // Fetch text
-    const res = await fetch(url);
+    const res = await fetch(urlWithVersion);
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
     const text = await res.text();
     
     // Cache result
-    textCache.set(url, text);
+    textCache.set(urlWithVersion, text);
 
     return text;
 }
@@ -95,10 +100,17 @@ async function includeFooter() {
  * @async
  */
 async function includeBanner() {
-    const banner = document.querySelector('.chapter-update');
+    let banner = document.querySelector('.chapter-update');
+    // Create banner element if not present
+    if (!banner) {
+        banner = document.createElement('section');
+        banner.classList.add('chapter-update');
+        document.body.appendChild(banner);
+    }
 
+    const progress = getChapterProgress();
     // Do not show this element if the user is a visitor or has finished the book
-    if (getChapterProgress() === 0 || getChapterProgress() === 43) return;
+    if (progress < FIRST_CHAPTER || progress === LAST_CHAPTER) return;
 
     try {
         // Fetch banner HTML
@@ -107,21 +119,23 @@ async function includeBanner() {
 
         // Update current chapter text
         const currentChapter = banner.querySelector('#current-chapter');
-        currentChapter.textContent = getChapterProgress();
+        if (currentChapter)
+            currentChapter.textContent = progress;
 
         // Close banner for the session on button 'X' click
         const closeButton = banner.querySelector('#banner-close');
-        closeButton.addEventListener('click', () => {
-            banner.classList.remove('show');
-            markBannerAsClosed(); // User does not want to see the banner again
-        });
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                banner.classList.remove('show');
+                markBannerAsClosed(); // User does not want to see the banner again
+            });
+        }
 
         // Animate in the banner only if user has not closed it for the session
-        if (!userHasClosedBanner()) {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (!userHasClosedBanner())
                 banner.classList.add('show');
-            }, 2000);
-        }
+        }, 2000);
     } catch (error) {
         // Silent fail
         console.error('Failed to load banner:', error);
@@ -139,6 +153,13 @@ async function includeBackToTopButton() {
     try {
         const html = await fetchText('includes/back-to-top-button.html');
         const button = document.querySelector('.back-to-top');
+        // Create button element if not present
+        if (!button) {
+            button = document.createElement('a');
+            button.classList.add('back-to-top');
+            document.body.appendChild(button);
+        }
+
         button.innerHTML = html;
         button.setAttribute('href', '#');
         button.setAttribute('aria-label', 'Back to top');
@@ -146,6 +167,7 @@ async function includeBackToTopButton() {
         // Show/hide button on scroll and adjust position above footer
         const footer = document.querySelector('footer');
         if (!footer) return;
+
         const baseBottom = 20;
 
         function handleScroll() {
@@ -192,29 +214,30 @@ function adjustMainOffset() {
  * Attach click event listeners to elements that should trigger the progress popup.
  * It also hides the banner if it's open when the popup is activated.
  */
-function attachPopupActivators() {
-    const popupActivators = document.querySelectorAll('.update-progress');
-    popupActivators.forEach(activator => {
-        activator.addEventListener('click', async () => {
-            try {
-                const html = await fetchText('includes/popup.html');
-                const template = document.getElementById('progress-modal-template');
-                template.innerHTML = html;
+async function attachPopupActivators() {
+    // Inject popup
+    const template = document.getElementById('progress-modal-template');
+    try {
+        const html = await fetchText('includes/popup.html');
+        template.innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load popup:', error);
+        // Silent fail
+    }
 
-                // Show the popup
-                createProgressPopup('update');
+    document.addEventListener("click", (event) => {
+        const activator = event.target.closest('.update-progress');
+        if (!activator) return;
 
-                // Hide the banner if it's open
-                const banner = document.querySelector('.chapter-update');
-                if (banner) {
-                    banner.classList.remove('show');
-                    markBannerAsClosed();
-                }
-            } catch (error) {
-                console.error('Failed to load popup:', error);
-                // Silent fail
-            }
-        });
+        // Show the popup
+        createProgressPopup('update');
+
+        // Hide the banner if it's open
+        const banner = document.querySelector('.chapter-update');
+        if (banner) {
+            banner.classList.remove('show');
+            markBannerAsClosed();
+        }
     });
 }
 
@@ -233,7 +256,7 @@ export async function includeAllSharedComponents() {
     adjustMainOffset();
     
     // Wait for layout to stabilize before attaching event listeners and popup
-    attachPopupActivators();
+    await attachPopupActivators();
 }
 
 /**
@@ -247,13 +270,27 @@ export function createProgressPopup(mode = 'onboarding') {
 
     const template = document.getElementById('progress-modal-template');
     // Popup alert if template was not loaded
-    if (!template || !template.content) {
-        alert("Unable to load the progress form. Please try again later.");
-        return;
+    if (!template || !template.content || !template.content.querySelector("[data-id='overlay']")) {
+        console.warn('Progress modal template missing or empty, injecting fallback.');
+
+        // Clear existing template if any
+        if (template) template.innerHTML = "";
+
+        const fallbackHtml = `
+            <div class="popup-overlay" data-id="overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
+                <div class="popup">
+                    <p class="popup-intro">Oops! Something went wrong.</p>
+                    <p class="popup-text">Unable to load the normal popup. Please try again later.</p>
+                    <button class="button button--primary" data-id="close">Close</button>
+                </div>
+            </div>
+        `;
+        template.innerHTML = fallbackHtml;
     }
 
     const modalFragment = template.content.cloneNode(true);
     const modal = modalFragment.querySelector("[data-id='overlay']");
+    if (!modal) return;
 
     // Hide/show based on mode
     modal.querySelectorAll('[data-when]').forEach(el => {
@@ -272,14 +309,13 @@ export function createProgressPopup(mode = 'onboarding') {
 	const saveButton = modal.querySelector('[data-id="save"]');
     const visitorButton = modal.querySelector('[data-id="visitor"]');
 
-    const MAX_CHAPTER = 43;
-    let chapter = getChapterProgress() || 1;
+    let chapter = getChapterProgress() || FIRST_CHAPTER;
 
     function updateDisplay() {
 		display.textContent = chapter;
-		decrease.disabled = chapter <= 1;
-		increase.disabled = chapter >= MAX_CHAPTER;
-        finishedCheckbox.checked = chapter === MAX_CHAPTER;
+		decrease.disabled = chapter <= FIRST_CHAPTER;
+		increase.disabled = chapter >= LAST_CHAPTER;
+        finishedCheckbox.checked = chapter === LAST_CHAPTER;
 	}
 
 	function closeModal() {
@@ -293,7 +329,7 @@ export function createProgressPopup(mode = 'onboarding') {
             contentWrapper.style.visibility = "hidden";
 
             const waitForTop = () => {
-                if (document.documentElement.scrollTop === 0) {
+                if (document.documentElement.scrollTop <= 1) {
                     window.injectContent();
                     // Show content again once injected
                     contentWrapper.style.visibility = "visible";
@@ -306,7 +342,7 @@ export function createProgressPopup(mode = 'onboarding') {
 	}
 
 	function changeChapter(step) {
-        chapter = Math.min(MAX_CHAPTER, Math.max(1, chapter + step));
+        chapter = Math.min(LAST_CHAPTER, Math.max(FIRST_CHAPTER, chapter + step));
         updateDisplay();
 	}
 
@@ -317,22 +353,27 @@ export function createProgressPopup(mode = 'onboarding') {
 	}
 
     // Event listeners
-    decrease.addEventListener("click", () => changeChapter(-1));
-	increase.addEventListener("click", () => changeChapter(1));
-	finishedCheckbox.addEventListener("change", () => {
-		if (finishedCheckbox.checked)
-			chapter = MAX_CHAPTER;
-		updateDisplay();
-	});
+    if (decrease && increase && finishedCheckbox && closeButton && saveButton) {
+        decrease.addEventListener("click", () => changeChapter(-1));
+        increase.addEventListener("click", () => changeChapter(1));
+        finishedCheckbox.addEventListener("change", () => {
+            if (finishedCheckbox.checked)
+                chapter = LAST_CHAPTER;
+            updateDisplay();
+        });
+    }
 
-	closeButton.addEventListener("click", () => register(markPopupAsSeen));
-	saveButton.addEventListener("click", () => register(() => saveChapterProgress(chapter)));
+    if (closeButton)
+        closeButton.addEventListener("click", () => register(markPopupAsSeen));
+    if (saveButton)
+        saveButton.addEventListener("click", () => register(() => saveChapterProgress(chapter)));
     if (visitorButton)
         visitorButton.addEventListener("click", () => register(markPopupAsSeen));
 
     // Show popup
     modal.classList.add("active");
-    updateDisplay();
+    if (display)
+        updateDisplay();
 }
 
 /**
@@ -341,18 +382,31 @@ export function createProgressPopup(mode = 'onboarding') {
  * @param {Element[] | NodeList} sections - Array of section elements to animate.
  */
 export function setUpSectionFadeIn(sections) {
-    if (!sections || typeof sections.forEach !== 'function')
+    if (!sections || typeof sections.forEach !== 'function') return;
+
+    // Respect accessibility preferences
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+        sections.forEach(section => section.classList.add("animate"));
         return;
+    }
+
     const observer = new IntersectionObserver((entries, obs) => {
         for (const entry of entries) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                obs.unobserve(entry.target);
+            const el = entry.target;
+            if (!entry.isIntersecting) continue;
+            if (el.classList.contains("animate")) {
+                obs.unobserve(el);
+                continue;
             }
-        };
+            el.classList.add("animate");
+            obs.unobserve(el);
+        }
     }, { threshold: 0.1 });
     
     sections.forEach(section => {
+        if (!(section instanceof Element)) return;
+
         observer.observe(section);
 
         // Manually trigger animation if section already in viewport
@@ -372,7 +426,7 @@ export function setUpSectionFadeIn(sections) {
  * @param {Element | NodeList | Element[]} containers - Elements that contain cards
  * @param {Object} options - Options to customize the delay strategy
  * @param {boolean} options.useColumnDelay - Whether to use column-based delay for grids
- * @param {number} options.staggerDelay - Base delay for staggered animations
+ * @param {number} options.staggerDelay - Base delay (ms) for staggered animations
  */
 export function setupCardFadeIn(containers, options = {}) {
     const {
@@ -380,18 +434,19 @@ export function setupCardFadeIn(containers, options = {}) {
         staggerDelay = 80,
     } = options;
 
+    // Respect accessibility preferences
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     // Container as array for consistent iteration
     const containerList = containers instanceof NodeList || Array.isArray(containers)
         ? Array.from(containers)
         : [containers];
 
     containerList.forEach(container => {
-        if (!(container instanceof Element))
-            return;
+        if (!(container instanceof Element)) return;
 
         const cards = container.querySelectorAll('.card');
-        if (!cards.length)
-            return;
+        if (!cards.length) return;
 
         // Detect number of columns in grid layout
         let columns = 1;
@@ -404,22 +459,26 @@ export function setupCardFadeIn(containers, options = {}) {
         // Animate cards when they come into view
         const observer = new IntersectionObserver((entries, obs) => {
             for (const entry of entries) {
-                if (!entry.isIntersecting)
-                    return;
-
                 const card = entry.target;
-
-                // Staggered delay for grid layout
-                const index = [...cards].indexOf(card);
-                let delay = 0;
-                if (useColumnDelay) {
-                    const column = index % columns;
-                    delay = column * staggerDelay;
+                if (!entry.isIntersecting) continue;
+                if (card.classList.contains("animate")) {
+                    obs.unobserve(card);
+                    continue;
                 }
 
-                setTimeout(() => {
+                if (reduceMotion) {
                     card.classList.add('animate');
-                }, delay);
+                } else {
+                    // Calculate delay based on column position
+                    const index = [...cards].indexOf(card);
+                    let delay = 0;
+                    if (useColumnDelay) {
+                        const column = index % columns;
+                        delay = column * staggerDelay;
+                    }
+                    card.style.transitionDelay = `${delay}ms`;
+                    card.classList.add("animate");
+                }
 
                 obs.unobserve(card);
             }
@@ -431,10 +490,12 @@ export function setupCardFadeIn(containers, options = {}) {
             // Manually trigger animation if card already in viewport with no delay
             requestAnimationFrame(() => {
                 if (isElementInViewport(card)) {
-                    setTimeout(() => {
+                    if (reduceMotion) {
                         card.classList.add('animate');
-                    });
-
+                    } else {
+                        card.style.transitionDelay = '0ms';
+                        card.classList.add('animate');
+                    }
                     observer.unobserve(card);
                 }
             });
@@ -472,7 +533,7 @@ export function showContent(contentLayout = "block") {
  * and elements with classes like "remove-on-3" will disappear when chapter >= 3.
  */
 export function loadContent() {
-    const chapter = getChapterProgress() > 0 ? getChapterProgress() : 1;
+    const chapter = getContentChapter();
     
     // Handle elements that should be visible and should disappear
     document.querySelectorAll("[class*='ch-'], [class*='remove-on-']").forEach(el => {
@@ -573,11 +634,11 @@ export function getChapterProgress() {
 
 /**
  * Get the chapter to use for content display.
- * If the user is a visitor (chapter 0), return chapter 1.
+ * If the user is a visitor (chapter 0), return first chapter.
  * @returns {number} - The chapter number to use for content display
  */
 export function getContentChapter() {
-    return getChapterProgress() > 0 ? getChapterProgress() : 1;
+    return getChapterProgress() > 0 ? getChapterProgress() : FIRST_CHAPTER;
 }
 
 /**

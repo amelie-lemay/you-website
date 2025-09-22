@@ -123,7 +123,10 @@ async function loadTranslations() {
                         separatorDiv.innerHTML = `<span>❈</span>`;
                         dialogueDiv.appendChild(separatorDiv);
                     }
-                    dialogueDiv.innerHTML = `<p class="context">${context}</p>`;
+                    const contextP = document.createElement("p");
+                    contextP.className = "context";
+                    contextP.textContent = context;
+                    dialogueDiv.appendChild(contextP);
                     dialogueDiv.appendChild(boxDiv);
 
                     // Append to chapter block
@@ -160,9 +163,13 @@ function addChapterSwitchListener() {
         if (!link) return;
         event.preventDefault();
 
-        // Update active state in sidebar
+        // Remove old active states
         sidebar.querySelectorAll("a").forEach(a => a.classList.remove("active"));
+        sidebar.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+
+        // Set new active state
         link.classList.add("active");
+        link.parentElement.classList.add("active");
 
         // Find matching section
         const chapterId = link.getAttribute("href").substring(1);
@@ -273,7 +280,7 @@ function configureCustomScrollbar() {
     });
 
     // Mouse move to drag
-    document.addEventListener('mousemove', (e) => {
+    const onMouseMove = (e) => {
         if (!dragging) return;
         const deltaY = e.clientY - dragStartY;
         const ch = ul.clientHeight;
@@ -284,14 +291,17 @@ function configureCustomScrollbar() {
         const scrollDelta = (deltaY / trackScrollable) * (sh - ch);
         ul.scrollTop = Math.max(0, Math.min(sh - ch, startScrollTop + scrollDelta));
         scheduleUpdate();
-    });
+    }
 
     // Mouse up to stop dragging
-    document.addEventListener('mouseup', () => {
+    const onMouseUp = () => {
         if (!dragging) return;
         dragging = false;
         document.body.classList.remove('no-select');
-    });
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
 
     // Click on faux scrollbar to jump
     wrapper.querySelector('.faux-scrollbar').addEventListener('click', (e) => {
@@ -312,5 +322,7 @@ function configureCustomScrollbar() {
         window.removeEventListener('resize', scheduleUpdate);
         ro.disconnect();
         mo.disconnect();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
     };
 }

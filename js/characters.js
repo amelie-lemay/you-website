@@ -27,26 +27,7 @@ async function injectContent() {
     showContent();
     loadContent();
     
-    await loadMainCharacters();
-    await loadMinorCharacters();
-
-    // Animate cards in
-    const largeCards = document.querySelectorAll('.major-characters');
-    const gridCards = document.querySelectorAll('.minor-characters');
-    setupCardFadeIn(largeCards);
-    setupCardFadeIn(gridCards, {
-        useColumnDelay: true,
-        staggerDelay: 80
-    });
-}
-
-/**
- * Load and render main characters data from JSON into the container 
- * with ID "main-characters".
- * 
- * @async
- */
-async function loadMainCharacters() {
+    // Load main characters
     await loadCards({
         jsonUrl: "../content/characters/main-characters.json",
         containerId: "main-characters",
@@ -61,18 +42,11 @@ async function loadMainCharacters() {
             <p><strong>Age:</strong> ${age}</p>
             <p><strong>Date of Arrival:</strong> ${dateOfArrival}</p>
             <p class="card-underline"><strong>Allegiance:</strong> ${allegiance}</p>
-            <p class="card-description">${description ?? ""}</p>
+            <p class="card-description">${description}</p>
         `},
     });
-}
-
-/**
- * Load and render minor characters data from JSON into the container 
- * with ID "minor-characters".
- * 
- * @async
- */
-async function loadMinorCharacters() {
+    
+    // Load minor characters
     await loadCards({
         jsonUrl: "../content/characters/minor-characters.json",
         containerId: "minor-characters",
@@ -83,5 +57,14 @@ async function loadMinorCharacters() {
             <h3 class="section-heading">${name}</h3>
             <p><strong>Allegiance:</strong> ${allegiance}</p>
         `},
+    });
+
+    // Animate cards in
+    const largeCards = document.querySelectorAll('.major-characters');
+    const gridCards = document.querySelectorAll('.minor-characters');
+    setupCardFadeIn(largeCards);
+    setupCardFadeIn(gridCards, {
+        useColumnDelay: true,
+        staggerDelay: 80
     });
 }

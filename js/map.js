@@ -27,21 +27,7 @@ async function injectContent() {
     showContent();
     loadContent();
     
-    await loadMajorGroups();
-    await loadNotableBuildings();
-    
-    // Animate cards in
-    const cards = document.querySelectorAll('.cards');
-    setupCardFadeIn(cards);
-}
-
-/**
- * Load and render major groups data from JSON into the container 
- * with ID "major-groups".
- * 
- * @async
- */
-async function loadMajorGroups() {
+    // Load major groups
     await loadCards({
         jsonUrl: "../content/map/major-groups.json",
         containerId: "major-groups",
@@ -57,15 +43,8 @@ async function loadMajorGroups() {
             <p class="card-description">${description ?? ""}</p>
         `},
     });
-}
-
-/**
- * Load and render notable buildings data from JSON into the container 
- * with ID "notable-buildings".
- * 
- * @async
- */
-async function loadNotableBuildings() {
+    
+    // Load notable buildings
     await loadCards({
         jsonUrl: "../content/map/notable-buildings.json",
         containerId: "notable-buildings",
@@ -81,4 +60,8 @@ async function loadNotableBuildings() {
             ` + (note ? `<p class="card-description">${note}</p>` : "");
         },
     });
+    
+    // Animate cards in
+    const cards = document.querySelectorAll('.cards');
+    setupCardFadeIn(cards);
 }

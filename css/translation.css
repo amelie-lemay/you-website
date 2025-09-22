@@ -114,7 +114,14 @@ aside li {
     margin-bottom: 0.2em;
 }
 
-aside li::after {
+aside a {
+    display: block;
+    position: relative;
+    padding: 0.3em 3em 0.3em 0.5em;
+    color: var(--text);
+}
+
+aside a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -127,17 +134,11 @@ aside li::after {
     transition: transform 0.5s ease, height 0.3s ease, background-color 0.3s ease;
 }
 
-aside li:hover::after,
-aside li:has(a.active)::after {
+aside a:hover::after,
+aside a.active::after {
     transform: scaleX(1);
     height: 3px;
     background-color: var(--accent);
-}
-
-aside a {
-    display: block;
-    padding: 0.3em 3em 0.3em 0.5em;
-    color: var(--text);
 }
 
 aside a.active {

@@ -36,13 +36,15 @@ function fadeInAndAnimate(heroImage) {
 
     const duration = 30000;
     const maxTranslateY = heroImage.clientHeight * 0.05;
-    const safeMargin = 3; // px margin top/bottom to avoid gap
+    const safeMargin = Math.max(3, window.innerHeight * 0.01); // Dynamic safe margin
     const startTime = performance.now();
+    const twoPi = 2 * Math.PI / duration;
+
     let animationId = null;
 
     function animate(time) {
-        const progress = ((time - startTime) % duration) / duration;
-        const offset = Math.cos(progress * 2 * Math.PI) * -(maxTranslateY - safeMargin);
+        const progress = (time - startTime) % duration;
+        const offset = Math.cos(progress * twoPi) * -(maxTranslateY - safeMargin);
         heroImage.style.transform = `scale(1.1) translateY(${offset}px)`;
 
         // Continue the animation if the page is visible
@@ -56,8 +58,9 @@ function fadeInAndAnimate(heroImage) {
     animationId = requestAnimationFrame(animate);
 
     // Resume animation when the page becomes visible again
-    document.addEventListener('visibilitychange', () => {
+    const visibilityHandler = () => {
         if (document.visibilityState === 'visible' && !animationId)
             animationId = requestAnimationFrame(animate);
-    });
+    };
+    document.addEventListener('visibilitychange', visibilityHandler);
 }
