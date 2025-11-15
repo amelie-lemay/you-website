@@ -555,6 +555,52 @@ export function loadContent() {
 }
 
 /**
+ * Get the image source URL based on the user's chapter progress.
+ *
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.imageFolder   Folder path, e.g. "../content/map/images/"
+ * @param {string} param0.extension     Image file extension, e.g. "png"
+ * @param {string} param0.manifestUrl   URL of JSON manifest mapping chapters to image names
+ * @param {string} param0.containerId   ID of the container element for error display
+ */
+export async function getImageSrc({
+    imageFolder,
+    extension,
+    manifestUrl,
+    containerId
+}) {
+    const chapter = getContentChapter();
+
+    try {
+        // Fetch available chapters
+        const data = await fetchJson(manifestUrl);
+        
+        // Get map file name
+        const mapName = getClosestChapterValue(data, chapter);
+
+        // Return image src
+        return `${imageFolder}${mapName}.${extension}`;
+    } catch (error) {
+        displayError(containerId, error);
+        return "";
+    }
+}
+
+/**
+ * Load an image and return its source URL once loaded.
+ * 
+ * @param {string} src - The source URL of the image to load
+ * @returns {Promise<string>} - A promise that resolves with the source URL once the image is loaded
+ */
+export function loadImage(src) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(src);
+        img.src = src;
+    });
+}
+
+/**
  * Load and render cards from a JSON file into a specified container.
  * 
  * - Only displays content if its `chapter` is <= the user's progress.
