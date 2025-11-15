@@ -1,6 +1,6 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
     setUpProgressSync, loadContent, getClosestChapterValue, loadCards,
-    showContent} from "./shared.js";
+    showContent, loadImage, getImageSrc } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -26,6 +26,24 @@ window.addEventListener("chapterChange", injectContent);
 async function injectContent() {
     showContent();
     loadContent();
+
+    // Load map image
+    const mapSrc = await getImageSrc({
+        imageFolder: "../img/maps/",
+        extension: "png",
+        manifestUrl: "../content/map/maps-manifest.json",
+        containerId: "map-image"
+    });
+
+    // Apply map image if available
+    if (mapSrc) {
+        await loadImage(mapSrc);
+        
+        // Add image to page and fade in
+        const img = document.getElementById("map-image");
+        img.src = mapSrc;
+        img.classList.add("loaded");
+    }
     
     // Load major groups
     await loadCards({

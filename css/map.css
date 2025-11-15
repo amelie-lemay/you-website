@@ -1,6 +1,6 @@
 .map-image {
     width: 100%;
     max-width: 900px;
-    border: 1px solid #CBB89D;
-    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
