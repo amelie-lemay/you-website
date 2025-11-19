@@ -645,6 +645,51 @@ export async function loadCards({
     }
 }
 
+export async function loadRegions({
+    mapSrc,
+    containerId
+
+}) {
+    // Image name (without path and extension)
+    const imageName = mapSrc.split('/').pop().split('.').slice(0, -1).join('.');
+
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    try {
+        // Get regions for this map
+        const data = await fetchJson("../content/map/regions.json");
+        const regions = data[imageName];
+
+        // Create hotspots
+        regions.forEach(region => {
+            const div = document.createElement("div");
+            div.className = "region";
+
+            // Position
+            div.style.top = region.top + "%";
+            div.style.left = region.left + "%";
+            div.style.zIndex = region.priority ? region.priority : "1";
+
+            // Size
+            div.style.height = region.radius ? (region.radius || 5) + "%" : (region.height || 5) + "%";
+            div.style.width = region.radius ? (region.radius || 5) + "%" : (region.width || 5) + "%";
+            div.style.borderRadius = region.radius ? "50%" : "0";
+
+            // Tooltip
+            const tooltip = document.createElement("span");
+            tooltip.className = "tooltip";
+            tooltip.textContent = region.label;
+
+            div.appendChild(tooltip);
+            container.appendChild(div);
+        });
+    } catch (error) {
+        // Silent fail
+        console.error('Failed to load regions:', error);
+    }
+}
+
 /**
  * Display an error message and hide the main content.
  */

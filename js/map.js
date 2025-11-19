@@ -1,6 +1,6 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
     setUpProgressSync, loadContent, getClosestChapterValue, loadCards,
-    showContent, loadImage, getImageSrc } from "./shared.js";
+    showContent, loadImage, getImageSrc, loadRegions } from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -43,6 +43,20 @@ async function injectContent() {
         const img = document.getElementById("map-image");
         img.src = mapSrc;
         img.classList.add("loaded");
+
+        // Add regions for this map
+        loadRegions({
+            mapSrc,
+            containerId: "regions-container"
+        });
+
+        /*  Coordinate picker for map regions
+        enableCoordinatePicker(document.getElementById("map-image"), ({ top, left }) => {
+            console.log("Coordinates:");
+            console.log("top:", top + "%");
+            console.log("left:", left + "%");
+            console.log("---");
+        }); */
     }
     
     // Load major groups
@@ -82,4 +96,48 @@ async function injectContent() {
     // Animate cards in
     const cards = document.querySelectorAll('.cards');
     setupCardFadeIn(cards);
+}
+
+// Utility function to get a pointer on an image and retrieve coordinates.
+function enableCoordinatePicker(imgElement, callback) {
+    // Create a temporary marker
+    const marker = document.createElement("div");
+    marker.style.position = "absolute";
+    marker.style.width = "10px";
+    marker.style.height = "10px";
+    marker.style.background = "red";
+    marker.style.borderRadius = "50%";
+    marker.style.pointerEvents = "none";
+    marker.style.transform = "translate(-50%, -50%)";
+    marker.style.display = "none";
+
+    // Wrap img in a positioned container if necessary
+    let container = imgElement.parentElement;
+    const containerStyle = getComputedStyle(container);
+    if (containerStyle.position === "static") {
+        container.style.position = "relative";
+    }
+    container.appendChild(marker);
+
+    imgElement.addEventListener("click", (ev) => {
+        console.log("Image clicked");
+        const rect = imgElement.getBoundingClientRect();
+
+        const x = ev.clientX - rect.left;
+        const y = ev.clientY - rect.top;
+
+        const leftPercent = (x / rect.width) * 100;
+        const topPercent = (y / rect.height) * 100;
+
+        // Move marker to clicked location
+        marker.style.left = leftPercent + "%";
+        marker.style.top = topPercent + "%";
+        marker.style.display = "block";
+
+        // Return rounded coordinates
+        callback({
+        top: Number(topPercent.toFixed(2)),
+        left: Number(leftPercent.toFixed(2)),
+        });
+    });
 }
