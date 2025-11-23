@@ -637,6 +637,14 @@ export async function loadCards({
                 const card = document.createElement("div");
                 card.className = "card card--hover";
                 card.innerHTML = cardHtml;
+
+                // Set data-name attribute for map linking
+                const mapLabel = getClosestChapterValue(item.mapLabel, chapter);
+                if (mapLabel) {
+                    const name = mapLabel.trim().toLowerCase().replace(/\s+/g, '-');
+                    card.dataset.name = name;
+                }
+
                 container.appendChild(card);
             }
         });
@@ -645,10 +653,17 @@ export async function loadCards({
     }
 }
 
+/**
+ * Load and render interactive regions on a map.
+ * 
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.mapSrc - Source URL of the map image
+ * @param {string} param0.containerId - ID of the container element to inject regions into
+ * @async
+ */
 export async function loadRegions({
     mapSrc,
     containerId
-
 }) {
     // Image name (without path and extension)
     const imageName = mapSrc.split('/').pop().split('.').slice(0, -1).join('.');
@@ -680,6 +695,12 @@ export async function loadRegions({
             const tooltip = document.createElement("span");
             tooltip.className = "tooltip";
             tooltip.textContent = region.label;
+
+            // Click behavior
+            tooltip.addEventListener("click", () => {
+                const selector = region.label.toLowerCase().replace(/\s+/g, '-');
+                scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
+            });
 
             div.appendChild(tooltip);
             container.appendChild(div);
@@ -825,4 +846,28 @@ export function isContentVisible(item, currentChapter) {
     const introduced = item.chapter <= currentChapter;
     const notRemoved = item.removeOn === null || item.removeOn > currentChapter;
     return introduced && notRemoved;
+}
+
+/**
+ * Smoothly scroll the page to the specified card element, 
+ * accounting for fixed header height and animation offset.
+ * 
+ * @param {*} card - The card element to scroll to
+ * @returns 
+ */
+function scrollToCard(card) {
+    if (!card) return;
+
+    // Adjust scroll margin for anchor targets to account for fixed header height + a 1rem gap
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const headerHeight = parseFloat(document.querySelector('header').offsetHeight) + rem;
+
+    // If animation not yet applied, add extra offset for translateY in the animation
+    const extraOffset = card.classList.contains('animate') ? 0 : 1.5 * rem;
+    const y = card.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
+
+    window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+    });
 }
