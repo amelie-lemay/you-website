@@ -46,7 +46,7 @@ async function injectContent() {
 
         // Add regions for this map
         loadRegions({
-            mapSrc,
+            jsonUrl: "../content/map/regions.json",
             containerId: "regions-container"
         });
 

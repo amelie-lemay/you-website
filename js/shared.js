@@ -662,48 +662,57 @@ export async function loadCards({
  * @async
  */
 export async function loadRegions({
-    mapSrc,
+    jsonUrl,
     containerId
 }) {
-    // Image name (without path and extension)
-    const imageName = mapSrc.split('/').pop().split('.').slice(0, -1).join('.');
-
     const container = document.getElementById(containerId);
     container.innerHTML = "";
 
+    const chapter = getContentChapter();
+
     try {
         // Get regions for this map
-        const data = await fetchJson("../content/map/regions.json");
-        const regions = data[imageName];
+        const data = await fetchJson(jsonUrl);
 
         // Create hotspots
-        regions.forEach(region => {
-            const div = document.createElement("div");
-            div.className = "region";
+        let i = 1;
+        data.forEach(item => {
+            if (item.chapter <= chapter) {
+                const div = document.createElement("div");
+                div.className = "region";
 
-            // Position
-            div.style.top = region.top + "%";
-            div.style.left = region.left + "%";
-            div.style.zIndex = region.priority ? region.priority : "1";
+                const top = getClosestChapterValue(item.top, chapter);
+                const left = getClosestChapterValue(item.left, chapter);
+                const priority = item.priority;
+                const width = getClosestChapterValue(item.width, chapter);
+                const height = getClosestChapterValue(item.height, chapter);
+                const radius = getClosestChapterValue(item.radius, chapter);
+                const label = getClosestChapterValue(item.label, chapter);
 
-            // Size
-            div.style.height = region.radius ? (region.radius || 5) + "%" : (region.height || 5) + "%";
-            div.style.width = region.radius ? (region.radius || 5) + "%" : (region.width || 5) + "%";
-            div.style.borderRadius = region.radius ? "50%" : "0";
+                // Position
+                div.style.top = top + "%";
+                div.style.left = left + "%";
+                div.style.zIndex = priority ? priority : "1";
 
-            // Tooltip
-            const tooltip = document.createElement("span");
-            tooltip.className = "tooltip";
-            tooltip.textContent = region.label;
+                // Size
+                div.style.height = radius ? (radius || 5) + "%" : (height || 5) + "%";
+                div.style.width = radius ? (radius || 5) + "%" : (width || 5) + "%";
+                div.style.borderRadius = radius ? "50%" : "0";
 
-            // Click behavior
-            tooltip.addEventListener("click", () => {
-                const selector = region.label.toLowerCase().replace(/\s+/g, '-');
-                scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
-            });
+                // Tooltip
+                const tooltip = document.createElement("span");
+                tooltip.className = "tooltip";
+                tooltip.textContent = label;
 
-            div.appendChild(tooltip);
-            container.appendChild(div);
+                // Click behavior
+                tooltip.addEventListener("click", () => {
+                    const selector = label.toLowerCase().replace(/\s+/g, '-');
+                    scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
+                });
+
+                div.appendChild(tooltip);
+                container.appendChild(div);
+            }
         });
     } catch (error) {
         // Silent fail

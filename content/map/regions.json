@@ -1,599 +1,544 @@
-{
-  "ch-1": [
-    {
-      "top": 24.7,
-      "left": 39.5,
-      "label": "The School",
-      "radius": 5
+[
+  {
+    "chapter": 1,
+    "label": {
+      "ch-1": "The School"
     },
-    {
-      "top": 56.8,
-      "left": 57,
-      "label": "Blue Clan",
-      "height": 8,
-      "width": 7
+    "top": {
+      "ch-1": 24.7,
+      "ch-6": 24.1,
+      "ch-9": 38.3,
+      "ch-14": 31.8,
+      "ch-15": 15.9,
+      "ch-18": 15.9,
+      "ch-20": 15.9,
+      "ch-21": 15.9,
+      "ch-22": 15.3,
+      "ch-30": 15.3,
+      "ch-34": 14.6,
+      "ch-40": 13.4
+    },
+    "left": {
+      "ch-1": 39.5,
+      "ch-6": 58.3,
+      "ch-9": 66,
+      "ch-14": 65.5,
+      "ch-15": 54.2,
+      "ch-18": 54.2,
+      "ch-20": 54.2,
+      "ch-21": 54.2,
+      "ch-22": 45.2,
+      "ch-30": 45.2,
+      "ch-34": 43.7,
+      "ch-40": 46
+    },
+    "radius": {
+      "ch-1": 5,
+      "ch-6": 5,
+      "ch-9": 6,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-6": [
-    {
-      "top": 10.3,
-      "left": 16.2,
-      "label": "The Grocery Store",
-      "radius": 5
+  },
+  {
+    "chapter": 1,
+    "label": {
+      "ch-1": "Blue Clan"
     },
-    {
-      "top": 8,
-      "left": 37.6,
-      "label": "The Ruins",
-      "radius": 5
+    "priority": "2",
+    "top": {
+      "ch-1": 56.8,
+      "ch-6": 41.4,
+      "ch-9": 50.3,
+      "ch-14": 41.5,
+      "ch-15": 20.7,
+      "ch-18": 20.7,
+      "ch-20": 20.7,
+      "ch-21": 20.7,
+      "ch-22": 20.1,
+      "ch-30": 20.1,
+      "ch-34": 19.1,
+      "ch-40": 17.2
     },
-    {
-      "top": 24.1,
-      "left": 58.3,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-1": 57,
+      "ch-6": 70.1,
+      "ch-9": 73.4,
+      "ch-14": 71,
+      "ch-15": 57.6,
+      "ch-18": 57.6,
+      "ch-20": 57.6,
+      "ch-21": 57.6,
+      "ch-22": 48.6,
+      "ch-30": 48.6,
+      "ch-34": 46.9,
+      "ch-40": 49.2
     },
-    {
-      "top": 41.4,
-      "left": 70.1,
-      "label": "Blue Clan",
-      "height": 8,
-      "width": 7
+    "height": {
+      "ch-1": 8,
+      "ch-6": 8,
+      "ch-9": 8,
+      "ch-14": 8,
+      "ch-15": 6,
+      "ch-18": 6,
+      "ch-20": 6,
+      "ch-21": 6,
+      "ch-22": 6,
+      "ch-30": 6,
+      "ch-34": 5.5,
+      "ch-40": 5
+    },
+    "width": {
+      "ch-1": 7,
+      "ch-6": 7,
+      "ch-9": 7,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-9": [
-    {
-      "top": 28,
-      "left": 33.9,
-      "label": "The Grocery Store",
-      "radius": 6
+  },
+  {
+    "chapter": 6,
+    "label": {
+      "ch-6": "The Grocery Store"
     },
-    {
-      "top": 5.2,
-      "left": 31.6,
-      "label": "The Ruins",
-      "radius": 6
+    "top": {
+      "ch-6": 10.3,
+      "ch-9": 28,
+      "ch-14": 23.6,
+      "ch-15": 11.8,
+      "ch-18": 11.8,
+      "ch-20": 11.8,
+      "ch-21": 11.8,
+      "ch-22": 11.2,
+      "ch-30": 11.2,
+      "ch-34": 10.7,
+      "ch-40": 9.9
     },
-    {
-      "top": 38.3,
-      "left": 66,
-      "label": "The School",
-      "radius": 6
+    "left": {
+      "ch-6": 16.2,
+      "ch-9": 33.9,
+      "ch-14": 40,
+      "ch-15": 39.7,
+      "ch-18": 39.7,
+      "ch-20": 39.7,
+      "ch-21": 39.7,
+      "ch-22": 30.7,
+      "ch-30": 30.7,
+      "ch-34": 29.8,
+      "ch-40": 33
     },
-    {
-      "top": 50.3,
-      "left": 73.4,
-      "label": "Blue Clan",
-      "width": 7,
-      "height": 8
-    },
-    {
-      "top": 71.1,
-      "left": 15.3,
-      "label": "The Sports Complex",
-      "radius": 6
-    },
-    {
-      "top": 77.5,
-      "left": 11.1,
-      "label": "Green Clan",
-      "height": 6.5,
-      "width": 16
+    "radius": {
+      "ch-6": 5,
+      "ch-9": 6,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-14": [
-    {
-      "top": 23.6,
-      "left": 40,
-      "label": "The Grocery Store",
-      "radius": 7
+  },
+  {
+    "chapter": 6,
+    "label": {
+      "ch-6": "The Ruins",
+      "ch-30": "Northern Clan"
     },
-    {
-      "top": 6.2,
-      "left": 41,
-      "label": "The Ruins",
-      "radius": 7
+    "top": {
+      "ch-6": 8,
+      "ch-9": 5.2,
+      "ch-14": 6.2,
+      "ch-15": 8.2,
+      "ch-18": 8.2,
+      "ch-20": 8.2,
+      "ch-21": 8.2,
+      "ch-22": 7.6,
+      "ch-30": 7.6,
+      "ch-34": 7.3,
+      "ch-40": 6.9
     },
-    {
-      "top": 31.8,
-      "left": 65.5,
-      "label": "The School",
-      "radius": 7
+    "left": {
+      "ch-6": 37.6,
+      "ch-9": 31.6,
+      "ch-14": 41,
+      "ch-15": 15,
+      "ch-18": 15,
+      "ch-20": 15,
+      "ch-21": 15,
+      "ch-22": 6,
+      "ch-30": 6,
+      "ch-34": 6.3,
+      "ch-40": 10.9
     },
-    {
-      "top": 41.5,
-      "left": 71,
-      "label": "Blue Clan",
-      "width": 7,
-      "height": 8
-    },
-    {
-      "top": 57.5,
-      "left": 25.3,
-      "label": "The Sports Complex",
-      "radius": 7
-    },
-    {
-      "top": 58.9,
-      "left": 19.2,
-      "label": "Green Clan",
-      "width": 7,
-      "height": 8,
-      "priority": "2"
-    },
-    {
-      "top": 93.9,
-      "left": 27.5,
-      "label": "The Hospital",
-      "radius": 7
+    "radius": {
+      "ch-6": 5,
+      "ch-9": 6,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-15": [
-    {
-      "top": 8.2,
-      "left": 15,
-      "label": "The Ruins",
-      "radius": 5
+  },
+  {
+    "chapter": 9,
+    "label": {
+      "ch-9": "The Sports Complex"
     },
-    {
-      "top": 11.8,
-      "left": 39.7,
-      "label": "The Grocery Store",
-      "radius": 5
+    "top": {
+      "ch-9": 71.1,
+      "ch-14": 57.5,
+      "ch-15": 29.3,
+      "ch-18": 29.3,
+      "ch-20": 29.3,
+      "ch-21": 29.3,
+      "ch-22": 28.7,
+      "ch-30": 28.7,
+      "ch-34": 27.3,
+      "ch-40": 24.4
     },
-    {
-      "top": 15.9,
-      "left": 54.2,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-9": 15.3,
+      "ch-14": 25.3,
+      "ch-15": 31.5,
+      "ch-18": 31.5,
+      "ch-20": 31.5,
+      "ch-21": 31.5,
+      "ch-22": 22.5,
+      "ch-30": 22.5,
+      "ch-34": 21.9,
+      "ch-40": 25.7
     },
-    {
-      "top": 20.7,
-      "left": 57.6,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 29.3,
-      "left": 31.5,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 29.7,
-      "left": 27.8,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 48,
-      "left": 32.5,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 44.3,
-      "left": 15.7,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 84.8,
-      "left": 62.7,
-      "label": "Southern Clans",
-      "width": 35,
-      "height": 26.8
-    },
-    {
-      "top": 59.9,
-      "left": 86.9,
-      "label": "Dahlia's Group",
-      "width": 9,
-      "height": 9.3
+    "radius": {
+      "ch-9": 6,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-18": [
-    {
-      "top": 8.2,
-      "left": 15,
-      "label": "The Ruins",
-      "radius": 5
+  },
+  {
+    "chapter": 9,
+    "label": {
+      "ch-9": "Green Clan"
     },
-    {
-      "top": 11.8,
-      "left": 39.7,
-      "label": "The Grocery Store",
-      "radius": 5
+    "priority": "2",
+    "top": {
+      "ch-9": 77.5,
+      "ch-14": 58.9,
+      "ch-15": 29.7,
+      "ch-18": 29.7,
+      "ch-20": 29.7,
+      "ch-21": 29.7,
+      "ch-22": 29.1,
+      "ch-30": 29.1,
+      "ch-34": 27.7,
+      "ch-40": 24.6
     },
-    {
-      "top": 15.9,
-      "left": 54.2,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-9": 11.1,
+      "ch-14": 19.2,
+      "ch-15": 27.8,
+      "ch-18": 27.8,
+      "ch-20": 27.8,
+      "ch-21": 27.8,
+      "ch-22": 18.8,
+      "ch-30": 18.8,
+      "ch-34": 18.5,
+      "ch-40": 22.5
     },
-    {
-      "top": 20.7,
-      "left": 57.6,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
+    "height": {
+      "ch-9": 6.5,
+      "ch-14": 8,
+      "ch-15": 6,
+      "ch-18": 6,
+      "ch-20": 6,
+      "ch-21": 6,
+      "ch-22": 6,
+      "ch-30": 6,
+      "ch-34": 5.5,
+      "ch-40": 5
     },
-    {
-      "top": 29.3,
-      "left": 31.5,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 29.7,
-      "left": 27.8,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 48,
-      "left": 32.5,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 44.3,
-      "left": 15.7,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 84.8,
-      "left": 62.7,
-      "label": "Southern Clans",
-      "width": 35,
-      "height": 26.8
-    },
-    {
-      "top": 59.9,
-      "left": 86.9,
-      "label": "Dahlia's Group",
-      "width": 9,
-      "height": 9.3
-    },
-    {
-      "top": 23.8,
-      "left": 78.9,
-      "label": "The University",
-      "radius": 5
+    "width": {
+      "ch-9": 16,
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-20": [
-    {
-      "top": 8.2,
-      "left": 15,
-      "label": "The Ruins",
-      "radius": 5
+  },
+  {
+    "chapter": 14,
+    "label": {
+      "ch-14": "The Hospital"
     },
-    {
-      "top": 11.8,
-      "left": 39.7,
-      "label": "The Grocery Store",
-      "radius": 5
+    "top": {
+      "ch-14": 93.9,
+      "ch-15": 48,
+      "ch-18": 48,
+      "ch-20": 48,
+      "ch-21": 48,
+      "ch-22": 47.4,
+      "ch-30": 47.4,
+      "ch-34": 45.2,
+      "ch-40": 39.8
     },
-    {
-      "top": 15.9,
-      "left": 54.2,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-14": 27.5,
+      "ch-15": 32.5,
+      "ch-18": 32.5,
+      "ch-20": 32.5,
+      "ch-21": 32.5,
+      "ch-22": 23.5,
+      "ch-30": 23.5,
+      "ch-34": 23,
+      "ch-40": 26.7
     },
-    {
-      "top": 20.7,
-      "left": 57.6,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 29.3,
-      "left": 31.5,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 29.7,
-      "left": 27.8,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 48,
-      "left": 32.5,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 44.3,
-      "left": 15.7,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 84.8,
-      "left": 62.7,
-      "label": "Southern Clans",
-      "width": 35,
-      "height": 26.8
-    },
-    {
-      "top": 63.3,
-      "left": 80.4,
-      "label": "Dahlia's Group",
-      "width": 5,
-      "height": 5
-    },
-    {
-      "top": 23.8,
-      "left": 78.9,
-      "label": "The University",
-      "radius": 5
+    "radius": {
+      "ch-14": 7,
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-22": [
-    {
-      "top": 7.6,
-      "left": 6,
-      "label": "The Ruins",
-      "radius": 5
+  },
+  {
+    "chapter": 15,
+    "label": {
+      "ch-15": "Western Clans"
     },
-    {
-      "top": 11.2,
-      "left": 30.7,
-      "label": "The Grocery Store",
-      "radius": 5
+    "top": {
+      "ch-15": 44.3,
+      "ch-18": 44.3,
+      "ch-20": 44.3,
+      "ch-21": 44.3,
+      "ch-22": 43.7,
+      "ch-30": 43.7,
+      "ch-34": 41.6,
+      "ch-40": 36.7
     },
-    {
-      "top": 15.3,
-      "left": 45.2,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-15": 15.7,
+      "ch-18": 15.7,
+      "ch-20": 15.7,
+      "ch-21": 15.7,
+      "ch-22": 6.7,
+      "ch-30": 6.7,
+      "ch-34": 6.9,
+      "ch-40": 11.6
     },
-    {
-      "top": 20.1,
-      "left": 48.6,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 28.7,
-      "left": 22.5,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 29.1,
-      "left": 18.8,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 6,
-      "priority": "2"
-    },
-    {
-      "top": 47.4,
-      "left": 23.5,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 43.7,
-      "left": 6.7,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 84.2,
-      "left": 53.7,
-      "label": "Southern Clans",
-      "width": 35,
-      "height": 26.8
-    },
-    {
-      "top": 62.8,
-      "left": 71.4,
-      "label": "The Pack",
-      "width": 5,
-      "height": 5
-    },
-    {
-      "top": 23.2,
-      "left": 69.9,
-      "label": "The University",
-      "radius": 5
-    },
-    {
-      "top": 61.7,
-      "left": 78.2,
-      "label": "The House",
-      "radius": 5
+    "radius": {
+      "ch-15": 5,
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ],
-  "ch-34": [
-    {
-      "top": 7.3,
-      "left": 6.3,
-      "label": "Northern Clan",
-      "radius": 5
+  },
+  {
+    "chapter": 15,
+    "label": {
+      "ch-15": "Southern Clans"
     },
-    {
-      "top": 10.7,
-      "left": 29.8,
-      "label": "The Grocery Store",
-      "radius": 5
+    "top": {
+      "ch-15": 84.8,
+      "ch-18": 84.8,
+      "ch-20": 84.8,
+      "ch-21": 84.8,
+      "ch-22": 84.2,
+      "ch-30": 84.2,
+      "ch-34": 80,
+      "ch-40": 70.1
     },
-    {
-      "top": 14.6,
-      "left": 43.7,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-15": 62.7,
+      "ch-18": 62.7,
+      "ch-20": 62.7,
+      "ch-21": 62.7,
+      "ch-22": 53.7,
+      "ch-30": 53.7,
+      "ch-34": 51.9,
+      "ch-40": 53.6
     },
-    {
-      "top": 19.1,
-      "left": 46.9,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 5.5,
-      "priority": "2"
+    "height": {
+      "ch-15": 26.8,
+      "ch-18": 26.8,
+      "ch-20": 26.8,
+      "ch-21": 26.8,
+      "ch-22": 26.8,
+      "ch-30": 26.8,
+      "ch-34": 25.3,
+      "ch-40": 22
     },
-    {
-      "top": 27.3,
-      "left": 21.9,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 27.7,
-      "left": 18.5,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 5.5,
-      "priority": "2"
-    },
-    {
-      "top": 45.2,
-      "left": 23,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 41.6,
-      "left": 6.9,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 80,
-      "left": 51.9,
-      "label": "Southern Clans",
-      "width": 33.7,
-      "height": 25.3
-    },
-    {
-      "top": 59.7,
-      "left": 68.7,
-      "label": "The Pack",
-      "width": 5,
-      "height": 5
-    },
-    {
-      "top": 22.2,
-      "left": 67.4,
-      "label": "The University",
-      "radius": 5
-    },
-    {
-      "top": 58.8,
-      "left": 75.4,
-      "label": "The House",
-      "radius": 5
-    },
-    {
-      "top": 93.8,
-      "left": 72,
-      "label": "The Subway",
-      "radius": 5
+    "width": {
+      "ch-15": 35,
+      "ch-18": 35,
+      "ch-20": 35,
+      "ch-21": 35,
+      "ch-22": 35,
+      "ch-30": 35,
+      "ch-34": 33.7,
+      "ch-40": 32
     }
-  ],
-  "ch-40": [
-    {
-      "top": 6.9,
-      "left": 10.9,
-      "label": "Northern Clan",
-      "radius": 5
+  },
+  {
+    "chapter": 15,
+    "label": {
+      "ch-15": "Dahlia's Group",
+      "ch-21": "The Pack"
     },
-    {
-      "top": 9.9,
-      "left": 33,
-      "label": "The Grocery Store",
-      "radius": 5
+    "top": {
+      "ch-15": 59.9,
+      "ch-18": 59.9,
+      "ch-20": 63.3,
+      "ch-21": 63.3,
+      "ch-22": 62.8,
+      "ch-30": 62.8,
+      "ch-34": 59.7,
+      "ch-40": 52.4
     },
-    {
-      "top": 13.4,
-      "left": 46,
-      "label": "The School",
-      "radius": 5
+    "left": {
+      "ch-15": 86.9,
+      "ch-18": 86.9,
+      "ch-20": 80.4,
+      "ch-21": 80.4,
+      "ch-22": 71.4,
+      "ch-30": 71.4,
+      "ch-34": 68.7,
+      "ch-40": 69.5
     },
-    {
-      "top": 17.2,
-      "left": 49.2,
-      "label": "Blue Clan",
-      "width": 5,
-      "height": 5,
-      "priority": "2"
+    "height": {
+      "ch-15": 9.3,
+      "ch-18": 9.3,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     },
-    {
-      "top": 24.4,
-      "left": 25.7,
-      "label": "The Sports Complex",
-      "radius": 5
-    },
-    {
-      "top": 24.6,
-      "left": 22.5,
-      "label": "Green Clan",
-      "width": 5,
-      "height": 5,
-      "priority": "2"
-    },
-    {
-      "top": 39.8,
-      "left": 26.7,
-      "label": "The Hospital",
-      "radius": 5
-    },
-    {
-      "top": 36.7,
-      "left": 11.6,
-      "label": "Western Clans",
-      "radius": 5
-    },
-    {
-      "top": 70.1,
-      "left": 53.6,
-      "label": "Southern Clans",
-      "width": 32,
-      "height": 22
-    },
-    {
-      "top": 52.4,
-      "left": 69.5,
-      "label": "The Pack",
-      "width": 5,
-      "height": 5
-    },
-    {
-      "top": 19.8,
-      "left": 68.1,
-      "label": "The University",
-      "radius": 5
-    },
-    {
-      "top": 51.6,
-      "left": 75.6,
-      "label": "The House",
-      "radius": 5
-    },
-    {
-      "top": 82,
-      "left": 72.6,
-      "label": "The Subway",
-      "radius": 5
+    "width": {
+      "ch-15": 9,
+      "ch-18": 9,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
     }
-  ]
-}
+  },
+  {
+    "chapter": 18,
+    "label": {
+      "ch-18": "The University"
+    },
+    "top": {
+      "ch-18": 23.8,
+      "ch-20": 23.8,
+      "ch-21": 23.8,
+      "ch-22": 23.2,
+      "ch-30": 23.2,
+      "ch-34": 22.2,
+      "ch-40": 19.8
+    },
+    "left": {
+      "ch-18": 78.9,
+      "ch-20": 78.9,
+      "ch-21": 78.9,
+      "ch-22": 69.9,
+      "ch-30": 69.9,
+      "ch-34": 67.4,
+      "ch-40": 68.1
+    },
+    "radius": {
+      "ch-18": 5,
+      "ch-20": 5,
+      "ch-21": 5,
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
+    }
+  },
+  {
+    "chapter": 22,
+    "label": {
+      "ch-22": "The House"
+    },
+    "top": {
+      "ch-22": 61.7,
+      "ch-30": 61.7,
+      "ch-34": 58.8,
+      "ch-40": 51.6
+    },
+    "left": {
+      "ch-22": 78.2,
+      "ch-30": 78.2,
+      "ch-34": 75.4,
+      "ch-40": 75.6
+    },
+    "radius": {
+      "ch-22": 5,
+      "ch-30": 5,
+      "ch-34": 5,
+      "ch-40": 5
+    }
+  },
+  {
+    "chapter": 34,
+    "label": {
+      "ch-34": "The Subway"
+    },
+    "top": {
+      "ch-34": 93.8,
+      "ch-40": 82
+    },
+    "left": {
+      "ch-34": 72,
+      "ch-40": 72.6
+    },
+    "radius": {
+      "ch-34": 5,
+      "ch-40": 5
+    }
+  }
+]
