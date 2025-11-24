@@ -675,7 +675,6 @@ export async function loadRegions({
         const data = await fetchJson(jsonUrl);
 
         // Create hotspots
-        let i = 1;
         data.forEach(item => {
             if (item.chapter <= chapter) {
                 const div = document.createElement("div");
@@ -705,10 +704,12 @@ export async function loadRegions({
                 tooltip.textContent = label;
 
                 // Click behavior
-                tooltip.addEventListener("click", () => {
+                function handleClick() {
                     const selector = label.toLowerCase().replace(/\s+/g, '-');
                     scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
-                });
+                }
+                tooltip.addEventListener("click", handleClick);
+                div.addEventListener("click", handleClick);
 
                 div.appendChild(tooltip);
                 container.appendChild(div);
