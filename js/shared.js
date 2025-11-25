@@ -5,6 +5,14 @@ const FIRST_CHAPTER = 1;
 const LAST_CHAPTER = 43;
 
 /**
+ * Check if the device supports hover interactions.
+ * @returns {boolean} True if the device supports hover, false otherwise.
+ */
+function deviceSupportsHover() {
+    return window.matchMedia('(hover: hover)').matches;
+}
+
+/**
  * Fetch a JSON file and parse its contents.
  * 
  * @async
@@ -674,6 +682,9 @@ export async function loadRegions({
         // Get regions for this map
         const data = await fetchJson(jsonUrl);
 
+        let activeHotspot = null;
+        const supportsHover = deviceSupportsHover();
+
         // Create hotspots
         data.forEach(item => {
             if (item.chapter <= chapter) {
@@ -708,13 +719,47 @@ export async function loadRegions({
                     const selector = label.toLowerCase().replace(/\s+/g, '-');
                     scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
                 }
-                tooltip.addEventListener("click", handleClick);
-                div.addEventListener("click", handleClick);
+                
+                // Desktop behavior
+                if (supportsHover) {
+                    tooltip.addEventListener("click", handleClick);
+                    div.addEventListener("click", handleClick);
+                }
+                // Mobile two-tap behavior
+                else {
+                    div.addEventListener('touchstart', (e) => {
+                        if (activeHotspot !== div) {
+                            // First tap: show tooltip only
+                            e.preventDefault(); // prevents the click from firing
+                            e.stopPropagation();
+                            div.classList.add('show-tooltip');
+                            if (activeHotspot)
+                                activeHotspot.classList.remove('show-tooltip');
+                            activeHotspot = div;
+                        } else {
+                            // Second tap: scroll
+                            handleClick();
+                            div.classList.remove('show-tooltip');
+                            activeHotspot = null;
+                        }
+                    });
+                }
 
                 div.appendChild(tooltip);
                 container.appendChild(div);
             }
         });
+
+        if (!supportsHover) {
+            document.addEventListener('touchstart', (e) => {
+                // If no tooltip is active, ignore
+                if (!activeHotspot)
+                    return;
+
+                activeHotspot.classList.remove('show-tooltip');
+                activeHotspot = null;
+            }, { passive: true });
+        }
     } catch (error) {
         // Silent fail
         console.error('Failed to load regions:', error);
