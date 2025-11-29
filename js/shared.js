@@ -767,6 +767,61 @@ export async function loadRegions({
 }
 
 /**
+ * Load and render the map legend from a JSON file into a specified container.
+ * 
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch legend data from
+ * @param {string} param0.containerId - ID of the container element to inject the legend into
+ */
+export async function loadMapLegend({
+    jsonUrl,
+    containerId
+}) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    const chapter = getContentChapter();
+
+    try {
+        const data = await fetchJson(jsonUrl);
+
+        data.forEach(legendGroup => {
+            // Create group
+            const group = document.createElement("div");
+            group.className = "legend-group";
+            group.id = legendGroup["legend-group"];
+            // Create items
+            legendGroup.items.forEach(legendItem => {
+                if (legendItem.chapter <= chapter) {
+                    const item = document.createElement("div");
+                    item.className = "legend-item";
+
+                    const icon = document.createElement("img");
+                    icon.className = "legend-icon";
+                    icon.src = "img/legend-icons/" + legendItem.icon;
+                    icon.alt = legendItem.label + " icon";
+
+                    const label = document.createElement("div");
+                    label.className = "legend-label";
+                    label.textContent = legendItem.label;
+
+                    item.appendChild(icon);
+                    item.appendChild(label);
+                    group.appendChild(item);
+                }
+            });
+            container.appendChild(group);
+        });
+    } catch (error) {
+        console.error('Failed to load map legend:', error);
+        // Functional fallback with minimal error message
+        container.innerHTML = `
+            <p class="error-p">Map legend failed to load</p>
+        `;
+    }
+}
+
+/**
  * Display an error message and hide the main content.
  */
 export function displayError(context = "unknown context", error = null) {

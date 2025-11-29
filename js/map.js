@@ -1,6 +1,7 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
     setUpProgressSync, loadContent, getClosestChapterValue, loadCards,
-    showContent, loadImage, getImageSrc, loadRegions } from "./shared.js";
+    showContent, loadImage, getImageSrc, loadRegions, 
+    loadMapLegend} from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -95,12 +96,19 @@ async function injectContent() {
             ` + (note ? `<p class="card-description">${note}</p>` : "");
         },
     });
+
+    // Load map legend
+    loadMapLegend({
+        jsonUrl: "../content/map/legend.json",
+        containerId: "legend-grid"
+    });
     
     // Animate cards in
     const cards = document.querySelectorAll('.cards');
     setupCardFadeIn(cards);
 }
 
+// Set up legend toggle functionality
 function toggleLegend() {
     const toggle = document.getElementById('legendToggle');
     const grid = document.getElementById('legend-grid');
