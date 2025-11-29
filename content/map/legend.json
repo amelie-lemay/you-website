@@ -1,0 +1,52 @@
+[
+  {
+    "legend-group": "legend-biomes",
+    "items": [
+      {
+        "chapter": 1,
+        "label": "Plains",
+        "icon": "plains.png"
+      },
+      {
+        "chapter": 1,
+        "label": "Sparse Forest",
+        "icon": "sparse-forest.png"
+      },
+      {
+        "chapter": 6,
+        "label": "Forest",
+        "icon": "forest.png"
+      },
+      {
+        "chapter": 9,
+        "label": "Dense Forest",
+        "icon": "dense-forest.png"
+      },
+      {
+        "chapter": 22,
+        "label": "Rocky Terrain",
+        "icon": "rocky-terrain.png"
+      },
+      {
+        "chapter": 1,
+        "label": "Water",
+        "icon": "water.png"
+      }
+    ]
+  },
+  {
+    "legend-group": "legend-places",
+    "items": [
+      {
+        "chapter": 1,
+        "label": "Group",
+        "icon": "group.png"
+      },
+      {
+        "chapter": 1,
+        "label": "Building",
+        "icon": "building.png"
+      }
+    ]
+  }
+]

@@ -1,6 +1,7 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
     setUpProgressSync, loadContent, getClosestChapterValue, loadCards,
-    showContent, loadImage, getImageSrc } from "./shared.js";
+    showContent, loadImage, getImageSrc, loadRegions, 
+    loadMapLegend} from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -15,6 +16,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Sync chapter progress across tabs
     setUpProgressSync();
+
+    // Set up legend toggle
+    toggleLegend();
 });
 
 // Reload content when chapter changes
@@ -43,6 +47,20 @@ async function injectContent() {
         const img = document.getElementById("map-image");
         img.src = mapSrc;
         img.classList.add("loaded");
+
+        // Add regions for this map
+        loadRegions({
+            jsonUrl: "../content/map/regions.json",
+            containerId: "regions-container"
+        });
+
+        /*  Coordinate picker for map regions
+        enableCoordinatePicker(document.getElementById("map-image"), ({ top, left }) => {
+            console.log("Coordinates:");
+            console.log("top:", top + "%");
+            console.log("left:", left + "%");
+            console.log("---");
+        }); */
     }
     
     // Load major groups
@@ -78,8 +96,112 @@ async function injectContent() {
             ` + (note ? `<p class="card-description">${note}</p>` : "");
         },
     });
+
+    // Load map legend
+    loadMapLegend({
+        jsonUrl: "../content/map/legend.json",
+        containerId: "legend-grid"
+    });
     
     // Animate cards in
     const cards = document.querySelectorAll('.cards');
     setupCardFadeIn(cards);
+}
+
+// Set up legend toggle functionality
+function toggleLegend() {
+    const toggle = document.getElementById('legendToggle');
+    const grid = document.getElementById('legend-grid');
+
+    // Expanded by default
+    grid.style.height = grid.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+        grid.style.height = "auto";
+    });
+
+    toggle.addEventListener('click', ()=> {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+
+        const currentHeight = grid.scrollHeight + 'px';
+
+        // Ensure clean state before transition
+        grid.removeEventListener('transitionend', onTransitionEnd);
+
+        // Closing
+        if (expanded) {
+            grid.style.height = currentHeight;
+            grid.classList.remove('legend-expanded');
+
+            requestAnimationFrame(() => {
+                grid.style.height = '0px';
+            });
+        }
+        // Opening
+        else {
+            grid.classList.add('legend-expanded');
+            grid.style.height = '0px';
+
+            requestAnimationFrame(() => {
+                grid.style.height = currentHeight;
+            });
+        }
+
+        function onTransitionEnd(e) {
+            if (e.propertyName !== 'height') return;
+            if (!expanded) {
+                grid.style.height = currentHeight;
+                requestAnimationFrame(() => {
+                    grid.style.height = 'auto';
+                });
+            } else 
+                grid.style.height = '0px';
+            grid.removeEventListener('transitionend', onTransitionEnd);
+        }
+        grid.addEventListener('transitionend', onTransitionEnd);
+    });
+}
+
+// Utility function to get a pointer on an image and retrieve coordinates.
+function enableCoordinatePicker(imgElement, callback) {
+    // Create a temporary marker
+    const marker = document.createElement("div");
+    marker.style.position = "absolute";
+    marker.style.width = "10px";
+    marker.style.height = "10px";
+    marker.style.background = "red";
+    marker.style.borderRadius = "50%";
+    marker.style.pointerEvents = "none";
+    marker.style.transform = "translate(-50%, -50%)";
+    marker.style.display = "none";
+
+    // Wrap img in a positioned container if necessary
+    let container = imgElement.parentElement;
+    const containerStyle = getComputedStyle(container);
+    if (containerStyle.position === "static") {
+        container.style.position = "relative";
+    }
+    container.appendChild(marker);
+
+    imgElement.addEventListener("click", (ev) => {
+        console.log("Image clicked");
+        const rect = imgElement.getBoundingClientRect();
+
+        const x = ev.clientX - rect.left;
+        const y = ev.clientY - rect.top;
+
+        const leftPercent = (x / rect.width) * 100;
+        const topPercent = (y / rect.height) * 100;
+
+        // Move marker to clicked location
+        marker.style.left = leftPercent + "%";
+        marker.style.top = topPercent + "%";
+        marker.style.display = "block";
+
+        // Return rounded coordinates
+        callback({
+        top: Number(topPercent.toFixed(2)),
+        left: Number(leftPercent.toFixed(2)),
+        });
+    });
 }

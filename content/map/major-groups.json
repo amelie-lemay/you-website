@@ -1,128 +1,148 @@
 [
-    {
-        "chapter": 14,
-        "removeOn": null,
-        "name": {
-            "ch-14": "Dahlia's group",
-            "ch-21": "The Pack"
-        },
-        "memberCount": {
-            "ch-14": 11,
-            "ch-21": 13
-        },
-        "location": {
-            "ch-14": "Unknown",
-            "ch-21": "East coast"
-        },
-        "description": {
-            "ch-14": "Runaways from the Green clan, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers.",
-            "ch-21": "Runaways from the Green and Blue clans, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers.",
-            "ch-28": "Runaways from the Green and Blue clans, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers. They are the Southern Clan's allies, despite their differences."
-        }
+  {
+    "chapter": 14,
+    "removeOn": null,
+    "name": {
+      "ch-14": "Dahlia's group",
+      "ch-21": "The Pack"
     },
-    {
-        "chapter": 1,
-        "removeOn": null,
-        "name": {
-            "ch-1": "Blue Clan"
-        },
-        "memberCount": {
-            "ch-1": 166,
-            "ch-10": 164,
-            "ch-12": 165,
-            "ch-13": 146,
-            "ch-18": 144,
-            "ch-26": 148,
-            "ch-29": 146,
-            "ch-32": 143,
-            "ch-35": 144,
-            "ch-40": 145
-        },
-        "location": {
-            "ch-1": "Northeast of the Lake"
-        },
-        "description": {
-            "ch-1": "The second-largest group around the Lake region, the Blue clan consists of eight leaders and is split into four bases. Despite their thriving conditions and internal peace, their main concern is the ongoing war with the Green clan. Their name comes from the denim ribbon they wear during raids.",
-            "ch-28": "The largest group around the Lake region, the Blue clan consists of eight leaders and is split into four bases. Despite their thriving conditions and internal peace, their main concern is the ongoing war with the Green clan. Their name comes from the denim ribbon they wear during raids."
-        }
+    "memberCount": {
+      "ch-14": 11,
+      "ch-21": 13
     },
-    {
-        "chapter": 1,
-        "removeOn": null,
-        "name": {
-            "ch-1": "Green Clan"
-        },
-        "memberCount": {
-            "ch-1": 206,
-            "ch-6": 199,
-            "ch-7": 198,
-            "ch-10": 197,
-            "ch-12": 172,
-            "ch-14": 161,
-            "ch-16": 162,
-            "ch-23": 164,
-            "ch-26": 163,
-            "ch-28": 120,
-            "ch-29": 118,
-            "ch-32": 127,
-            "ch-40": 126
-        },
-        "location": {
-            "ch-1": "West of the Lake"
-        },
-        "description": {
-            "ch-1": "The largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. Their name comes from their signature camo ribbons.",
-            "ch-11": "The largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group. Their name comes from their signature camo ribbons.",
-            "ch-28": "The second-largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group. Their name comes from their signature camo ribbons.",
-            "ch-32": "The second-largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group, where low-ranked members are mistreated. Their name comes from their signature camo ribbons."
-        }
+    "location": {
+      "ch-14": "Unknown",
+      "ch-21": "East coast"
     },
-    {
-        "chapter": 15,
-        "removeOn": null,
-        "name": {
-            "ch-15": "Southern Clans"
-        },
-        "memberCount": "~1000",
-        "location": {
-            "ch-15": "Mountain range"
-        },
-        "description": {
-            "ch-15": "This large group is divided into eighteen villages, organized by language. They collaborate through a council formed with elected members from each sub-group and share farming grounds and livestock."
-        }
+    "description": {
+      "ch-14": "Runaways from the Green clan, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers.",
+      "ch-21": "Runaways from the Green and Blue clans, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers.",
+      "ch-28": "Runaways from the Green and Blue clans, this group is consisted of close friends that share the same ideals and wish to welcome in newcomers. They are the Southern Clan's allies, despite their differences."
     },
-    {
-        "chapter": 15,
-        "removeOn": null,
-        "name": {
-            "ch-15": "Western Clans"
-        },
-        "memberCount": {
-            "ch-15": "~500"
-        },
-        "location": {
-            "ch-15": "Riverside, beyond the Plains"
-        },
-        "description": {
-            "ch-15": "Little is known about this group, only that they are the Southern clans' ally and share a similar organization."
-        }
-    },
-    {
-        "chapter": 4,
-        "removeOn": null,
-        "name": {
-            "ch-4": "Unknown extinct group",
-            "ch-30": "Northern Clan [extinct]"
-        },
-        "memberCount": {
-            "ch-4": 0
-        },
-        "location": {
-            "ch-4": "The Ruins, far North"
-        },
-        "description": {
-            "ch-4": "A large, extinct group that left nothing but ruins of their passage in this world. Most intact materials were salvaged by the Blue clan.",
-            "ch-30": "One of the oldest groups, the Northern clan was famous for having children in their ranks, despite it being their downfall. Most intact materials were salvaged by the Blue clan."
-        }
+    "mapLabel": {
+      "ch-15": "Dahlia's Group",
+      "ch-21": "The Pack"
     }
+  },
+  {
+    "chapter": 1,
+    "removeOn": null,
+    "name": {
+      "ch-1": "Blue Clan"
+    },
+    "memberCount": {
+      "ch-1": 166,
+      "ch-10": 164,
+      "ch-12": 165,
+      "ch-13": 146,
+      "ch-18": 144,
+      "ch-26": 148,
+      "ch-29": 146,
+      "ch-32": 143,
+      "ch-35": 144,
+      "ch-40": 145
+    },
+    "location": {
+      "ch-1": "Northeast of the Lake"
+    },
+    "description": {
+      "ch-1": "The second-largest group around the Lake region, the Blue clan consists of eight leaders and is split into four bases. Despite their thriving conditions and internal peace, their main concern is the ongoing war with the Green clan. Their name comes from the denim ribbon they wear during raids.",
+      "ch-28": "The largest group around the Lake region, the Blue clan consists of eight leaders and is split into four bases. Despite their thriving conditions and internal peace, their main concern is the ongoing war with the Green clan. Their name comes from the denim ribbon they wear during raids."
+    },
+    "mapLabel": {
+      "ch-1": "Blue Clan"
+    }
+  },
+  {
+    "chapter": 1,
+    "removeOn": null,
+    "name": {
+      "ch-1": "Green Clan"
+    },
+    "memberCount": {
+      "ch-1": 206,
+      "ch-6": 199,
+      "ch-7": 198,
+      "ch-10": 197,
+      "ch-12": 172,
+      "ch-14": 161,
+      "ch-16": 162,
+      "ch-23": 164,
+      "ch-26": 163,
+      "ch-28": 120,
+      "ch-29": 118,
+      "ch-32": 127,
+      "ch-40": 126
+    },
+    "location": {
+      "ch-1": "West of the Lake"
+    },
+    "description": {
+      "ch-1": "The largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. Their name comes from their signature camo ribbons.",
+      "ch-11": "The largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group. Their name comes from their signature camo ribbons.",
+      "ch-28": "The second-largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group. Their name comes from their signature camo ribbons.",
+      "ch-32": "The second-largest group in the Lake region, this battle-inclined clan survives by stealing from their neighbor. One leader rules the entire clan, supported by a few trusted friends. Their barbaric values are reflected within the group, where low-ranked members are mistreated. Their name comes from their signature camo ribbons."
+    },
+    "mapLabel": {
+      "ch-9": "Green Clan"
+    }
+  },
+  {
+    "chapter": 15,
+    "removeOn": null,
+    "name": {
+      "ch-15": "Southern Clans"
+    },
+    "memberCount": "~1000",
+    "location": {
+      "ch-15": "Mountain range"
+    },
+    "description": {
+      "ch-15": "This large group is divided into eighteen villages, organized by language. They collaborate through a council formed with elected members from each sub-group and share farming grounds and livestock."
+    },
+    "mapLabel": {
+      "ch-15": "Southern Clans"
+    }
+  },
+  {
+    "chapter": 15,
+    "removeOn": null,
+    "name": {
+      "ch-15": "Western Clans"
+    },
+    "memberCount": {
+      "ch-15": "~500"
+    },
+    "location": {
+      "ch-15": "Riverside, beyond the Plains"
+    },
+    "description": {
+      "ch-15": "Little is known about this group, only that they are the Southern clans' ally and share a similar organization."
+    },
+    "mapLabel": {
+      "ch-15": "Western Clans"
+    }
+  },
+  {
+    "chapter": 4,
+    "removeOn": null,
+    "name": {
+      "ch-4": "Unknown extinct group",
+      "ch-30": "Northern Clan [extinct]"
+    },
+    "memberCount": {
+      "ch-4": 0
+    },
+    "location": {
+      "ch-4": "The Ruins, far North"
+    },
+    "description": {
+      "ch-4": "A large, extinct group that left nothing but ruins of their passage in this world. Most intact materials were salvaged by the Blue clan.",
+      "ch-30": "One of the oldest groups, the Northern clan was famous for having children in their ranks, despite it being their downfall. Most intact materials were salvaged by the Blue clan."
+    },
+    "mapLabel": {
+      "ch-6": "The Ruins",
+      "ch-30": "Northern Clan"
+    }
+  }
 ]

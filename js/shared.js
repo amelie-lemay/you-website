@@ -5,6 +5,14 @@ const FIRST_CHAPTER = 1;
 const LAST_CHAPTER = 43;
 
 /**
+ * Check if the device supports hover interactions.
+ * @returns {boolean} True if the device supports hover, false otherwise.
+ */
+function deviceSupportsHover() {
+    return window.matchMedia('(hover: hover)').matches;
+}
+
+/**
  * Fetch a JSON file and parse its contents.
  * 
  * @async
@@ -637,11 +645,179 @@ export async function loadCards({
                 const card = document.createElement("div");
                 card.className = "card card--hover";
                 card.innerHTML = cardHtml;
+
+                // Set data-name attribute for map linking
+                const mapLabel = getClosestChapterValue(item.mapLabel, chapter);
+                if (mapLabel) {
+                    const name = mapLabel.trim().toLowerCase().replace(/\s+/g, '-');
+                    card.dataset.name = name;
+                }
+
                 container.appendChild(card);
             }
         });
     } catch (error) {
         displayError(containerId, error);
+    }
+}
+
+/**
+ * Load and render interactive regions on a map.
+ * 
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.mapSrc - Source URL of the map image
+ * @param {string} param0.containerId - ID of the container element to inject regions into
+ * @async
+ */
+export async function loadRegions({
+    jsonUrl,
+    containerId
+}) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    const chapter = getContentChapter();
+
+    try {
+        // Get regions for this map
+        const data = await fetchJson(jsonUrl);
+
+        let activeHotspot = null;
+        const supportsHover = deviceSupportsHover();
+
+        // Create hotspots
+        data.forEach(item => {
+            if (item.chapter <= chapter) {
+                const div = document.createElement("div");
+                div.className = "region";
+
+                const top = getClosestChapterValue(item.top, chapter);
+                const left = getClosestChapterValue(item.left, chapter);
+                const priority = item.priority;
+                const width = getClosestChapterValue(item.width, chapter);
+                const height = getClosestChapterValue(item.height, chapter);
+                const radius = getClosestChapterValue(item.radius, chapter);
+                const label = getClosestChapterValue(item.label, chapter);
+
+                // Position
+                div.style.top = top + "%";
+                div.style.left = left + "%";
+                div.style.zIndex = priority ? priority : "1";
+
+                // Size
+                div.style.height = radius ? (radius || 5) + "%" : (height || 5) + "%";
+                div.style.width = radius ? (radius || 5) + "%" : (width || 5) + "%";
+                div.style.borderRadius = radius ? "50%" : "0";
+
+                // Tooltip
+                const tooltip = document.createElement("span");
+                tooltip.className = "tooltip";
+                tooltip.textContent = label;
+
+                // Click behavior
+                function handleClick() {
+                    const selector = label.toLowerCase().replace(/\s+/g, '-');
+                    scrollToCard(document.querySelector(`.card[data-name="${selector}"]`));
+                }
+                
+                // Desktop behavior
+                if (supportsHover) {
+                    tooltip.addEventListener("click", handleClick);
+                    div.addEventListener("click", handleClick);
+                }
+                // Mobile two-tap behavior
+                else {
+                    div.addEventListener('touchstart', (e) => {
+                        if (activeHotspot !== div) {
+                            // First tap: show tooltip only
+                            e.preventDefault(); // prevents the click from firing
+                            e.stopPropagation();
+                            div.classList.add('show-tooltip');
+                            if (activeHotspot)
+                                activeHotspot.classList.remove('show-tooltip');
+                            activeHotspot = div;
+                        } else {
+                            // Second tap: scroll
+                            handleClick();
+                            div.classList.remove('show-tooltip');
+                            activeHotspot = null;
+                        }
+                    });
+                }
+
+                div.appendChild(tooltip);
+                container.appendChild(div);
+            }
+        });
+
+        if (!supportsHover) {
+            document.addEventListener('touchstart', (e) => {
+                // If no tooltip is active, ignore
+                if (!activeHotspot)
+                    return;
+
+                activeHotspot.classList.remove('show-tooltip');
+                activeHotspot = null;
+            }, { passive: true });
+        }
+    } catch (error) {
+        // Silent fail
+        console.error('Failed to load regions:', error);
+    }
+}
+
+/**
+ * Load and render the map legend from a JSON file into a specified container.
+ * 
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch legend data from
+ * @param {string} param0.containerId - ID of the container element to inject the legend into
+ */
+export async function loadMapLegend({
+    jsonUrl,
+    containerId
+}) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    const chapter = getContentChapter();
+
+    try {
+        const data = await fetchJson(jsonUrl);
+
+        data.forEach(legendGroup => {
+            // Create group
+            const group = document.createElement("div");
+            group.className = "legend-group";
+            group.id = legendGroup["legend-group"];
+            // Create items
+            legendGroup.items.forEach(legendItem => {
+                if (legendItem.chapter <= chapter) {
+                    const item = document.createElement("div");
+                    item.className = "legend-item";
+
+                    const icon = document.createElement("img");
+                    icon.className = "legend-icon";
+                    icon.src = "img/legend-icons/" + legendItem.icon;
+                    icon.alt = legendItem.label + " icon";
+
+                    const label = document.createElement("div");
+                    label.className = "legend-label";
+                    label.textContent = legendItem.label;
+
+                    item.appendChild(icon);
+                    item.appendChild(label);
+                    group.appendChild(item);
+                }
+            });
+            container.appendChild(group);
+        });
+    } catch (error) {
+        console.error('Failed to load map legend:', error);
+        // Functional fallback with minimal error message
+        container.innerHTML = `
+            <p class="error-p">Map legend failed to load</p>
+        `;
     }
 }
 
@@ -780,4 +956,28 @@ export function isContentVisible(item, currentChapter) {
     const introduced = item.chapter <= currentChapter;
     const notRemoved = item.removeOn === null || item.removeOn > currentChapter;
     return introduced && notRemoved;
+}
+
+/**
+ * Smoothly scroll the page to the specified card element, 
+ * accounting for fixed header height and animation offset.
+ * 
+ * @param {*} card - The card element to scroll to
+ * @returns 
+ */
+function scrollToCard(card) {
+    if (!card) return;
+
+    // Adjust scroll margin for anchor targets to account for fixed header height + a 1rem gap
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const headerHeight = parseFloat(document.querySelector('header').offsetHeight) + rem;
+
+    // If animation not yet applied, add extra offset for translateY in the animation
+    const extraOffset = card.classList.contains('animate') ? 0 : 1.5 * rem;
+    const y = card.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
+
+    window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+    });
 }
