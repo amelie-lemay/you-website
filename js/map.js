@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Sync chapter progress across tabs
     setUpProgressSync();
+
+    // Set up legend toggle
+    toggleLegend();
 });
 
 // Reload content when chapter changes
@@ -96,6 +99,59 @@ async function injectContent() {
     // Animate cards in
     const cards = document.querySelectorAll('.cards');
     setupCardFadeIn(cards);
+}
+
+function toggleLegend() {
+    const toggle = document.getElementById('legendToggle');
+    const grid = document.getElementById('legend-grid');
+
+    // Expanded by default
+    grid.style.height = grid.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+        grid.style.height = "auto";
+    });
+
+    toggle.addEventListener('click', ()=> {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+
+        const currentHeight = grid.scrollHeight + 'px';
+
+        // Ensure clean state before transition
+        grid.removeEventListener('transitionend', onTransitionEnd);
+
+        // Closing
+        if (expanded) {
+            grid.style.height = currentHeight;
+            grid.classList.remove('legend-expanded');
+
+            requestAnimationFrame(() => {
+                grid.style.height = '0px';
+            });
+        }
+        // Opening
+        else {
+            grid.classList.add('legend-expanded');
+            grid.style.height = '0px';
+
+            requestAnimationFrame(() => {
+                grid.style.height = currentHeight;
+            });
+        }
+
+        function onTransitionEnd(e) {
+            if (e.propertyName !== 'height') return;
+            if (!expanded) {
+                grid.style.height = currentHeight;
+                requestAnimationFrame(() => {
+                    grid.style.height = 'auto';
+                });
+            } else 
+                grid.style.height = '0px';
+            grid.removeEventListener('transitionend', onTransitionEnd);
+        }
+        grid.addEventListener('transitionend', onTransitionEnd);
+    });
 }
 
 // Utility function to get a pointer on an image and retrieve coordinates.

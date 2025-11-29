@@ -62,3 +62,76 @@
     transform: translateX(-50%) translateY(0);
     pointer-events: auto;
 }
+
+.legend {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 900px;
+    background: none;
+}
+
+.legend-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.legend-toggle {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    color: var(--text);
+}
+
+.legend-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: transform 0.4s ease;
+}
+
+.legend-toggle[aria-expanded="false"] svg {
+    transform: rotate(-90deg)
+}
+
+.legend-toggle:hover {
+    transform: scale(1.1);
+}
+
+.legend-grid {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transform: translateY(1rem);
+    filter: blur(4px);
+    transition: opacity 0.4s ease, height 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1.5rem;
+}
+
+.legend-grid.legend-expanded {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.legend-group {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    gap: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon {
+    width: 3rem;
+    height: 3rem;
+}

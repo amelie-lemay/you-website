@@ -19,13 +19,69 @@
 
     <main>
         <div id="content-wrapper">
-            <!-- TO DO: Map references to the cards -->
             <section class="section">
                 <h2>Jane's Map</h2>
                 <div id="map-wrapper">
                     <img class="map-image" id="map-image" alt="Jane's Map" loading="eager">
                     <div id="regions-container"></div>
                 </div>
+
+                <aside class="legend" aria-label="Map legend">
+                    <div class="legend-head">
+                        <button class="legend-toggle" aria-expanded="true" aria-controls="legend-grid" id="legendToggle">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                        <h3>Map Legend</h3>
+                    </div>
+                
+                    <div class="legend-grid legend-expanded" id="legend-grid">
+                        <div class="legend-group" id="legend-biomes">
+                            <div class="legend-item">
+                                <img class="icon plains" src="img/home-temp.jpg" alt="Plains icon">
+                                <div class="label">Plains</div>
+                            </div>
+                    
+                            <div class="legend-item">
+                                <img class="icon sparse-forest" src="img/home-temp.jpg" alt="Sparse forest icon">
+                                <div class="label">Sparse forest</div>
+                            </div>
+                    
+                            <div class="legend-item">
+                                <img class="icon forest" src="img/home-temp.jpg" alt="Forest icon">
+                                <div class="label">Forest</div>
+                            </div>
+                    
+                            <div class="legend-item">
+                                <img class="icon dense-forest" src="img/home-temp.jpg" alt="Dense forest icon">
+                                <div class="label">Dense forest</div>
+                            </div>
+                    
+                            <div class="legend-item">
+                                <img class="icon rocky" src="img/home-temp.jpg" alt="Rocky terrain icon">
+                                <div class="label">Rocky terrain</div>
+                            </div>
+                    
+                            <div class="legend-item">
+                                <img class="icon water" src="img/home-temp.jpg" alt="Water icon">
+                                <div class="label">Water</div>
+                            </div>
+                        </div>
+                
+                        <div class="legend-group" id="legend-buildings">
+                            <div class="legend-item .buildings-row">
+                                <img class="icon village" src="img/home-temp.jpg" alt="Village icon">
+                                <div class="label">Building</div>
+                            </div>
+                    
+                            <div class="legend-item .buildings-row">
+                                <img class="icon city" src="img/home-temp.jpg" alt="City icon">
+                                <div class="label">Group</div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
             </section>
             
             <section class="section">

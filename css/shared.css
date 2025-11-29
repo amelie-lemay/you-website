@@ -259,6 +259,10 @@ body.scrolled .back-to-top {
     margin-bottom: 0.5rem;
 }
 
+.section h3 {
+    font-size: 1.3rem;
+}
+
 h3.section-heading {
     font-family: 'Cinzel', serif;
     font-size: 1.5rem;
