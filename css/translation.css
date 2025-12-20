@@ -114,34 +114,28 @@ aside li {
     margin-bottom: 0.2em;
 }
 
-aside a {
+aside .link {
     display: block;
-    position: relative;
     padding: 0.3em 3em 0.3em 0.5em;
     color: var(--text);
 }
 
-aside a::after {
-    content: "";
-    position: absolute;
-    left: 0;
+aside .link::after {
     right: 0;
     bottom: -0.1em;
-    height: 2px;
     background-color: #2B3D2F;
-    transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.5s ease, height 0.3s ease, background-color 0.3s ease;
 }
 
-aside a:hover::after,
-aside a.active::after {
+aside .link:hover::after,
+aside .link.active::after {
     transform: scaleX(1);
     height: 3px;
     background-color: var(--accent);
 }
 
-aside a.active {
+aside .link.active {
     color: var(--accent);
     font-weight: 600;
     background-color: #f3f0e6;

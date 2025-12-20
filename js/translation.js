@@ -89,7 +89,7 @@ async function loadTranslations() {
             if (isContentVisible(translationBlock, chapter)) {
                 // Add chapter to sidebar
                 const sidebarItem = document.createElement("li");
-                sidebarItem.innerHTML = `<a href="#chapter${translationBlock.chapter}">Chapter ${translationBlock.chapter}</a>`;
+                sidebarItem.innerHTML = `<a href="#chapter${translationBlock.chapter}" class="link">Chapter ${translationBlock.chapter}</a>`;
                 sidebar.appendChild(sidebarItem);
 
                 // Create block element
