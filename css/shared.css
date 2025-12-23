@@ -480,6 +480,12 @@ img.loaded {
     transition: color 0.3s ease;
 }
 
+.popup-note {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
 .button--primary {
     background-color: var(--accent);
     color: var(--bg);
