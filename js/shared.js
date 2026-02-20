@@ -68,6 +68,31 @@ async function includeHeader(page) {
         // Set the current page link
         const currentPage = header.querySelector(`nav a[href="${page}"]`);
         currentPage?.setAttribute('aria-current', 'page');
+
+        // Mobile menu toggle
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = header.querySelector('nav');
+        // Open menu
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+
+            const expanded = toggle.getAttribute('aria-expanded') === 'true' || false;
+            toggle.setAttribute('aria-expanded', !expanded);
+        });
+        // Close menu when clicking a link
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            });
+        });
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+                nav.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            }
+        });
     } catch (error) {
         console.error('Failed to load header:', error);
         // Functional fallback with minimal error message
@@ -94,7 +119,7 @@ async function includeFooter() {
         // Minimal functional fallback
         footer.innerHTML = `
             &copy; 2025 Amélie Lemay. All rights reserved. |
-            <a class="update-progress">Change Progress</a> |
+            <a class="update-progress link">Change Progress</a> |
             <span class="error-p">Footer failed to load</span>
         `;
     }
@@ -349,10 +374,63 @@ export function createProgressPopup(mode = 'onboarding') {
         }
 	}
 
+    // Change chapter with bounds checking
 	function changeChapter(step) {
         chapter = Math.min(LAST_CHAPTER, Math.max(FIRST_CHAPTER, chapter + step));
         updateDisplay();
 	}
+
+    // Setup hold-to-stepper with acceleration
+    function setupHoldStepper(button, step) {
+        // State variables
+        let timeoutId = null;
+        let intervalId = null;
+
+        // Initial speed and acceleration parameters
+        let speed = 200;
+        const minSpeed = 120;
+        const acceleration = 10;
+
+        const start = () => {
+            // Immediate single step
+            changeChapter(step);
+
+            // Start delay before continuous stepping
+            timeoutId = setTimeout(() => {
+                intervalId = setInterval(() => {
+                    changeChapter(step);
+                }, speed);
+
+                // Acceleration loop
+                const accelerate = () => {
+                    if (speed > minSpeed) {
+                        speed -= acceleration;
+                        clearInterval(intervalId);
+                        intervalId = setInterval(() => {
+                            changeChapter(step);
+                        }, speed);
+                    }
+                };
+
+                // Accelerate every 300ms while holding
+                timeoutId = setInterval(accelerate, 300);
+            }, 300);
+        };
+
+        // Reset on stop
+        const stop = () => {
+            clearTimeout(timeoutId);
+            clearInterval(intervalId);
+            timeoutId = null;
+            intervalId = null;
+            speed = 200;
+        };
+
+        button.addEventListener("pointerdown", start);
+        button.addEventListener("pointerup", stop);
+        button.addEventListener("pointerleave", stop);
+        button.addEventListener("pointercancel", stop);
+    }
 
 	function register(action) {
 		action();
@@ -362,8 +440,9 @@ export function createProgressPopup(mode = 'onboarding') {
 
     // Event listeners
     if (decrease && increase && finishedCheckbox && closeButton && saveButton) {
-        decrease.addEventListener("click", () => changeChapter(-1));
-        increase.addEventListener("click", () => changeChapter(1));
+        setupHoldStepper(decrease, -1);
+        setupHoldStepper(increase, 1);
+
         finishedCheckbox.addEventListener("change", () => {
             if (finishedCheckbox.checked)
                 chapter = LAST_CHAPTER;
