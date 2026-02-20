@@ -57,6 +57,13 @@
 }
 
 /* ====================================
+   Synopsis Section
+==================================== */
+.synopsis {
+    text-align: justify;
+}
+
+/* ====================================
     Updates Section
 ==================================== */
 
@@ -70,9 +77,9 @@
 ==================================== */
 
 .cards--row {
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .card {
@@ -80,7 +87,6 @@
     text-decoration: inherit;
     display: flex;
     flex-direction: column;
-    flex: 1 1 calc(33% - 1em);
     opacity: 1;
     transform: none;
 }
@@ -91,4 +97,26 @@
     padding-top: 0.5rem;
     font-weight: bold;
     position: relative;
+}
+
+/* ====================================
+   Media Queries
+==================================== */
+/* Tablets */
+@media (min-width: 720px) {
+    .cards.cards--row {
+        flex-direction: row;
+        gap: 1.1rem;
+    }
+
+    .card {
+        flex: 1 1 calc(33.333% - 1rem);
+    }
+}
+
+/* Desktops */
+@media (min-width: 900px) {
+    .cards.cards--row {
+        gap: 1.5rem;
+    }
 }

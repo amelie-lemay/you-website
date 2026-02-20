@@ -68,6 +68,31 @@ async function includeHeader(page) {
         // Set the current page link
         const currentPage = header.querySelector(`nav a[href="${page}"]`);
         currentPage?.setAttribute('aria-current', 'page');
+
+        // Mobile menu toggle
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = header.querySelector('nav');
+        // Open menu
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+
+            const expanded = toggle.getAttribute('aria-expanded') === 'true' || false;
+            toggle.setAttribute('aria-expanded', !expanded);
+        });
+        // Close menu when clicking a link
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            });
+        });
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+                nav.classList.remove('open');
+                toggle.setAttribute('aria-expanded', false);
+            }
+        });
     } catch (error) {
         console.error('Failed to load header:', error);
         // Functional fallback with minimal error message
@@ -401,15 +426,10 @@ export function createProgressPopup(mode = 'onboarding') {
             speed = 200;
         };
 
-        // Desktop
-        button.addEventListener("mousedown", start);
-        button.addEventListener("mouseup", stop);
-        button.addEventListener("mouseleave", stop);
-
-        // Mobile
-        button.addEventListener("touchstart", start, { passive: true });
-        button.addEventListener("touchend", stop);
-        button.addEventListener("touchcancel", stop);
+        button.addEventListener("pointerdown", start);
+        button.addEventListener("pointerup", stop);
+        button.addEventListener("pointerleave", stop);
+        button.addEventListener("pointercancel", stop);
     }
 
 	function register(action) {

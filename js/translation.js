@@ -62,6 +62,7 @@ async function injectContent() {
 async function loadTranslations() {
     const chapter = getContentChapter();
     const container = document.getElementById('translations');
+    const selector = document.getElementById('chapter-select');
     const sidebar = document.getElementById("sidebar");
     const FIRST_CHAPTER = 7;
 
@@ -82,15 +83,22 @@ async function loadTranslations() {
 
         // Clear existing content
         container.innerHTML = "";
+        selector.innerHTML = "";
         sidebar.innerHTML = "";
 
         // Build translation blocks
         data.forEach(translationBlock => {
             if (isContentVisible(translationBlock, chapter)) {
-                // Add chapter to sidebar
+                // Add chapter to desktop sidebar
                 const sidebarItem = document.createElement("li");
                 sidebarItem.innerHTML = `<a href="#chapter${translationBlock.chapter}" class="link">Chapter ${translationBlock.chapter}</a>`;
                 sidebar.appendChild(sidebarItem);
+
+                // Add chapter to mobile selector
+                const option = document.createElement("option");
+                option.value = `chapter${translationBlock.chapter}`;
+                option.textContent = `${translationBlock.chapter}`;
+                selector.appendChild(option);
 
                 // Create block element
                 const chapterDiv = document.createElement("div");
@@ -156,22 +164,40 @@ async function loadTranslations() {
  */
 function addChapterSwitchListener() {
     const sidebar = document.querySelector("aside ul");
+    const chapterSelector = document.getElementById("chapter-select");
     const chapters = document.querySelectorAll(".translation-block");
 
+    // Mobile selector change listener
+    chapterSelector.addEventListener("change", (event) => {
+        // Selected chapter
+        const optionSelected = chapterSelector.value;
+
+        // Get corresponding sidebar link
+        const link = sidebar.querySelector(`a[href="#${optionSelected}"]`);
+
+        // Change layout to corresponding chapter
+        if (link)
+            handleChapterSwitch(link);
+        // Fallback if corresponding sidebar link not found
+        else {
+            chapters.forEach(chapter => {
+                chapter.classList.toggle("active", chapter.id === optionSelected);
+            });
+        }
+    });
+
+    // Desktop sidebar click listener
     sidebar.addEventListener("click", (event) => {
         const link = event.target.closest("a");
         if (!link) return;
         event.preventDefault();
 
-        // Remove old active states
-        sidebar.querySelectorAll("a").forEach(a => a.classList.remove("active"));
-        sidebar.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+        // Change layout to corresponding chapter
+        handleChapterSwitch(link);
+    });
 
-        // Set new active state
-        link.classList.add("active");
-        link.parentElement.classList.add("active");
-
-        // Find matching section
+    function handleChapterSwitch(link) {
+        // Get chapter id from sidebar link
         const chapterId = link.getAttribute("href").substring(1);
 
         // Update active state in sections
@@ -179,13 +205,24 @@ function addChapterSwitchListener() {
             chapter.classList.toggle("active", chapter.id === chapterId);
         });
 
+        // Remove sidebar old active states
+        sidebar.querySelectorAll("a").forEach(a => a.classList.remove("active"));
+        sidebar.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+
+        // Set new active state for sidebar (desktop)
+        link.classList.add("active");
+        link.parentElement.classList.add("active");
+
+        // Set new active state for selector (mobile)
+        chapterSelector.value = chapterId;
+
         // Update localStorage
         const chapterNumber = parseInt(chapterId.replace("chapter", ""));
         localStorage.setItem("activeTranslation", chapterNumber);
 
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    }
 }
 
 /**
