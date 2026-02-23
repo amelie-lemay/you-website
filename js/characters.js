@@ -39,9 +39,14 @@ async function injectContent() {
             const description = getClosestChapterValue(character.description, chapter);
             return `
             <h3 class="section-heading">${name}</h3>
-            <p><strong>Age:</strong> ${age}</p>
-            <p><strong>Date of Arrival:</strong> ${dateOfArrival}</p>
-            <p class="card-underline"><strong>Allegiance:</strong> ${allegiance}</p>
+            <div class="card-meta card-underline">
+                <div class="label">Age:</div>
+                <div>${age}</div>
+                <div class="label">Date of Arrival:</div>
+                <div>${dateOfArrival}</div>
+                <div class="label">Allegiance:</div>
+                <div>${allegiance}</div>
+            </div>
             <p class="card-description">${description}</p>
         `},
     });
@@ -55,7 +60,10 @@ async function injectContent() {
             const allegiance = getClosestChapterValue(character.allegiance, chapter);
             return `
             <h3 class="section-heading">${name}</h3>
-            <p><strong>Allegiance:</strong> ${allegiance}</p>
+            <div class="card-meta">
+                <div class="label">Allegiance:</div>
+                <div>${allegiance}</div>
+            </div>
         `},
     });
 
