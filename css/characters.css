@@ -5,8 +5,8 @@
     gap: 0.5rem;
 }
 
-.minor-characters .card strong {
-    min-width: 9ch;
+.minor-characters .card-meta {
+    display: block;
 }
 
 @media (min-width: 600px) {

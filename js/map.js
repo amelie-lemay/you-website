@@ -74,8 +74,12 @@ async function injectContent() {
             const description = group.description ? getClosestChapterValue(group.description, chapter) : "";
             return `
             <h3 class="section-heading">${name}</h3>
-            <p><strong>Member count:</strong> ${memberCount ?? "N/A"}</p>
-            <p class="card-underline"><strong>Location:</strong> ${location}</p>
+            <div class="card-meta card-underline">
+                <div class="label">Member count:</div>
+                <div>${memberCount ?? "N/A"}</div>
+                <div class="label">Location:</div>
+                <div>${location}</div>
+            </div>
             <p class="card-description">${description ?? ""}</p>
         `},
     });
@@ -91,8 +95,12 @@ async function injectContent() {
             const note = building.note ? getClosestChapterValue(building.note, chapter) : "";
             return `
             <h3 class="section-heading">${name}</h3>
-            <p><strong>Belongs to:</strong> ${belongsTo}</p>
-            <p><strong>Usage:</strong> ${usage}</p>
+            <div class="card-meta">
+                <div class="label">Belongs to:</div>
+                <div>${belongsTo}</div>
+                <div class="label">Usage:</div>
+                <div>${usage}</div>
+            </div>
             ` + (note ? `<p class="card-description">${note}</p>` : "");
         },
     });

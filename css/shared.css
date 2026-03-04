@@ -588,9 +588,15 @@ img.loaded {
     text-align: left;
 }
 
-.card strong {
-    margin-top: 0.2rem;
-    display: block;
+.card-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    row-gap: 0.4rem;
+    column-gap: 0.6rem;
+}
+
+.card-meta .label {
+    font-weight: bold;
 }
 
 .card.animate {
@@ -702,12 +708,6 @@ footer {
 
     .card h3 {
         margin-bottom: 0.5rem;
-    }
-
-    .card strong {
-        margin-top: none;
-        display: inline-block;
-        min-width: 12ch;
     }
 
     .back-to-top {
