@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Merriweather&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/shared.css">
+    <link rel="stylesheet" href="/css/contact.css">
+    <script type="module" src="/js/shared.js"></script>
+    <script type="module" src="/js/contact.js"></script>
+</head>
+
+<body>
+    <header></header>
+
+    <section class="chapter-update"></section>
+
+    <main>
+        <section class="section contact-block">
+            <h2>Contact</h2>
+            <form class="contact-form animate" action="https://api.web3forms.com/submit" method="POST" autocomplete="off">
+                <input type="hidden" name="access_key" value="7e72d4c0-4e50-462b-a492-0defb80f0c48">
+                <input type="hidden" name="subject" value="Contact Form Submission from You Website">
+                <input type="hidden" name="from_name" value="You Website Contact Form">
+                <input type="checkbox" name="botcheck" id="botcheck" style="display: none;">
+
+                <label for="name">Name</label>
+                <p class="hint card-description">Anonymous is totally fine too.</p>
+                <input type="text" name="name" id="name" placeholder="(Optional) Your name">
+                <span class="field-error" id="name-error" aria-live="polite"></span>
+
+                <label for="email">Email</label>
+                <p class="hint card-description">Only needed if you want a reply — no pressure.</p>
+                <input type="text" name="email" id="email" placeholder="(Optional) you@example.com">
+                <span class="field-error" id="email-error" aria-live="polite"></span>
+
+                <label for="message">Message <span class="required-asterisk" title="Required">*</span></label>
+                <p class="hint card-description">Questions, thoughts, complaints, fan mail — it all goes here.</p>
+                <textarea name="message" id="message" placeholder="What's on your mind?"></textarea>
+                <span class="field-error" id="message-error" aria-live="polite"></span>
+
+                <button class="button" id="contact-submit-button" type="submit">Send Message</button>
+                <div id="form-result" aria-live="polite" hidden></div>
+            </form>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    <a class="back-to-top"></a>
+
+    <template id="progress-modal-template"></template>
+</body>
+
+</html>

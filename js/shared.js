@@ -118,7 +118,7 @@ async function includeFooter() {
         console.error('Failed to load footer:', error);
         // Minimal functional fallback
         footer.innerHTML = `
-            &copy; 2025 Amélie Lemay. All rights reserved. |
+            &copy; 2026 Amélie Lemay. All rights reserved. |
             <a class="update-progress link">Change Progress</a> |
             <span class="error-p">Footer failed to load</span>
         `;
@@ -1044,7 +1044,7 @@ export function isContentVisible(item, currentChapter) {
  * @param {*} card - The card element to scroll to
  * @returns 
  */
-function scrollToCard(card) {
+export function scrollToCard(card) {
     if (!card) return;
 
     // Adjust scroll margin for anchor targets to account for fixed header height + a 1rem gap
