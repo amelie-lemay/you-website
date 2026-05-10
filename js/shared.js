@@ -1044,7 +1044,7 @@ export function isContentVisible(item, currentChapter) {
  * @param {*} card - The card element to scroll to
  * @returns 
  */
-function scrollToCard(card) {
+export function scrollToCard(card) {
     if (!card) return;
 
     // Adjust scroll margin for anchor targets to account for fixed header height + a 1rem gap

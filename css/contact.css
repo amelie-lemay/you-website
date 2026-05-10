@@ -1,0 +1,113 @@
+.contact-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+}
+
+.contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-form label {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin-left: 2px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    resize: none;
+    box-shadow: 0 1px 4px rgba(76,107,71,0.04);
+    margin-bottom: 1.2rem;
+}
+
+.contact-form input[type="text"]:focus,
+.contact-form input[type="email"]:focus,
+.contact-form textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 2px 8px rgba(76,107,71,0.10);
+}
+
+.hint {
+    font-style: italic;
+    margin-top: -0.8rem;
+    margin-left: 2px;
+}
+
+.required-asterisk {
+    color: #a94442;
+    font-size: 1.1em;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.contact-form textarea {
+    min-height: 10rem;
+    max-height: 25rem;
+    resize: vertical;
+}
+
+#contact-submit-button {
+    margin-top: 0.5rem;
+    align-self: flex-end;
+}
+
+#contact-submit-button:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+.field-error {
+    display: block;
+    color: #a94442;
+    font-size: 0.875rem;
+    margin-top: -1.5rem;
+    margin-left: 2px;
+    min-height: 1.2em;
+}
+
+.field-invalid {
+    border-color: #a94442 !important;
+    box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15) !important;
+}
+
+#form-result {
+    font-size: 0.95rem;
+    font-style: italic;
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.25rem;
+    opacity: 0;
+    animation: fadeInResult 0.4s ease forwards;
+}
+
+#form-result.result-success {
+    color: var(--accent);
+}
+
+#form-result.result-error {
+    color: #a94442;
+}
+
+@keyframes fadeInResult {
+    to { opacity: 1; }
+}
+
+@media (min-width: 900px) {
+    .contact-block {
+        max-width: 50%;
+    }
+}
