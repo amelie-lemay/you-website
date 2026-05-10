@@ -118,7 +118,7 @@ async function includeFooter() {
         console.error('Failed to load footer:', error);
         // Minimal functional fallback
         footer.innerHTML = `
-            &copy; 2025 Amélie Lemay. All rights reserved. |
+            &copy; 2026 Amélie Lemay. All rights reserved. |
             <a class="update-progress link">Change Progress</a> |
             <span class="error-p">Footer failed to load</span>
         `;
