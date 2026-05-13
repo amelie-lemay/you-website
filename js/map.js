@@ -34,7 +34,7 @@ async function injectContent() {
     // Load map image
     const mapSrc = await getImageSrc({
         imageFolder: "../img/maps/",
-        extension: "png",
+        extension: "webp",
         manifestUrl: "../content/map/maps-manifest.json",
         containerId: "map-image"
     });
