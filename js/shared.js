@@ -4,6 +4,35 @@ const TEXT_VERSION = "1.0.1"; // Increment this to invalidate cache
 const FIRST_CHAPTER = 1;
 const LAST_CHAPTER = 43;
 
+// Safe wrappers for localStorage and sessionStorage that fall back to in-memory storage if unavailable
+const safeLocal = (() => {
+    let mem = {};
+    try {
+        localStorage.setItem('__test__', '1');
+        localStorage.removeItem('__test__');
+        return localStorage;
+    } catch {
+        return {
+            getItem:    (k)    => mem[k] ?? null,
+            setItem:    (k, v) => { mem[k] = String(v); },
+            removeItem: (k)    => { delete mem[k]; },
+        };
+    }
+})();
+const safeSession = (() => {
+    let mem = {};
+    try {
+        sessionStorage.setItem('__test__', '1');
+        sessionStorage.removeItem('__test__');
+        return sessionStorage;
+    } catch {
+        return {
+            getItem:    (k)    => mem[k] ?? null,
+            setItem:    (k, v) => { mem[k] = String(v); },
+        };
+    }
+})();
+
 /**
  * Check if the device supports hover interactions.
  * @returns {boolean} True if the device supports hover, false otherwise.
@@ -916,7 +945,7 @@ export function displayError(context = "unknown context", error = null) {
  */
 function saveChapterProgress(chapter) {
     const value = Number(chapter);
-    localStorage.setItem("chapter", value);
+    safeLocal.setItem("chapter", value);
 
     // Emit change for pages to adapt
     window.dispatchEvent(new CustomEvent("chapterChange", {
@@ -930,7 +959,7 @@ function saveChapterProgress(chapter) {
  * @returns {number} - The chapter number the user is currently on
  */
 export function getChapterProgress() {
-    return Number(localStorage.getItem("chapter") || 0);
+    return Number(safeLocal.getItem("chapter") || 0);
 }
 
 /**
@@ -946,7 +975,7 @@ export function getContentChapter() {
  * Reset the user's chapter progress.
  */
 function resetChapterProgress() {
-    localStorage.removeItem("chapter");
+    safeLocal.removeItem("chapter");
 }
 
 /**
@@ -970,7 +999,7 @@ export function setUpProgressSync() {
  * @returns {boolean} - True if the popup has been seen, false otherwise
  */
 function visitorHasSeenPopup() {
-    return sessionStorage.getItem("popupSeen") === "true";
+    return safeSession.getItem("popupSeen") === "true";
 }
 
 /**
@@ -978,7 +1007,7 @@ function visitorHasSeenPopup() {
  * on the home page for the duration of their visit.
  */
 function markPopupAsSeen() {
-    sessionStorage.setItem("popupSeen", "true");
+    safeSession.setItem("popupSeen", "true");
 }
 
 /**
@@ -986,7 +1015,7 @@ function markPopupAsSeen() {
  * @returns {boolean}
  */
 function userHasClosedBanner() {
-    return sessionStorage.getItem("bannerClosed") === "true";
+    return safeSession.getItem("bannerClosed") === "true";
 }
 
 /**
@@ -994,7 +1023,7 @@ function userHasClosedBanner() {
  * for the duration of their visit.
  */
 function markBannerAsClosed() {
-    sessionStorage.setItem("bannerClosed", "true");
+    safeSession.setItem("bannerClosed", "true");
 }
 
 /**
