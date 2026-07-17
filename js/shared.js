@@ -394,7 +394,7 @@ export function createProgressPopup(mode = 'onboarding') {
                     window.injectContent();
                     // Show content again once injected
                     if (contentWrapper)
-                    contentWrapper.style.visibility = "visible";
+                        contentWrapper.style.visibility = "visible";
                 } else {
                     requestAnimationFrame(waitForTop);
                 }
@@ -680,13 +680,13 @@ export function loadContent() {
  * @param {string} param0.imageFolder   Folder path, e.g. "../content/map/images/"
  * @param {string} param0.extension     Image file extension, e.g. "png"
  * @param {string} param0.manifestUrl   URL of JSON manifest mapping chapters to image names
- * @param {string} param0.containerId   ID of the container element for error display
+ * @param {function} param0.errorEvent  Function to handle error events
  */
 export async function getImageSrc({
     imageFolder,
     extension,
     manifestUrl,
-    containerId
+    errorEvent
 }) {
     const chapter = getContentChapter();
 
@@ -694,13 +694,13 @@ export async function getImageSrc({
         // Fetch available chapters
         const data = await fetchJson(manifestUrl);
         
-        // Get map file name
-        const mapName = getClosestChapterValue(data, chapter);
+        // Get image file name
+        const imageName = getClosestChapterValue(data, chapter);
 
         // Return image src
-        return `${imageFolder}${mapName}.${extension}`;
+        return `${imageFolder}${imageName}.${extension}`;
     } catch (error) {
-        displayError(containerId, error);
+        errorEvent(error);
         return "";
     }
 }

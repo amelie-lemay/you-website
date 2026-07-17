@@ -10,26 +10,36 @@
     overflow: hidden;
 }
 
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 70%);
+    z-index: 0;
+}
+
 .hero-bg {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     z-index: -1;
-    opacity: 0.2;
+    opacity: 0;
     will-change: transform, opacity;
     transition: opacity 2s ease-out;
-    transform: scale(1.1);
 }
 
 .hero h1,
 .hero p,
 .hero a {
+    position: relative;
+    z-index: 1;
     opacity: 0;
     transform: translateY(1.25rem);
     animation: fadeSlideIn 1s forwards;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
 }
 
 .hero h1 {
