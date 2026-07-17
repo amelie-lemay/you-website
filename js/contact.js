@@ -181,8 +181,8 @@ function validateAll() {
 
         if (error) {
             setError(config, error);
-        if (!firstInvalid)
-            firstInvalid = input;
+            if (!firstInvalid)
+                firstInvalid = input;
             allValid = false;
         } else {
             clearError(config);
