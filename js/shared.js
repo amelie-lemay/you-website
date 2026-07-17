@@ -35,10 +35,13 @@ const safeSession = (() => {
 
 /**
  * Check if the device supports hover interactions.
- * @returns {boolean} True if the device supports hover, false otherwise.
+ * Uses pointer media queries for reliability across devices.
+ * Many Android browsers report `hover: hover` even on touchscreens,
+ * so we check for a fine pointer (mouse) instead of relying on hover alone.
+ * @returns {boolean} True if the device has a fine pointer (mouse), false for touch-only devices.
  */
 function deviceSupportsHover() {
-    return window.matchMedia('(hover: hover)').matches;
+    return window.matchMedia('(pointer: fine)').matches;
 }
 
 /**
@@ -795,6 +798,7 @@ export async function loadRegions({
 
         let activeHotspot = null;
         const supportsHover = deviceSupportsHover();
+        console.log(supportsHover);
 
         // Create hotspots
         data.forEach(item => {
@@ -863,8 +867,8 @@ export async function loadRegions({
 
         if (!supportsHover) {
             document.addEventListener('touchstart', (e) => {
-                // If no tooltip is active, ignore
-                if (!activeHotspot)
+                // If no tooltip is active, or the tap is on a hotspot (handled separately), ignore
+                if (!activeHotspot || e.target.closest('.region'))
                     return;
 
                 activeHotspot.classList.remove('show-tooltip');
