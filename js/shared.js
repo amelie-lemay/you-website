@@ -214,7 +214,7 @@ async function includeBanner() {
 async function includeBackToTopButton() {
     try {
         const html = await fetchText('includes/back-to-top-button.html');
-        const button = document.querySelector('.back-to-top');
+        let button = document.querySelector('.back-to-top');
         // Create button element if not present
         if (!button) {
             button = document.createElement('a');
@@ -388,17 +388,20 @@ export function createProgressPopup(mode = 'onboarding') {
         if (typeof window.injectContent === "function") {
             // Hide content during reload
             const contentWrapper = document.getElementById("content-wrapper");
-            contentWrapper.style.visibility = "hidden";
 
             const waitForTop = () => {
                 if (document.documentElement.scrollTop <= 1) {
                     window.injectContent();
                     // Show content again once injected
+                    if (contentWrapper)
                     contentWrapper.style.visibility = "visible";
                 } else {
                     requestAnimationFrame(waitForTop);
                 }
             };
+
+            if (contentWrapper)
+                contentWrapper.style.visibility = "hidden";
             waitForTop();
         }
 	}
