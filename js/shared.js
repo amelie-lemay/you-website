@@ -113,6 +113,10 @@ async function includeHeader(page) {
         // Mobile menu toggle
         const toggle = document.querySelector('.menu-toggle');
         const nav = header.querySelector('nav');
+
+        // Mark nav links that should stay hidden until a specific chapter
+        await applyHiddenPageClasses("../content/site/hidden-pages.json", nav);
+
         // Open menu
         toggle.addEventListener('click', () => {
             nav.classList.toggle('open');
@@ -346,6 +350,28 @@ export async function includeAllSharedComponents() {
     
     // Wait for layout to stabilize before attaching event listeners and popup
     await attachPopupActivators();
+
+    // Show content after shared components are loaded
+    loadContent();
+}
+
+/**
+ * Apply hidden page classes based on the configuration from a JSON file.
+ * 
+ * @param {*} jsonUrl - URL of the JSON file containing hidden page configurations
+ * @param {*} root - Optional root element to scope the querySelectorAll (default: document)
+ */
+export async function applyHiddenPageClasses(jsonUrl, root = document) {
+    try {
+        const hiddenPages = await fetchJson(jsonUrl);
+        hiddenPages.forEach(({ page, chapter }) => {
+            root.querySelectorAll(`a[href="${page}"]`).forEach(link => {
+                link.classList.add(`ch-${chapter}`, 'hidden');
+            });
+        });
+    } catch (error) {
+        console.error('Failed to load hidden pages config:', error);
+    }
 }
 
 /**

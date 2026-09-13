@@ -1,7 +1,7 @@
 import {
     includeAllSharedComponents, setUpSectionFadeIn, 
     createProgressPopup, setUpProgressSync, showContent, loadContent, 
-    getImageSrc, loadImage, injectFields, loadItems
+    getImageSrc, loadImage, injectFields, loadItems, applyHiddenPageClasses
 } from "./shared.js";
 
 const HERO_IMAGE_OPTIONS = {
@@ -37,8 +37,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Reload content when chapter changes
 window.addEventListener("chapterChange", injectContent);
 
+/**
+ * Inject content into the page based on user's chapter progress.
+ */
 async function injectContent() {
     showContent();
+
+    // Hide locked cards
+    await applyHiddenPageClasses("../content/site/hidden-pages.json");
     loadContent();
 
     // Add book-related sections: tagline, synopsis, about-website
