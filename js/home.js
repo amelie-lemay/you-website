@@ -41,21 +41,21 @@ async function injectContent() {
     showContent();
     loadContent();
 
-    // Add book-related sections: title, tagline, synopsis, about-website
+    // Add book-related sections: tagline, synopsis, about-website
     await injectFields({
         jsonUrl: HOME_CONTENT_URL,
         fields: {
-            "book-title": "title",
             "book-tagline": "tagline",
             "book-synopsis": "synopsis",
             "about-website": "about-website"
         }
     });
 
-    // Add site cards
+    // Add book title and site cards
     await injectFields({
         jsonUrl: SITE_CONTENT_URL,
         fields: {
+            "book-title": "book-title",
             "card-map-desc": "home-cards.map",
             "card-translation-desc": "home-cards.translation",
             "card-characters-desc": "home-cards.characters"
