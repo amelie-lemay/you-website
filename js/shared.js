@@ -97,6 +97,15 @@ async function includeHeader(page) {
         const html = await fetchText('includes/header.html');
         header.innerHTML = html;
 
+        // Inject site title
+        await injectFields(
+            {
+                jsonUrl: "../content/site/site-data.json",
+                fields: { "site-title": "book-title" }
+            },
+            (containerId, error) => { throw error }
+        );
+
         // Set the current page link
         const currentPage = header.querySelector(`nav a[href="${page}"]`);
         currentPage?.setAttribute('aria-current', 'page');
@@ -129,7 +138,7 @@ async function includeHeader(page) {
         console.error('Failed to load header:', error);
         // Functional fallback with minimal error message
         header.innerHTML = `
-            <h1><a href="index.html">You</a></h1>
+            <h1><a href="index.html">Home</a></h1>
             <p class="error-p">Header failed to load</p>
         `;
     }
@@ -727,9 +736,13 @@ export function loadImage(src) {
  * @param {*} param0 - Configuration object
  * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
  * @param {Object} param0.fields - Object mapping container IDs to field configurations
+ * @param {function} onError - Optional error handler function for individual container errors
  * @returns {Promise<void>}
  */
-export async function injectFields({ jsonUrl, fields }) {
+export async function injectFields(
+    { jsonUrl, fields },
+    onError = (containerId, error) => displayError(containerId, error)
+) {
     const chapter = getContentChapter();
     const containerIds = Object.keys(fields);
 
@@ -738,7 +751,7 @@ export async function injectFields({ jsonUrl, fields }) {
     try {
         data = await fetchJson(jsonUrl);
     } catch (error) {
-        containerIds.forEach(id => displayError(id, error));
+        containerIds.forEach(id => onError(id, error));
         return;
     }
 
@@ -752,7 +765,7 @@ export async function injectFields({ jsonUrl, fields }) {
             const text = resolveChapterContent(data, fields[containerId], chapter);
             container.innerHTML = text ?? "";
         } catch (error) {
-            displayError(containerId, error);
+            onError(containerId, error);
         }
     });
 }
