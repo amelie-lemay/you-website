@@ -723,6 +723,103 @@ export function loadImage(src) {
 }
 
 /**
+ * Injects field values into the DOM based on the current chapter.
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
+ * @param {Object} param0.fields - Object mapping container IDs to field configurations
+ * @returns {Promise<void>}
+ */
+export async function injectFields({ jsonUrl, fields }) {
+    const chapter = getContentChapter();
+    const containerIds = Object.keys(fields);
+
+    // Fetch data
+    let data;
+    try {
+        data = await fetchJson(jsonUrl);
+    } catch (error) {
+        containerIds.forEach(id => displayError(id, error));
+        return;
+    }
+
+    // Inject data into container
+    containerIds.forEach(containerId => {
+        try {
+            let container = document.getElementById(containerId);
+            if (!container)
+                throw new Error(`Container with ID "${containerId}" not found in the DOM.`);
+
+            const text = resolveChapterContent(data, fields[containerId], chapter);
+            container.innerHTML = text ?? "";
+        } catch (error) {
+            displayError(containerId, error);
+        }
+    });
+}
+
+/**
+ * Load and render items from a JSON file into a specified container.
+ * 
+ * - Only displays content if its `chapter` is <= the user's progress.
+ * - Hides content if its `removeOn` value is <= the user's progress.
+ * - Uses `mapItemToHtml` to convert each item to its HTML representation.
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
+ * @param {string} param0.dataKey - Optional key to access nested data in the JSON
+ * @param {string} param0.containerId - ID of the container element to inject items into
+ * @param {function} param0.filterFn - Function to filter items based on visibility (default: isContentVisible)
+ * @param {function} param0.mapItemToHtml - Function to convert an item to its HTML representation
+ * @param {function} param0.createWrapper - Function to create a wrapper element for each item (default: defaultCardWrapper)
+ * @param {string} param0.emptyMessage - Optional message to display if no items are visible
+ * @returns {Promise<void>}
+ */
+export async function loadItems({
+    jsonUrl,
+    dataKey = null,
+    containerId,
+    filterFn = isContentVisible,
+    mapItemToHtml,
+    createWrapper = defaultCardWrapper,
+    emptyMessage = null
+}) {
+    const chapter = getContentChapter();
+    const container = document.getElementById(containerId);
+
+    try {
+        // Fetch data
+        const data = await fetchJson(jsonUrl);
+        const items = dataKey ? (data[dataKey] ?? []) : data;
+        const visibleItems = items.filter(item => filterFn(item, chapter));
+
+        // Clear existing content
+        container.innerHTML = "";
+
+        // Build empty message container if no content to inject
+        if (visibleItems.length === 0 && emptyMessage) {
+            const wrapper = createWrapper();
+            wrapper.textContent = emptyMessage;
+            container.appendChild(wrapper);
+            return;
+        }
+
+        // Build card items
+        visibleItems.forEach(item => {
+            const wrapper = createWrapper();
+            wrapper.innerHTML = mapItemToHtml(item, chapter);
+
+            // Set data-name attribute for map linking (if map)
+            const mapLabel = item.mapLabel ? getClosestChapterValue(item.mapLabel, chapter) : null;
+            if (mapLabel)
+                wrapper.dataset.name = mapLabel.trim().toLowerCase().replace(/\s+/g, '-');
+
+            container.appendChild(wrapper);
+        });
+    } catch (error) {
+        displayError(containerId, error);
+    }
+}
+
+/**
  * Load and render cards from a JSON file into a specified container.
  * 
  * - Only displays content if its `chapter` is <= the user's progress.
@@ -1068,8 +1165,8 @@ export function getClosestChapterValue(values, chapter) {
  * @returns {boolean} True if the item should be visible, false otherwise.
  */
 export function isContentVisible(item, currentChapter) {
-    const introduced = item.chapter <= currentChapter;
-    const notRemoved = item.removeOn === null || item.removeOn > currentChapter;
+    const introduced = (item.chapter ?? 0) <= currentChapter;
+    const notRemoved = (item.removeOn ?? null) === null || (item.removeOn ?? null) > currentChapter;
     return introduced && notRemoved;
 }
 
@@ -1095,4 +1192,31 @@ export function scrollToCard(card) {
         top: y,
         behavior: 'smooth'
     });
+}
+
+/**
+ * Resolves the content for a given key and chapter.
+ * 
+ * @param {*} data - The data object containing chapter-specific content.
+ * @param {*} key - The key for the content to resolve.
+ * @param {*} chapter - The current chapter number.
+ * @returns The resolved content for the given key and chapter.
+ */
+function resolveChapterContent(data, key, chapter) {
+    // Parse nested content
+    const parts = key.split(".").filter(Boolean);
+    const content = parts.reduce((obj, part) => obj?.[part], data);
+    return content && typeof content === 'object' && !Array.isArray(content)
+        ? getClosestChapterValue(content, chapter)
+        : content;
+}
+
+/**
+ * Creates a default card wrapper element.
+ * @returns {HTMLElement} The created card wrapper element.
+ */
+function defaultCardWrapper() {
+    const el = document.createElement("div");
+    el.className = "card card--hover";
+    return el;
 }
