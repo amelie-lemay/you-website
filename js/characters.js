@@ -1,6 +1,10 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
-    setUpProgressSync, loadContent, getClosestChapterValue, loadCards, 
-    showContent} from "./shared.js";
+    setUpProgressSync, loadContent, getClosestChapterValue, loadItems, 
+    showContent
+} from "./shared.js";
+
+const MAIN_CHARACTERS_URL = "../content/characters/main-characters.json";
+const MINOR_CHARACTERS_URL = "../content/characters/minor-characters.json";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -28,8 +32,8 @@ async function injectContent() {
     loadContent();
     
     // Load main characters
-    await loadCards({
-        jsonUrl: "../content/characters/main-characters.json",
+    await loadItems({
+        jsonUrl: MAIN_CHARACTERS_URL,
         containerId: "main-characters",
         mapItemToHtml: (character, chapter) => {
             const name = getClosestChapterValue(character.name, chapter);
@@ -52,8 +56,8 @@ async function injectContent() {
     });
     
     // Load minor characters
-    await loadCards({
-        jsonUrl: "../content/characters/minor-characters.json",
+    await loadItems({
+        jsonUrl: MINOR_CHARACTERS_URL,
         containerId: "minor-characters",
         mapItemToHtml: (character, chapter) => {
             const name = getClosestChapterValue(character.name, chapter);
