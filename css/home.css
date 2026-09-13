@@ -84,6 +84,11 @@
     border-radius: 6px;
 }
 
+.updates-list:has(li:only-child) {
+    list-style: none;
+    padding-left: 0;
+}
+
 /* ====================================
    Card customization
 ==================================== */

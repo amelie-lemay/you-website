@@ -19,79 +19,88 @@
     <section class="chapter-update"></section>
 
     <main>
-        <section class="hero">
-            <img alt="Book Artwork" class="hero-bg" id="hero-bg" loading="eager">
-            <h1>You</h1>
-            <p>Dive into the world undefiled of humans' memories</p>
-            <a href="map.html" class="button">Explore the map</a>
-        </section>
+        <div id="content-wrapper">
+            <section class="hero">
+                <img alt="Book Artwork" class="hero-bg" id="hero-bg" loading="eager">
+                <h1 id="book-title">You</h1>
+                <p id="book-tagline">Dive into the world undefiled of humans' memories</p>
+                <a href="map.html" class="button">Explore the map</a>
+            </section>
 
-        <section class="section">
-            <h2>Book Synopsis</h2>
-            <p class="synopsis">Jane, like every friend and foe around her, woke up in this vast and
-                empty world absent of memories. Some had been here for a year, five
-                years, ten years - the oldest tales dated to twenty! - and herself had
-                wandered for five months. Jane had had the luck to meet the clan that
-                took her home early, where she was safe, fed, and appreciated. She loved
-                her group, she really did, yet could not share the same hatred as
-                everyone for the pack living across the lake. She hated this ever-going
-                war. And, above all, Jane could not take her eyes off the horizon singing
-                freedom.</p>
-            <p class="tip">Would you rather have a teaser?</p>
-            <a href="content/you_chapter1.pdf" class="button" target="_blank">Read the first chapter</a>
-        </section>
+            <section class="section">
+                <h2>Book Synopsis</h2>
+                <p class="synopsis" id="book-synopsis">Jane, like every friend and foe around her, woke up in this vast and
+                    empty world absent of memories. Some had been here for a year, five
+                    years, ten years - the oldest tales dated to twenty! - and herself had
+                    wandered for five months. Jane had had the luck to meet the clan that
+                    took her home early, where she was safe, fed, and appreciated. She loved
+                    her group, she really did, yet could not share the same hatred as
+                    everyone for the pack living across the lake. She hated this ever-going
+                    war. And, above all, Jane could not take her eyes off the horizon singing
+                    freedom.</p>
+                <p class="tip">Would you rather have a teaser?</p>
+                <a href="content/you_chapter1.pdf" class="button" target="_blank">Read the first chapter</a>
+            </section>
 
-        <section class="section">
-            <h2>Step Into the Lore</h2>
-            <div class="cards cards--row">
-                <a href="map.html" class="card">
-                    <div class="card-content">
-                        <h3>Map</h3>
-                        <p>View the map with Jane's eyes.</p>
-                    </div>
-                    <span class="link">Explore</span>
-                </a>
-                <a href="translation.html" class="card ch-7 hidden">
-                    <div class="card-content">
-                        <h3>Translation</h3>
-                        <p>Bonjour in the book, hello on this page.</p>
-                    </div>
-                    <span class="link">Read Here</span>
-                </a>
-                <a href="characters.html" class="card">
-                    <div class="card-content">
-                        <h3>Characters</h3>
-                        <p>Follow the ones who shape the story.</p>
-                    </div>
-                    <span class="link">Meet Them</span>
-                </a>
-            </div>
-        </section>
+            <section class="section">
+                <h2>Step Into the Lore</h2>
+                <div class="cards cards--row">
+                    <a href="map.html" class="card">
+                        <div class="card-content">
+                            <h3>Map</h3>
+                            <p id="card-map-desc">View the map with Jane's eyes.</p>
+                        </div>
+                        <span class="link">Explore</span>
+                    </a>
+                    <a href="translation.html" class="card ch-7 hidden">
+                        <div class="card-content">
+                            <h3>Translation</h3>
+                            <p id="card-translation-desc">Bonjour in the book, hello on this page.</p>
+                        </div>
+                        <span class="link">Read Here</span>
+                    </a>
+                    <a href="characters.html" class="card">
+                        <div class="card-content">
+                            <h3>Characters</h3>
+                            <p id="card-characters-desc">Follow the ones who shape the story.</p>
+                        </div>
+                        <span class="link">Meet Them</span>
+                    </a>
+                </div>
+            </section>
 
-        <section class="section">
-            <h2>About This Website</h2>
-            <p>Hi, this is the author! I created this website as a companion to your
-                reading experience. Initially meant for <span class="remove-on-7 hidden">additional
-                information on a specific chapter (this spoiler-free version will change
-                once you reach this point!)</span><span class="ch-7 hidden">a translation of
-                French dialogues for non-speakers of the language</span>, I've expanded
-                it to include my sketches of Jane's maps and other notes on characters
-                and places you might find interesting. And, to top it all, it is
-                designed to adapt to your reading progress so you can navigate through
-                this site with no fear of accidentally uncovering an important plot
-                line. Thank you for taking an interest in my story, and happy reading!</p>
-        </section>
+            <section class="section">
+                <h2>About This Website</h2>
+                <p id="about-website">Hi, this is the author! I created this website as a companion to your
+                    reading experience. Initially meant for <span class="remove-on-7 hidden">additional
+                    information on a specific chapter (this spoiler-free version will change
+                    once you reach this point!)</span><span class="ch-7 hidden">a translation of
+                    French dialogues for non-speakers of the language</span>, I've expanded
+                    it to include my sketches of Jane's maps and other notes on characters
+                    and places you might find interesting. And, to top it all, it is
+                    designed to adapt to your reading progress so you can navigate through
+                    this site with no fear of accidentally uncovering an important plot
+                    line. Thank you for taking an interest in my story, and happy reading!</p>
+            </section>
 
-        <section class="section section--updates">
-            <h2>Latest Updates</h2>
-            <p>This place is empty for now. Come back later.</p>
-            <!-- Example of updates
-                <ul>
+            <section class="section section--updates">
+                <h2>Latest Updates</h2>
+                <ul class="updates-list" id="latest-updates">
+                    This place is empty for now. Come back later.
+                <!-- Example of updates
                     <li>📢 Volume II coming Winter 2025!</li>
                     <li>🗺️ Map updated with new region: The Glade of Echoes</li>
                     <li>🎨 Fan art contest open until June 30</li>
-                </ul> -->
-        </section>
+                -->
+                </ul>
+            </section>
+        </div>
+
+        <div id="error-wrapper" hidden>
+            <p id="error-message" role="alert" aria-live="assertive">
+                Sorry, something went wrong while loading the content. Please refresh or try again later.
+            </p>
+        </div>
     </main>
 
     <footer></footer>

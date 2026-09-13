@@ -1,6 +1,8 @@
-import { includeAllSharedComponents, setUpSectionFadeIn, 
-    createProgressPopup, setUpProgressSync, loadContent, 
-    getImageSrc, loadImage} from "./shared.js";
+import {
+    includeAllSharedComponents, setUpSectionFadeIn, 
+    createProgressPopup, setUpProgressSync, showContent, loadContent, 
+    getImageSrc, loadImage, injectFields, loadItems
+} from "./shared.js";
 
 const HERO_IMAGE_OPTIONS = {
     imageFolder: "../img/home-banner/",
@@ -8,20 +10,21 @@ const HERO_IMAGE_OPTIONS = {
     manifestUrl: "../content/home/hero-img-manifest.json",
     errorEvent: (error) => console.error(`Error loading content for hero image:`, error)
 };
+const HOME_CONTENT_URL = "../content/home/book-info.json";
+const SITE_CONTENT_URL = "../content/site/site-data.json";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Kick off image fetch and shared components in parallel
-    const [, imageSrc] = await Promise.all([
+    // Kick off content injection and shared components in parallel
+    await Promise.all([
         includeAllSharedComponents(),
-        getImageSrc(HERO_IMAGE_OPTIONS),
+        applyHeroImage(),
     ]);
+
+    // Inject book and site content into the page
+    injectContent();
 
     // Get user's chapter progress if visitor
     createProgressPopup('onboarding');
-
-    // Update website's content with chapter progress
-    loadContent();
-    applyHeroImage(imageSrc);
 
     // Set up animations
     const sections = document.querySelectorAll('.section');
@@ -35,18 +38,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 window.addEventListener("chapterChange", injectContent);
 
 async function injectContent() {
+    showContent();
     loadContent();
 
-    // Load hero image
-    const imageSrc = await getImageSrc(HERO_IMAGE_OPTIONS);
-    applyHeroImage(imageSrc);
+    // Add book-related sections: title, tagline, synopsis, about-website
+    await injectFields({
+        jsonUrl: HOME_CONTENT_URL,
+        fields: {
+            "book-title": "title",
+            "book-tagline": "tagline",
+            "book-synopsis": "synopsis",
+            "about-website": "about-website"
+        }
+    });
+
+    // Add site cards
+    await injectFields({
+        jsonUrl: SITE_CONTENT_URL,
+        fields: {
+            "card-map-desc": "home-cards.map",
+            "card-translation-desc": "home-cards.translation",
+            "card-characters-desc": "home-cards.characters"
+        }
+    });
+
+    // Add updates
+    await loadItems({
+        jsonUrl: HOME_CONTENT_URL,
+        dataKey: "updates",
+        containerId: "latest-updates",
+        mapItemToHtml: (update, chapter) => update,
+        createWrapper: () => document.createElement("li"),
+        emptyMessage: "This place is empty for now. Come back later."
+    });
 }
 
 /**
  * Pre-load and apply the hero image to the page, then start the animation.
  * @param {string} imageSrc - The source URL of the image to apply
  */
-async function applyHeroImage(imageSrc) {
+async function applyHeroImage() {
+    const imageSrc = await getImageSrc(HERO_IMAGE_OPTIONS);
     if (!imageSrc) return;
 
     await loadImage(imageSrc);
