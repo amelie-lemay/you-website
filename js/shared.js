@@ -155,11 +155,23 @@ async function includeFooter() {
     try {
         const html = await fetchText('includes/footer.html');
         footer.innerHTML = html;
+
+        // Inject copyright line
+        await injectFields(
+            {
+                jsonUrl: "../content/site/site-data.json",
+                fields: {
+                    "copyright-year": "copyright-year",
+                    "copyright-author": "author"
+                }
+            },
+            (containerId, error) => { throw error }
+        );
     } catch (error) {
         console.error('Failed to load footer:', error);
         // Minimal functional fallback
         footer.innerHTML = `
-            &copy; 2026 Amélie Lemay. All rights reserved. |
+            &copy; All rights reserved. |
             <a class="update-progress link">Change Progress</a> |
             <span class="error-p">Footer failed to load</span>
         `;
