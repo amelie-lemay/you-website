@@ -2,7 +2,7 @@
 const textCache = new Map();
 const TEXT_VERSION = "1.0.1"; // Increment this to invalidate cache
 const FIRST_CHAPTER = 1;
-const LAST_CHAPTER = 43;
+let lastChapter = 0;
 
 // Safe wrappers for localStorage and sessionStorage that fall back to in-memory storage if unavailable
 const safeLocal = (() => {
@@ -97,6 +97,15 @@ async function includeHeader(page) {
         const html = await fetchText('includes/header.html');
         header.innerHTML = html;
 
+        // Inject site title
+        await injectFields(
+            {
+                jsonUrl: "../content/site/site-data.json",
+                fields: { "site-title": "book-title" }
+            },
+            (containerId, error) => { throw error }
+        );
+
         // Set the current page link
         const currentPage = header.querySelector(`nav a[href="${page}"]`);
         currentPage?.setAttribute('aria-current', 'page');
@@ -104,6 +113,10 @@ async function includeHeader(page) {
         // Mobile menu toggle
         const toggle = document.querySelector('.menu-toggle');
         const nav = header.querySelector('nav');
+
+        // Mark nav links that should stay hidden until a specific chapter
+        await applyHiddenPageClasses("../content/site/hidden-pages.json", nav);
+
         // Open menu
         toggle.addEventListener('click', () => {
             nav.classList.toggle('open');
@@ -129,7 +142,7 @@ async function includeHeader(page) {
         console.error('Failed to load header:', error);
         // Functional fallback with minimal error message
         header.innerHTML = `
-            <h1><a href="index.html">You</a></h1>
+            <h1><a href="index.html">Home</a></h1>
             <p class="error-p">Header failed to load</p>
         `;
     }
@@ -146,11 +159,23 @@ async function includeFooter() {
     try {
         const html = await fetchText('includes/footer.html');
         footer.innerHTML = html;
+
+        // Inject copyright line
+        await injectFields(
+            {
+                jsonUrl: "../content/site/site-data.json",
+                fields: {
+                    "copyright-year": "copyright-year",
+                    "copyright-author": "author"
+                }
+            },
+            (containerId, error) => { throw error }
+        );
     } catch (error) {
         console.error('Failed to load footer:', error);
         // Minimal functional fallback
         footer.innerHTML = `
-            &copy; 2026 Amélie Lemay. All rights reserved. |
+            &copy; All rights reserved. |
             <a class="update-progress link">Change Progress</a> |
             <span class="error-p">Footer failed to load</span>
         `;
@@ -175,7 +200,7 @@ async function includeBanner() {
 
     const progress = getChapterProgress();
     // Do not show this element if the user is a visitor or has finished the book
-    if (progress < FIRST_CHAPTER || progress === LAST_CHAPTER) return;
+    if (progress < FIRST_CHAPTER || progress === lastChapter) return;
 
     try {
         // Fetch banner HTML
@@ -310,6 +335,9 @@ async function attachPopupActivators() {
  * Include all shared components into the current page.
  */
 export async function includeAllSharedComponents() {
+    // Get last chapter
+    lastChapter = await getLastChapter();
+
     // Get current page from URL
     let currentPage = window.location.pathname.split("/").pop();
     if (!currentPage) currentPage = "index.html";
@@ -322,6 +350,28 @@ export async function includeAllSharedComponents() {
     
     // Wait for layout to stabilize before attaching event listeners and popup
     await attachPopupActivators();
+
+    // Show content after shared components are loaded
+    loadContent();
+}
+
+/**
+ * Apply hidden page classes based on the configuration from a JSON file.
+ * 
+ * @param {*} jsonUrl - URL of the JSON file containing hidden page configurations
+ * @param {*} root - Optional root element to scope the querySelectorAll (default: document)
+ */
+export async function applyHiddenPageClasses(jsonUrl, root = document) {
+    try {
+        const hiddenPages = await fetchJson(jsonUrl);
+        hiddenPages.forEach(({ page, chapter }) => {
+            root.querySelectorAll(`a[href="${page}"]`).forEach(link => {
+                link.classList.add(`ch-${chapter}`, 'hidden');
+            });
+        });
+    } catch (error) {
+        console.error('Failed to load hidden pages config:', error);
+    }
 }
 
 /**
@@ -379,8 +429,8 @@ export function createProgressPopup(mode = 'onboarding') {
     function updateDisplay() {
 		display.textContent = chapter;
 		decrease.disabled = chapter <= FIRST_CHAPTER;
-		increase.disabled = chapter >= LAST_CHAPTER;
-        finishedCheckbox.checked = chapter === LAST_CHAPTER;
+		increase.disabled = chapter >= lastChapter;
+        finishedCheckbox.checked = chapter === lastChapter;
 	}
 
 	function closeModal() {
@@ -411,7 +461,7 @@ export function createProgressPopup(mode = 'onboarding') {
 
     // Change chapter with bounds checking
 	function changeChapter(step) {
-        chapter = Math.min(LAST_CHAPTER, Math.max(FIRST_CHAPTER, chapter + step));
+        chapter = Math.min(lastChapter, Math.max(FIRST_CHAPTER, chapter + step));
         updateDisplay();
 	}
 
@@ -480,7 +530,7 @@ export function createProgressPopup(mode = 'onboarding') {
 
         finishedCheckbox.addEventListener("change", () => {
             if (finishedCheckbox.checked)
-                chapter = LAST_CHAPTER;
+                chapter = lastChapter;
             updateDisplay();
         });
     }
@@ -720,6 +770,107 @@ export function loadImage(src) {
         img.onload = () => resolve(src);
         img.src = src;
     });
+}
+
+/**
+ * Injects field values into the DOM based on the current chapter.
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
+ * @param {Object} param0.fields - Object mapping container IDs to field configurations
+ * @param {function} onError - Optional error handler function for individual container errors
+ * @returns {Promise<void>}
+ */
+export async function injectFields(
+    { jsonUrl, fields },
+    onError = (containerId, error) => displayError(containerId, error)
+) {
+    const chapter = getContentChapter();
+    const containerIds = Object.keys(fields);
+
+    // Fetch data
+    let data;
+    try {
+        data = await fetchJson(jsonUrl);
+    } catch (error) {
+        containerIds.forEach(id => onError(id, error));
+        return;
+    }
+
+    // Inject data into container
+    containerIds.forEach(containerId => {
+        try {
+            let container = document.getElementById(containerId);
+            if (!container)
+                throw new Error(`Container with ID "${containerId}" not found in the DOM.`);
+
+            const text = resolveChapterContent(data, fields[containerId], chapter);
+            container.innerHTML = text ?? "";
+        } catch (error) {
+            onError(containerId, error);
+        }
+    });
+}
+
+/**
+ * Load and render items from a JSON file into a specified container.
+ * 
+ * - Only displays content if its `chapter` is <= the user's progress.
+ * - Hides content if its `removeOn` value is <= the user's progress.
+ * - Uses `mapItemToHtml` to convert each item to its HTML representation.
+ * @param {*} param0 - Configuration object
+ * @param {string} param0.jsonUrl - URL of the JSON file to fetch data from
+ * @param {string} param0.dataKey - Optional key to access nested data in the JSON
+ * @param {string} param0.containerId - ID of the container element to inject items into
+ * @param {function} param0.filterFn - Function to filter items based on visibility (default: isContentVisible)
+ * @param {function} param0.mapItemToHtml - Function to convert an item to its HTML representation
+ * @param {function} param0.createWrapper - Function to create a wrapper element for each item (default: defaultCardWrapper)
+ * @param {string} param0.emptyMessage - Optional message to display if no items are visible
+ * @returns {Promise<void>}
+ */
+export async function loadItems({
+    jsonUrl,
+    dataKey = null,
+    containerId,
+    filterFn = isContentVisible,
+    mapItemToHtml,
+    createWrapper = defaultCardWrapper,
+    emptyMessage = null
+}) {
+    const chapter = getContentChapter();
+    const container = document.getElementById(containerId);
+
+    try {
+        // Fetch data
+        const data = await fetchJson(jsonUrl);
+        const items = dataKey ? (data[dataKey] ?? []) : data;
+        const visibleItems = items.filter(item => filterFn(item, chapter));
+
+        // Clear existing content
+        container.innerHTML = "";
+
+        // Build empty message container if no content to inject
+        if (visibleItems.length === 0 && emptyMessage) {
+            const wrapper = createWrapper();
+            wrapper.textContent = emptyMessage;
+            container.appendChild(wrapper);
+            return;
+        }
+
+        // Build card items
+        visibleItems.forEach(item => {
+            const wrapper = createWrapper();
+            wrapper.innerHTML = mapItemToHtml(item, chapter);
+
+            // Set data-name attribute for map linking (if map)
+            const mapLabel = item.mapLabel ? getClosestChapterValue(item.mapLabel, chapter) : null;
+            if (mapLabel)
+                wrapper.dataset.name = mapLabel.trim().toLowerCase().replace(/\s+/g, '-');
+
+            container.appendChild(wrapper);
+        });
+    } catch (error) {
+        displayError(containerId, error);
+    }
 }
 
 /**
@@ -1068,8 +1219,8 @@ export function getClosestChapterValue(values, chapter) {
  * @returns {boolean} True if the item should be visible, false otherwise.
  */
 export function isContentVisible(item, currentChapter) {
-    const introduced = item.chapter <= currentChapter;
-    const notRemoved = item.removeOn === null || item.removeOn > currentChapter;
+    const introduced = (item.chapter ?? 0) <= currentChapter;
+    const notRemoved = (item.removeOn ?? null) === null || (item.removeOn ?? null) > currentChapter;
     return introduced && notRemoved;
 }
 
@@ -1095,4 +1246,68 @@ export function scrollToCard(card) {
         top: y,
         behavior: 'smooth'
     });
+}
+
+/**
+ * Resolves the content for a given key and chapter.
+ * 
+ * @param {*} data - The data object containing chapter-specific content.
+ * @param {*} key - The key for the content to resolve.
+ * @param {*} chapter - The current chapter number.
+ * @returns The resolved content for the given key and chapter.
+ */
+function resolveChapterContent(data, key, chapter) {
+    // Parse nested content
+    const parts = key.split(".").filter(Boolean);
+    const content = parts.reduce((obj, part) => obj?.[part], data);
+    return content && typeof content === 'object' && !Array.isArray(content)
+        ? getClosestChapterValue(content, chapter)
+        : content;
+}
+
+/**
+ * Creates a default card wrapper element.
+ * @returns {HTMLElement} The created card wrapper element.
+ */
+function defaultCardWrapper() {
+    const el = document.createElement("div");
+    el.className = "card card--hover";
+    return el;
+}
+
+/**
+ * Fetch the last chapter number from the site data JSON.
+ * If the fetch fails, it defaults to 25.
+ * 
+ * @returns {Promise<number>} The last chapter number.
+ */
+async function getLastChapter() {
+    if (lastChapter === 0) {
+        try {
+            const data = await fetchJson("../content/site/site-data.json");
+            lastChapter = Number(data["total-chapters"]) || 25;
+        } catch (error) {
+            console.error("Error fetching total number of chapters:", error);
+            lastChapter = 25;
+        }
+    }
+    return lastChapter;
+}
+
+/**
+ * Get the chapter at which a given page becomes accessible, based on the
+ * hidden-pages.json config used for nav visibility.
+ *
+ * @param {string} page - The page filename to look up
+ * @returns {Promise<number|null>} The unlock chapter, or null if the page isn't gated.
+ */
+export async function getPageUnlockChapter(page) {
+    try {
+        const hiddenPages = await fetchJson("../content/site/hidden-pages.json");
+        const entry = hiddenPages.find(p => p.page === page);
+        return entry ? entry.chapter : null;
+    } catch (error) {
+        console.error('Failed to load hidden pages config:', error);
+        return null;
+    }
 }

@@ -1,7 +1,12 @@
 import { setUpSectionFadeIn, setupCardFadeIn, includeAllSharedComponents, 
-    setUpProgressSync, loadContent, getClosestChapterValue, loadCards,
+    setUpProgressSync, loadContent, getClosestChapterValue, loadItems,
     showContent, loadImage, getImageSrc, loadRegions, loadMapLegend, 
-    displayError} from "./shared.js";
+    displayError, injectFields
+} from "./shared.js";
+
+const MAJOR_GROUPS_URL = "../content/map/major-groups.json";
+const NOTABLE_BUILDINGS_URL = "../content/map/notable-buildings.json";
+const SITE_CONTENT_URL = "../content/site/site-data.json";
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Include shared components
@@ -62,10 +67,17 @@ async function injectContent() {
             console.log("---");
         }); */
     }
+
+    // Add map title
+    injectFields({
+        jsonUrl: SITE_CONTENT_URL,
+        fields: {
+            "map-title": "map-title"
+        }
+    })
     
-    // Load major groups
-    await loadCards({
-        jsonUrl: "../content/map/major-groups.json",
+    await loadItems({
+        jsonUrl: MAJOR_GROUPS_URL,
         containerId: "major-groups",
         mapItemToHtml: (group, chapter) => {
             const name = getClosestChapterValue(group.name, chapter);
@@ -85,8 +97,8 @@ async function injectContent() {
     });
     
     // Load notable buildings
-    await loadCards({
-        jsonUrl: "../content/map/notable-buildings.json",
+    await loadItems({
+        jsonUrl: NOTABLE_BUILDINGS_URL,
         containerId: "notable-buildings",
         mapItemToHtml: (building, chapter) => {
             const name = getClosestChapterValue(building.name, chapter);

@@ -1,17 +1,15 @@
 import { setUpSectionFadeIn, includeAllSharedComponents,
     getChapterProgress, getContentChapter, setUpProgressSync, 
     loadContent, fetchJson, displayError, isContentVisible, 
-    showContent} from "./shared.js";
+    showContent, getPageUnlockChapter} from "./shared.js";
 
 // To hold the cleanup function for the custom scrollbar
 let cleanupScrollbar = null;
+let unlockChapter = 1;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Include shared components
-    await includeAllSharedComponents();
-
-    // Update website's content with chapter progress
-    injectContent();
+    // Get chapter at which this page unlocks
+    unlockChapter = (await getPageUnlockChapter("translation.html")) ?? 1;
 
     // Configure custom scrollbar for sidebar
     configureCustomScrollbar();
@@ -29,7 +27,7 @@ window.addEventListener("chapterChange", injectContent);
  * be redirected to the main page.
  */
 async function injectContent() {
-    if (getChapterProgress() < 7) {
+    if (getChapterProgress() < unlockChapter) {
         window.location.href = "../index.html";
         return;
     }
@@ -37,6 +35,7 @@ async function injectContent() {
     showContent("flex");
     loadContent();
 
+    // Add translations to page
     await loadTranslations();
 
     // Listener to switch between chapters
@@ -64,7 +63,6 @@ async function loadTranslations() {
     const container = document.getElementById('translations');
     const selector = document.getElementById('chapter-select');
     const sidebar = document.getElementById("sidebar");
-    const FIRST_CHAPTER = 7;
 
     try {
         // Fetch translations data
@@ -77,9 +75,9 @@ async function loadTranslations() {
         }
 
         // Get active chapter number
-        let activeChapter = localStorage.getItem("activeTranslation") === null ? FIRST_CHAPTER : Number(localStorage.getItem("activeTranslation"));
+        let activeChapter = localStorage.getItem("activeTranslation") === null ? unlockChapter : Number(localStorage.getItem("activeTranslation"));
         if (activeChapter > chapter) // Prevent accessing chapters beyond progress
-            activeChapter = FIRST_CHAPTER;
+            activeChapter = unlockChapter;
 
         // Clear existing content
         container.innerHTML = "";
