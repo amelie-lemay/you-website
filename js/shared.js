@@ -1293,3 +1293,21 @@ async function getLastChapter() {
     }
     return lastChapter;
 }
+
+/**
+ * Get the chapter at which a given page becomes accessible, based on the
+ * hidden-pages.json config used for nav visibility.
+ *
+ * @param {string} page - The page filename to look up
+ * @returns {Promise<number|null>} The unlock chapter, or null if the page isn't gated.
+ */
+export async function getPageUnlockChapter(page) {
+    try {
+        const hiddenPages = await fetchJson("../content/site/hidden-pages.json");
+        const entry = hiddenPages.find(p => p.page === page);
+        return entry ? entry.chapter : null;
+    } catch (error) {
+        console.error('Failed to load hidden pages config:', error);
+        return null;
+    }
+}
