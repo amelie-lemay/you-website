@@ -2,7 +2,7 @@
 const textCache = new Map();
 const TEXT_VERSION = "1.0.1"; // Increment this to invalidate cache
 const FIRST_CHAPTER = 1;
-const LAST_CHAPTER = 43;
+let lastChapter = 0;
 
 // Safe wrappers for localStorage and sessionStorage that fall back to in-memory storage if unavailable
 const safeLocal = (() => {
@@ -196,7 +196,7 @@ async function includeBanner() {
 
     const progress = getChapterProgress();
     // Do not show this element if the user is a visitor or has finished the book
-    if (progress < FIRST_CHAPTER || progress === LAST_CHAPTER) return;
+    if (progress < FIRST_CHAPTER || progress === lastChapter) return;
 
     try {
         // Fetch banner HTML
@@ -331,6 +331,9 @@ async function attachPopupActivators() {
  * Include all shared components into the current page.
  */
 export async function includeAllSharedComponents() {
+    // Get last chapter
+    lastChapter = await getLastChapter();
+
     // Get current page from URL
     let currentPage = window.location.pathname.split("/").pop();
     if (!currentPage) currentPage = "index.html";
@@ -400,8 +403,8 @@ export function createProgressPopup(mode = 'onboarding') {
     function updateDisplay() {
 		display.textContent = chapter;
 		decrease.disabled = chapter <= FIRST_CHAPTER;
-		increase.disabled = chapter >= LAST_CHAPTER;
-        finishedCheckbox.checked = chapter === LAST_CHAPTER;
+		increase.disabled = chapter >= lastChapter;
+        finishedCheckbox.checked = chapter === lastChapter;
 	}
 
 	function closeModal() {
@@ -432,7 +435,7 @@ export function createProgressPopup(mode = 'onboarding') {
 
     // Change chapter with bounds checking
 	function changeChapter(step) {
-        chapter = Math.min(LAST_CHAPTER, Math.max(FIRST_CHAPTER, chapter + step));
+        chapter = Math.min(lastChapter, Math.max(FIRST_CHAPTER, chapter + step));
         updateDisplay();
 	}
 
@@ -501,7 +504,7 @@ export function createProgressPopup(mode = 'onboarding') {
 
         finishedCheckbox.addEventListener("change", () => {
             if (finishedCheckbox.checked)
-                chapter = LAST_CHAPTER;
+                chapter = lastChapter;
             updateDisplay();
         });
     }
@@ -1244,4 +1247,23 @@ function defaultCardWrapper() {
     const el = document.createElement("div");
     el.className = "card card--hover";
     return el;
+}
+
+/**
+ * Fetch the last chapter number from the site data JSON.
+ * If the fetch fails, it defaults to 25.
+ * 
+ * @returns {Promise<number>} The last chapter number.
+ */
+async function getLastChapter() {
+    if (lastChapter === 0) {
+        try {
+            const data = await fetchJson("../content/site/site-data.json");
+            lastChapter = Number(data["total-chapters"]) || 25;
+        } catch (error) {
+            console.error("Error fetching total number of chapters:", error);
+            lastChapter = 25;
+        }
+    }
+    return lastChapter;
 }
